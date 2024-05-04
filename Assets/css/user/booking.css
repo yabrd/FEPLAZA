@@ -1,0 +1,205 @@
+/*******************************/
+/******* Page Header CSS *******/
+/*******************************/
+.page-header {
+    position: relative;
+    margin-bottom: 45px;
+    padding: 150px 0 90px 0;
+    text-align: center;
+    background: #00235B;
+}
+
+.page-header h2 {
+    position: relative;
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.page-header a {
+    position: relative;
+    padding: 0 12px;
+    font-size: 22px;
+    color: #00235B;
+}
+
+.page-header a:hover {
+    color: #ffffff;
+}
+
+.page-header a::after {
+    position: absolute;
+    content: "/";
+    width: 8px;
+    height: 8px;
+    top: -2px;
+    right: -7px;
+    text-align: center;
+    color: #00235B;
+}
+
+.page-header a:last-child::after {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .page-header h2 {
+        font-size: 35px;
+    }
+    
+    .page-header a {
+        font-size: 18px;
+    }
+}
+
+/*******************************/
+/******* Section Header ********/
+/*******************************/
+.section-header {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 45px;
+}
+
+.section-header p {
+    margin-bottom: 5px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.section-header h2 {
+    margin: 0;
+    position: relative;
+    font-size: 50px;
+    font-weight: 700;
+}
+
+@media (max-width: 767.98px) {
+    .section-header h2 {
+        font-size: 30px;
+    }
+}
+
+/*******************************/
+/********* Contact CSS *********/
+/*******************************/
+.contact {
+    position: relative;
+    width: 100%;
+    margin: 45px 0;
+    background: white;
+}
+
+.contact .container-fluid {
+    background: #00235B;
+    max-width: 35%; /* Penyesuaian ukuran */
+    margin: 0 auto; /* Pusatkan konten */
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px #aaaaaa;;
+}
+
+.contact .contact-form {
+    padding: 15px 15px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column; /* Menjadikan susunan vertikal */
+}
+
+.contact .contact-form input,
+.contact .contact-form textarea,
+.contact .contact-form .btn,
+.contact .contact-form select.form-control,
+.contact .contact-form .alert {
+    margin: 0 auto; /* Menengahkan elemen */
+    width: 100%; /* Membuat elemen mengambil lebar penuh */
+    max-width: 500px; /* Membatasi lebar maksimum */
+}
+
+.contact .contact-form .btn {
+    width: auto; /* Mengembalikan lebar ke ukuran default */
+    margin-top: 10px; /* Jarak antara tombol dan input fields */
+    padding: 15px 30px; /* Mengembalikan padding */
+    font-size: 16px; /* Mengembalikan font size */
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #f84200;
+    background: none;
+    border: 2px solid #f84200;
+    border-radius: 0;
+    transition: .3s;
+}
+
+.contact .contact-form .btn:hover {
+    color: #00235B;
+    background: #f84200;
+}
+
+.contact .help-block ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+
+
+/* Class Balutan untuk Gambar */
+.image-wrapper {
+    padding: 15px 15px;
+    text-align: center; /* Menengahkan gambar */
+}
+
+.image-wrapper img {
+    display: inline-block; /* Memastikan gambar dapat ditengahkan */
+}
+
+/* Custom Classes */
+.col-md-6-custom {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column; /* Menjadikan susunan vertikal */
+    padding-left: 15px; 
+    padding-right: 15px;
+}
+
+.text-center-custom {
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .page-header h2 {
+        font-size: 35px;
+    }
+    
+    .page-header a {
+        font-size: 18px;
+    }
+
+    .section-header {
+        max-width: 90%; /* Menyesuaikan lebar maksimum */
+    }
+
+    .section-header h2 {
+        font-size: 30px; /* Mengurangi ukuran font */
+    }
+
+    .contact .container-fluid {
+        max-width: 90%; /* Penyesuaian ukuran */
+    }
+
+    .contact .contact-form {
+        padding: 15px 15px; /* Menyesuaikan padding */
+    }
+
+    .image-wrapper {
+        padding: 15px 15px; /* Menyesuaikan padding */
+    }
+
+    .col-md-6-custom {
+        padding-left: 15px; 
+        padding-right: 15px;
+    }
+}

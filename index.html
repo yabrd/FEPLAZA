@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Plaza Barbershop</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JavaScript (Popper.js harus dimuat terlebih dahulu, diikuti oleh Bootstrap JS) -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <!-- <link href="Assets/css/style.css" rel="stylesheet"> -->
+    <link href="Assets/css/user/idx.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Nav Bar Start -->
+    <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <div class="container-fluid">
+            <a href="?Beranda" class="navbar-brand"><span>PLAZA</span></a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                <div class="navbar-nav ml-auto">
+                    <a href="?Beranda" class="nav-item nav-link">Beranda</a>
+                    <a href="?Price" class="nav-item nav-link">Harga</a>
+                    <a href="?Galeri" class="nav-item nav-link">Galeri</a>
+                    <a href="?Booking" class="nav-item nav-link">Pemesanan</a>
+                    <a href="Auth/?Login" class="nav-item nav-link" id="loginLink">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data dari /Beranda/index.html akan ditampilkan di sini -->
+    <div id="contentFromIndexHTML"></div>
+
+    <!-- Footer Start -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="footer-contact">
+                                <h2>Alamat Barbershop</h2>
+                                <p><i class="fa fa-map-marker-alt"></i>Jogjakarta tercintahh</p>
+                                <p><i class="fa fa-phone-alt"></i>0834 5845 4857</p>
+                                <p><i class="fa fa-envelope"></i>Plazabarber@gmail.com</p>
+                                <div class="footer-social">
+                                    <a href="https://twitter.com/"><i class="fab fa-twitter"></i></a>
+                                    <a href="https://facebook.com/"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://linkedin/"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="https://instagram.com/"><i class="fab fa-instagram"></i></a>
+                                    <a href="https://www.youtube.com/channel/UCg7kU1QYOiVyhV1GnmgOuBA"><i
+                                            class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="container copyright">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; <a>Plaza Barbershop</a>, All Right Reserved.</p>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <!-- Footer End -->
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="Assets/lib/easing/easing.min.js"></script>
+    <script src="Assets/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="Assets/lib/isotope/isotope.pkgd.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="Assets/mail/jqBootstrapValidation.min.js"></script>
+    <script src="Assets/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="Assets/js/booking.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const loginLinkElement = document.getElementById('loginLink');
+            const userId = sessionStorage.getItem('id');
+            const userRole = sessionStorage.getItem('role');
+            let pageToLoad = "beranda.html";
+    
+            if (userId) {
+                loginLinkElement.innerText = 'Logout';
+                loginLinkElement.setAttribute('href', 'Auth/?Logout');
+                loginLinkElement.addEventListener('click', function() {
+                    sessionStorage.removeItem('id');
+                    sessionStorage.removeItem('role');
+                });
+            } else {
+                loginLinkElement.innerText = 'Login';
+                loginLinkElement.setAttribute('href', 'Auth/?Login');
+            }
+    
+            if (userRole === 'admin') {
+                window.location.href = 'Admin/';
+            } else {
+                if (window.location.search.includes('?Beranda')) {
+                    pageToLoad = "beranda.html";
+                } else if (window.location.search.includes('?Price')) {
+                    pageToLoad = "price.html";
+                    var scriptToLoad = "Assets/js/user/harga.js";
+                } else if (window.location.search.includes('?Galeri')) {
+                    pageToLoad = "galeri.html";
+                } else if (window.location.search.includes('?Booking')) {
+                    if (userId) {
+                        pageToLoad = "booking.html";
+                        fetchUserById(userId);
+                    } else {
+                        window.location.href = 'Auth/?Login';
+                    }
+                }
+            }
+    
+            var xhttp = new XMLHttpRequest();
+    
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("contentFromIndexHTML").innerHTML = this.responseText;
+    
+                    if (scriptToLoad) {
+                        var scriptElement = document.createElement('script');
+                        scriptElement.src = scriptToLoad;
+                        document.body.appendChild(scriptElement);
+                    }
+                }
+            };
+    
+            xhttp.open("GET", pageToLoad, true);
+            xhttp.send();
+        });
+    </script>    
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="login-frame">
+        <div class="logo">
+            <img src="../Assets/img/Logo-Blue.png" alt="Logo">
+        </div>
+        <div class="form-container">
+            <form method="post" name="RegisterForm" id="RegisterForm">
+                <h1>
+                    <center>SIGN UP</center>
+                </h1>
+                <hr>
+                <div class="form-group">
+                    <input type="text" placeholder="Username" class="input-control" name="username" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="telp" placeholder="Nomor Telepon" required="required" class="input-control" data-validation-required-message="Silakan masukkan nomor telepon" pattern="[0-9]{10,15}" title="Nomor telepon harus terdiri dari 10 hingga 15 angka">
+                </div>
+
+                <div class="form-group">
+                    <input type="password" placeholder="Password" class="input-control" name="password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Confirm Password" class="input-control" name="cpassword" required>
+                </div>
+                <input type="submit" name="register" class="btn btn-primary my-2" value="REGISTER">
+            </form>
+            <p class="input-control">Have Already Account? <a href="?Login">Login </a></p>
+        </div>
+    </div>
+</div>
