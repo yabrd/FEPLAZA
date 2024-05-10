@@ -619,9 +619,6 @@ function fetchAndDisplayServices(Booking) {
         });
 }
 
-
-
-
 function resetForm() {
     document.getElementById("nama").value = "";
     document.getElementById("telp").value = "";
@@ -638,7 +635,6 @@ function resetForm() {
 
 function submitBookingAdm() {
     var button = document.getElementById("submitBtn");
-    console.log("babi")
 
     // Menonaktifkan tombol
     button.disabled = true;

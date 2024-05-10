@@ -17,8 +17,8 @@ function AllService() {
                     </td>
                     <td>${Service.harga}</td>
                     <td class="text-center" style="min-width: 170px;">
-                        <button class="btn btn-warning text-white" onclick="editService(${Service.id})">Edit</button>
-                        <button id="btn_delete${Service.id}" class="btn btn-danger text-white" onclick="deleteService(${Service.id})">Delete</button>
+                        <button class="btn btn-warning text-white" onclick="editService(${Service.id_pelayanan})">Edit</button>
+                        <button id="btn_delete${Service.id_pelayanan}" class="btn btn-danger text-white" onclick="deleteService(${Service.id_pelayanan})">Delete</button>
                     </td>
                 `;
                 serviceContainer.appendChild(ServiceElement);
@@ -35,7 +35,7 @@ function editService(serviceId) {
     fetch(url)
         .then(response => response.json())
         .then(service => {
-            document.getElementById('editIdPelayanan').value = service.id;
+            document.getElementById('editIdPelayanan').value = service.id_pelayanan;
             document.getElementById('editnamaPelayanan').value = service.nama;
             document.getElementById('editketeranganPelayanan').value = service.keterangan;
             document.getElementById('edithargaPelayanan').value = service.harga;
