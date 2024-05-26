@@ -5,85 +5,103 @@ import { resetTable } from './DashboardAdmin.js';
 let CurrentBookingHistoryTable = 1;
 let CurrentBookingListTable = 1;
 
-function displayBookingTable(BookingData, startIndex, Action) {
+function displayBookingTable(BookingData, currentPage, Action) {
     let selectorTarget;
     let tableId;
     let pageInfoId;
-    
+    let prevButtonId;
+    let nextButtonId;
+
     if (Action === 'apply') {
         selectorTarget = '#ListTableDisplay';
         tableId = 'NextBookingListTable';
         pageInfoId = 'PageListTable';
+        prevButtonId = 'PrevBookingListTable';
+        nextButtonId = 'NextBookingListTable';
     } else if (Action === 'edit') {
         selectorTarget = '#HistoryTableDisplay';
         tableId = 'NextBookingHistoryTable';
         pageInfoId = 'PageHistoryTable';
+        prevButtonId = 'PrevBookingHistoryTable';
+        nextButtonId = 'NextBookingHistoryTable';
     }
-    
+
     const tableContainer = document.querySelector(selectorTarget);
     tableContainer.innerHTML = '';
 
-    let iteration = 1;
+    const itemsPerPage = 5;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, BookingData.length);
 
-    for (let i = startIndex; i < BookingData.length; i++) {
+    let displayedDataCount = 0; // Variable untuk menghitung data yang ditampilkan
+
+    for (let i = 0; i < BookingData.length; i++) {
         const Booking = BookingData[i];
-        const NullPriceAndService = Booking.harga_booking === '' && Booking.order_layanan === '';
 
-        if ((Action === 'apply' && NullPriceAndService) || (Action === 'edit' && !NullPriceAndService)) {
-            let innerHTML = `
-                <td>${startIndex + iteration}</td>
-                <td>${Booking.nama_booking}</td>
-                <td>${Booking.nomerhp_booking}</td>
-                <td>${Booking.waktu_booking}</td>
-                <td>${Booking.tanggal_booking}</td>
-                <td>${Booking.pesan_booking}</td>
-            `;
+        // Pisahkan data menjadi dua kategori: list dan history
+        const isListData = !Booking.order_layanan && !Booking.harga_booking;
+        const isHistoryData = Booking.order_layanan && Booking.harga_booking;
 
-            if (Action === 'edit') {
-                innerHTML += `
-                    <td>${Booking.order_layanan}</td>
-                    <td>${Booking.harga_booking}</td>
-                    <td class="text-center">
-                        <div class="btn-container">
-                            <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
-                            <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
-                        </div>
-                    </td>
+        if ((Action === 'apply' && isListData) || (Action === 'edit' && isHistoryData)) {
+            // Tampilkan hanya jika sesuai dengan kategori yang diproses
+            if (displayedDataCount >= startIndex && displayedDataCount < endIndex) {
+                let innerHTML = `
+                    <td>${displayedDataCount + 1}</td>
+                    <td>${Booking.nama_booking}</td>
+                    <td>${Booking.nomerhp_booking}</td>
+                    <td>${Booking.waktu_booking}</td>
+                    <td>${Booking.tanggal_booking}</td>
+                    <td>${Booking.pesan_booking}</td>
                 `;
-            } else if (Action === 'apply') {
-                innerHTML += `
-                    <td class="text-center">
-                        <div class="btn-container">
-                            <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
-                        </div>
-                    </td>
-                `;
+
+                if (Action === 'edit') {
+                    innerHTML += `
+                        <td>${Booking.order_layanan}</td>
+                        <td>${formatRupiah(Booking.harga_booking)}</td>
+                        <td class="text-center">
+                            <div class="btn-container">
+                                <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
+                                <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
+                            </div>
+                        </td>
+                    `;
+                } else if (Action === 'apply') {
+                    innerHTML += `
+                        <td class="text-center">
+                            <div class="btn-container">
+                                <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
+                            </div>
+                        </td>
+                    `;
+                }
+
+                const BookingElement = document.createElement('tr');
+                BookingElement.innerHTML = innerHTML;
+                tableContainer.appendChild(BookingElement);
+
+                const modalElement = HistoryAndEditingModal(Booking, Action);
+                document.body.appendChild(modalElement);
+
+                fetchAndDisplayServices(Booking.id_booking, Action);
+
+                if (Action === 'edit') {
+                    const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
+                    deleteButton.addEventListener('click', function() {
+                        deleteBooking(Booking.id_booking);
+                    });
+                }
             }
 
-
-            const BookingElement = document.createElement('tr');
-            BookingElement.innerHTML = innerHTML;
-            tableContainer.appendChild(BookingElement);
-
-            const modalElement = HistoryAndEditingModal(Booking, Action);
-            document.body.appendChild(modalElement);
-
-            fetchAndDisplayServices(Booking.id_booking, Action);
-
-            if (Action === 'edit') {
-                const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
-                deleteButton.addEventListener('click', function() {
-                    deleteBooking(Booking.id_booking);
-                });
-            }
-            iteration++;
+            displayedDataCount++; // Tambahkan hitungan data yang ditampilkan
         }
     }
 
-    document.getElementById(tableId).disabled = true;
+    // Update pagination info
+    document.getElementById(pageInfoId).innerText = `Page ${currentPage} / ${Math.ceil(displayedDataCount / itemsPerPage)}`;
 
-    const totalPages = 1;
-    // document.getElementById(pageInfoId).innerText = `Page ${pageInfoId} / ${totalPages}`;
+    // Enable/Disable pagination buttons
+    document.getElementById(prevButtonId).disabled = currentPage === 1;
+    document.getElementById(nextButtonId).disabled = endIndex >= displayedDataCount;
 }
 
 function fetchAndDisplayServices(BookingID, Action) {
