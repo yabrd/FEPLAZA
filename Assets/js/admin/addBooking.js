@@ -126,6 +126,62 @@ function DataService() {
 }
 DataService();
 
+function formatRupiah(angka) {
+    var reverse = angka.toString().split('').reverse().join(''),
+        ribuan = reverse.match(/\d{1,3}/g);
+    ribuan = ribuan.join('.').split('').reverse().join('');
+    return ribuan;
+}
+
+
+
+setInterval(doSomethingWithCheckboxes, 1000);
+var totalHarga = 0; 
+function doSomethingWithCheckboxes() {
+    var checkboxes = document.querySelectorAll('.service-checkbox');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            totalHarga = 0;
+            checkboxes.forEach(function(cb) {
+                if (cb.checked) {
+                    totalHarga += parseFloat(cb.getAttribute('data-harga'));
+                }
+            });
+            var formattedHarga = 'Rp. ' + formatRupiah(totalHarga.toFixed(0));
+            document.getElementById('total-harga').textContent = 'Total Harga: ' + formattedHarga;
+            
+
+        });
+    });
+    let hargaElement = document.getElementById('harga');
+    if (hargaElement) {
+        hargaElement.value = totalHarga;
+    } else {
+        let hargaContainer = document.querySelector('#total-harga');
+        let hargaElementBaru = document.createElement('input');
+        hargaElementBaru.setAttribute('type', 'hidden');
+        hargaElementBaru.setAttribute('id', 'harga');
+        hargaElementBaru.setAttribute('name', 'harga');
+        hargaElementBaru.value = totalHarga;
+        hargaContainer.appendChild(hargaElementBaru);
+    }
+
+}
+
+function setMinDate() {
+    var inputTanggal = document.getElementById('tanggal');
+    if (inputTanggal) {
+        
+        var Hours = new Date();
+        Hours.setHours(Hours.getHours() + 7);
+        var today = Hours.toISOString().split('T')[0];
+        inputTanggal.min = today;
+    } else {
+        setTimeout(setMinDate, 1000);
+    }
+}
+setMinDate()
+
 // Ketika mengklik tombol submit booking
 function submitBookingAdm() {
     var button = document.getElementById("submitBtn");
