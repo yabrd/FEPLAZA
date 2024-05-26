@@ -123,8 +123,8 @@ function fetchAndDisplayServices(BookingID, Action) {
     });
 }
 
-function fetchOrderData(checkboxes, totalHarga, booId, Action) {
-    const orderUrl = `http://localhost/BEPLAZA/API/api.php/BookingOrder/${booId}`;
+function fetchOrderData(checkboxes, totalHarga, BookingID, Action) {
+    const orderUrl = `http://localhost/BEPLAZA/API/api.php/BookingOrder/${BookingID}`;
     fetch(orderUrl).then(response => response.json())
     .then(orderData => {
         const checkedServiceIds = orderData.map(order => order.id_pelayanan);
@@ -134,7 +134,7 @@ function fetchOrderData(checkboxes, totalHarga, booId, Action) {
             checkedServiceIds.forEach(idorder => {
                 if (idorder == serviceId) {
                     checkbox.checked = true;
-                    updateTotalHarga(checkboxes, totalHarga, booId, Action);
+                    updateTotalHarga(checkboxes, totalHarga, BookingID, Action);
                 }
             });
         });
@@ -142,7 +142,7 @@ function fetchOrderData(checkboxes, totalHarga, booId, Action) {
         // Tambahkan event listener setelah menandai checkbox yang sesuai
         checkboxes.forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
-                updateTotalHarga(checkboxes, totalHarga, booId, Action);
+                updateTotalHarga(checkboxes, totalHarga, BookingID, Action);
             });
         });
     })
@@ -151,21 +151,21 @@ function fetchOrderData(checkboxes, totalHarga, booId, Action) {
     });
 }
 
-function updateTotalHarga(checkboxes, totalHarga, booId, Action) {
-    totalHarga[booId] = 0;
+function updateTotalHarga(checkboxes, totalHarga, BookingID, Action) {
+    totalHarga[BookingID] = 0;
     checkboxes.forEach(function(cb) {
         if (cb.checked) {
-            totalHarga[booId] += parseFloat(cb.getAttribute('data-harga'));
+            totalHarga[BookingID] += parseFloat(cb.getAttribute('data-harga'));
         }
     });
-    var formattedHarga = 'Rp. ' + formatRupiah(totalHarga[booId].toFixed(0));
-    document.getElementById(`TotalHarga${Action}${booId}`).textContent = 'Total Harga: ' + formattedHarga;
-    document.getElementById(`Harga${Action}${booId}`).value = totalHarga[booId];
+    var formattedHarga = 'Rp. ' + formatRupiah(totalHarga[BookingID].toFixed(0));
+    document.getElementById(`TotalHarga${Action}${BookingID}`).textContent = 'Total Harga: ' + formattedHarga;
+    document.getElementById(`Harga${Action}${BookingID}`).value = totalHarga[BookingID];
 }
 
-function deleteBooking(booId) {
+function deleteBooking(BookingID) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-        var button = document.getElementById(`deleteBtn${booId}`);
+        var button = document.getElementById(`deleteBtn${BookingID}`);
 
         button.disabled = true;
         setTimeout(function() {
@@ -173,7 +173,7 @@ function deleteBooking(booId) {
         }, 5000);
 
         var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", "http://localhost/BEPLAZA/API/api.php/booking/" + booId, true);
+        xhr.open("DELETE", "http://localhost/BEPLAZA/API/api.php/booking/" + BookingID, true);
         console.log("After Delete");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function() {
@@ -202,4 +202,4 @@ function deleteBooking(booId) {
     }
 }
 
-export { displayBookingTable };
+export { displayBookingTable, fetchAndDisplayServices };

@@ -1,74 +1,89 @@
-import { enableWaktu } from "./utils.js";
+import { enableWaktu, setMinDate } from "./utils.js";
+import { fetchAndDisplayServices } from "./BookingAll.js"
 
-function createBookingForm() {
+function createBookingForm(Action) {
     // Mendapatkan elemen tempat Anda ingin menambahkan formulir
     var formContainer = document.getElementById('formContainer');
+    const BookingID = 1;
+    const formId = `Form${Action}${BookingID}`;
+    const idFieldId = `Id${Action}${BookingID}`;
+    const namaFieldId = `Nama${Action}${BookingID}`;
+    const nomorHPFieldId = `NomorHP${Action}${BookingID}`;
+    const tanggalFieldId = `Tanggal${Action}${BookingID}`;
+    const waktuFieldId = `Waktu${Action}${BookingID}`;
+    const pesanFieldId = `Pesan${Action}${BookingID}`;
+    const submitBtnId = `SubmitBtn${Action}${BookingID}`;
+    const TotalHarga = `TotalHarga${Action}${BookingID}`;
+    const Harga = `Harga${Action}${BookingID}`;
 
     // Menyiapkan HTML untuk formulir
     var formHTML = `
-        <form role="form" name="bookingForm" id="bookingForm" method="post" class="booking-form">
+        <form role="form" name="${formId}" id="${formId}" method="post" class="booking-form">
             <!-- Bagian Pertama -->
             <div class="section section-1">
                 <div class="form-group">
                     <label for="nama_booking">Nama</label>
-                    <input type="text" id="nama" name="nama" class="form-control" required>
+                    <input type="text" id="${namaFieldId}" name="${namaFieldId}" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="tanggal">Tanggal</label>
-                    <input type="date" id="tanggal" name="tanggal" required="required" class="form-control" data-validation-required-message="Silahkan masukan tanggal booking" required>
+                    <input type="date" id="${tanggalFieldId}" name="${tanggalFieldId}" required="required" class="form-control" data-validation-required-message="Silahkan masukan tanggal booking" required>
                 </div>
             </div>
             <!-- Bagian Kedua -->
             <div class="section section-2">
                 <div class="form-group">
                     <label for="nomerhp_booking">Nomor HP</label>
-                    <input type="text" name="telp" id="telp" class="form-control" required>
+                    <input type="text" name="${nomorHPFieldId}" id="${nomorHPFieldId}" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <label for="waktu">Waktu</label>
-                    <select id="waktu" name="waktu" required="required" class="form-control" disabled>
+                    <select id="${waktuFieldId}" name="${waktuFieldId}" required="required" class="form-control" disabled>
                         <option value="" disabled selected>Pilih Tanggal Dahulu</option>
                     </select>
                 </div>
             </div>
             <!-- Bagian Ketiga -->
             <div class="section section-3">
-                <div class="form-group service-data "></div>
+                <div class="form-group service-data-container${BookingID}"></div>
             </div>
             <!-- Bagian Keempat -->
             <div class="section section-4">
                 <div class="form-group">
                     <label for="pesan">Pesan</label>
-                    <textarea type="text" id="pesan" name="pesan" class="form-control" required></textarea>
+                    <textarea type="text" id="${pesanFieldId}" name="${pesanFieldId}" class="form-control" required></textarea>
                 </div>
             </div>
             <!-- Bagian Kelima -->
             <div class="section section-5">
                 <div class="form-group">
                     <div class="form-group service-data "></div>
-                    <button id="submitBtn" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
+                    <button id="submitBtn${submitBtnId}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
                 </div>
             </div>
             <!-- Bagian Keenam -->
             <div class="section section-6">
-                <div id="total-harga">
+                <div id="${TotalHarga}">
                     Total Harga: Rp. 0
                 </div>
             </div>
         </form>
     `;
-
-    // Menambahkan formulir ke dalam kontainer
     formContainer.innerHTML = formHTML;
 
-    formContainer.querySelector(`#submitBtn`).addEventListener('click', function() {
-        submitBookingAdm();
-    });
+    fetchAndDisplayServices(BookingID, Action);
+    
+    // Menambahkan formulir ke dalam kontainer
+    // formContainer.querySelector(`#submitBtn`).addEventListener('click', function() {
+    //     submitBookingAdm();
+    // });
         // Ambil elemen input tanggal
-    var tanggalInput = document.getElementById("tanggal");
 
-    // Tambahkan event listener untuk peristiwa change
-    tanggalInput.addEventListener("change", enableWaktu);
+    setMinDate(tanggalFieldId);
+    var tanggalInput = document.getElementById(tanggalFieldId);
+    tanggalInput.addEventListener("change", function() {
+        enableWaktu(tanggalFieldId, waktuFieldId);
+    });
 }
 // Memunculkan Referensi Pelanggan dari database
 function ReverencePelanggan() {
@@ -96,91 +111,12 @@ function ReverencePelanggan() {
     });
 }
 
-// Menampilkan layanan yang tersedia pada halaman booking admin
-function DataService() {
-    const url = 'http://localhost/BEPLAZA/API/api.php/layanan';
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        const layananContainer = document.querySelector('.service-data');
-        layananContainer.innerHTML = `
-            <label>Service</label>
-        `;
-
-        data.forEach(Layanan => {
-            if(Layanan.tampilkan === '1') {
-            var formattedNumber = new Intl.NumberFormat('id-ID', { style: 'decimal', minimumFractionDigits: 0 }).format(Layanan.harga);
-            const layananElement = document.createElement('div');
-            layananElement.classList.add('form-check');
-            layananElement.innerHTML = `
-                <input class="form-check-input service-checkbox" type="checkbox" name="service[]" value="${Layanan.id_pelayanan}" id="${Layanan.id_pelayanan}" data-harga="${Layanan.harga}">
-                <label class="form-check-label" for="service${Layanan.id_pelayanan}">${Layanan.nama} = Rp. ${formattedNumber} </label>
-            `;
-            layananContainer.appendChild(layananElement);
-            }
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-DataService();
-
 function formatRupiah(angka) {
     var reverse = angka.toString().split('').reverse().join(''),
         ribuan = reverse.match(/\d{1,3}/g);
     ribuan = ribuan.join('.').split('').reverse().join('');
     return ribuan;
 }
-
-
-
-setInterval(doSomethingWithCheckboxes, 1000);
-var totalHarga = 0; 
-function doSomethingWithCheckboxes() {
-    var checkboxes = document.querySelectorAll('.service-checkbox');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            totalHarga = 0;
-            checkboxes.forEach(function(cb) {
-                if (cb.checked) {
-                    totalHarga += parseFloat(cb.getAttribute('data-harga'));
-                }
-            });
-            var formattedHarga = 'Rp. ' + formatRupiah(totalHarga.toFixed(0));
-            document.getElementById('total-harga').textContent = 'Total Harga: ' + formattedHarga;
-            
-
-        });
-    });
-    let hargaElement = document.getElementById('harga');
-    if (hargaElement) {
-        hargaElement.value = totalHarga;
-    } else {
-        let hargaContainer = document.querySelector('#total-harga');
-        let hargaElementBaru = document.createElement('input');
-        hargaElementBaru.setAttribute('type', 'hidden');
-        hargaElementBaru.setAttribute('id', 'harga');
-        hargaElementBaru.setAttribute('name', 'harga');
-        hargaElementBaru.value = totalHarga;
-        hargaContainer.appendChild(hargaElementBaru);
-    }
-
-}
-
-function setMinDate() {
-    var inputTanggal = document.getElementById('tanggal');
-    if (inputTanggal) {
-        
-        var Hours = new Date();
-        Hours.setHours(Hours.getHours() + 7);
-        var today = Hours.toISOString().split('T')[0];
-        inputTanggal.min = today;
-    } else {
-        setTimeout(setMinDate, 1000);
-    }
-}
-setMinDate()
 
 // Ketika mengklik tombol submit booking
 function submitBookingAdm() {
@@ -314,4 +250,4 @@ function resetForm() {
     }
 }
 
-export { createBookingForm }
+export { createBookingForm, setMinDate }

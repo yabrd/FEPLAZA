@@ -106,7 +106,6 @@ function HistoryAndEditingModal(Booking, Action) {
 
 function SubmitButton(booId, Action) {
 
-    var CloseButtonId = `CloseModal${Action}${booId}`;
     var ButtonId = `SubmitBtn${Action}${booId}`;
     var IdFieldId = `Id${Action}${booId}`;
     var NamaFieldId = `Nama${Action}${booId}`;
@@ -114,13 +113,26 @@ function SubmitButton(booId, Action) {
     var TanggalFieldId = `Tanggal${Action}${booId}`;
     var WaktuFieldId = `Waktu${Action}${booId}`;
     var PesanFieldId = `Pesan${Action}${booId}`;
-    var MissingFieldsListId = `MissingFieldsList${Action}${booId}`;
-    var AlertContainerId = `AlertContainer${Action}${booId}`;
-    var SuccessAlertContainerId = `SuccessAlertContainer${Action}${booId}`;
     var Harga = `Harga${Action}${booId}`;
 
     var button = document.getElementById(ButtonId);
-    console.log('idFieldId:', IdFieldId);
+    var id = document.getElementById(IdFieldId).value;
+    var nama_booking = document.getElementById(NamaFieldId).value;
+    var nomerhp_booking = document.getElementById(NomerhpFieldId).value;
+    var tanggal = document.getElementById(TanggalFieldId).value;
+    var waktu = document.getElementById(WaktuFieldId).value;
+    var pesan = document.getElementById(PesanFieldId).value;
+    var harga = document.getElementById(Harga).value;
+    var checkboxes = document.getElementsByName(`services${booId}[]`);
+
+    var selectedServices = [];
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            selectedServices.push(checkboxes[i].value);
+        }
+    }
+
+    var countSelectedServices = selectedServices.length;
 
     // Menonaktifkan tombol
     button.disabled = true;
@@ -130,24 +142,15 @@ function SubmitButton(booId, Action) {
         button.disabled = false;
     }, 5000);
 
-    var id = document.getElementById(IdFieldId).value;
-    var nama_booking = document.getElementById(NamaFieldId).value;
-    var nomerhp_booking = document.getElementById(NomerhpFieldId).value;
-    var tanggal = document.getElementById(TanggalFieldId).value;
-    var waktu = document.getElementById(WaktuFieldId).value;
-    var pesan = document.getElementById(PesanFieldId).value;
-    var harga = document.getElementById(Harga).value;
-
-    var checkboxes = document.getElementsByName(`services${booId}[]`);
-    
-    var selectedServices = [];
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            selectedServices.push(checkboxes[i].value);
-        }
+    if (Action == 'apply' || Action == 'edit') {
+        var CloseButtonId = `CloseModal${Action}${booId}`;
+        var MissingFieldsListId = `MissingFieldsList${Action}${booId}`;
+        var AlertContainerId = `AlertContainer${Action}${booId}`;
+        var SuccessAlertContainerId = `SuccessAlertContainer${Action}${booId}`;
+        var API = `http://localhost/BEPLAZA/API/api.php/bookingUpdate/"${+booId}`
+    } else if (Action == 'add') {
+        var API = `http://localhost/BEPLAZA/API/api.php/booking-admin`
     }
-
-    var countSelectedServices = selectedServices.length;
 
     var fieldsNotFilled = [];
 
@@ -197,7 +200,7 @@ function SubmitButton(booId, Action) {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open("PUT", "http://localhost/BEPLAZA/API/api.php/bookingUpdate/"+id, true); // Mengubah URL ke endpoint order
+    xhr.open("PUT", API, true); // Mengubah URL ke endpoint order
 
     xhr.setRequestHeader("Content-Type", "application/json");
 

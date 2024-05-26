@@ -31,6 +31,6 @@ function resetTable() {
 }
 
 fetchGetDataBooking();
-createBookingForm();
+createBookingForm('add');
 
 export {resetTable};
