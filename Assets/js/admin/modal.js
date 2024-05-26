@@ -1,73 +1,91 @@
 import { resetTable } from './DashboardAdmin.js';
 
-function BookingModal(Booking, isEditing) {
+function HistoryAndEditingModal(Booking, Action) {
     const modalElement = document.createElement('div');
-    const modalTitle = isEditing ? 'Edit Booking' : 'Booking Details';
-    const submitBtnText = isEditing ? 'Simpan Perubahan' : 'Simpan';
+
+    const BooID = Booking.id_booking;
+
+    const modalId = `Modal${Action}${BooID}`;
+    const closeModalId = `CloseModal${Action}${BooID}`;
+    const alertContainerId = `AlertContainer${Action}${BooID}`;
+    const missingFieldsListId = `MissingFieldsList${Action}${BooID}`;
+    const successAlertContainerId = `SuccessAlertContainer${Action}${BooID}`;
+    const formId = `Form${Action}${BooID}`;
+    const idFieldId = `Id${Action}${BooID}`;
+    const namaFieldId = `Nama${Action}${BooID}`;
+    const nomorHPFieldId = `NomorHP${Action}${BooID}`;
+    const tanggalFieldId = `Tanggal${Action}${BooID}`;
+    const waktuFieldId = `Waktu${Action}${BooID}`;
+    const pesanFieldId = `Pesan${Action}${BooID}`;
+    const submitBtnId = `SubmitBtn${Action}${BooID}`;
+    const TotalHarga = `TotalHarga${Action}${BooID}`;
+    const Harga = `Harga${Action}${BooID}`;
+    const modalTitle = Action;
+    const submitBtnText = Action;
 
     modalElement.innerHTML = `
-        <div class="modal fade" id="${isEditing ? 'editModal' : 'bookingModal'}${Booking.id_booking}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="${modalId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">${modalTitle}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="${isEditing ? 'closeEditModal' : 'closeBookingModal'}${Booking.id_booking}">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="${closeModalId}">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div id="${isEditing ? 'editalertContainerModal' : 'alertContainerModal'}${Booking.id_booking}" class="mt-3 d-none">
+                        <div id="${alertContainerId}" class="mt-3 d-none">
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 <strong>Perhatian!</strong> Ada field yang belum terisi:
-                                <ul id="${isEditing ? 'editmissingFieldsListModal' : 'missingFieldsListModal'}${Booking.id_booking}" class="mb-0"></ul>
+                                <ul id="${missingFieldsListId}" class="mb-0"></ul>
                             </div>
                         </div>
-                        <div id="${isEditing ? 'editsuccessAlertContainerModal' : 'successAlertContainerModal'}${Booking.id_booking}" class="mt-3 d-none">
+                        <div id="${successAlertContainerId}" class="mt-3 d-none">
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                ${isEditing ? 'Berhasil Mengubah Data Booking!' : 'Berhasil Apply Booking!'}
+                                ${Action === 'edit' ? 'Berhasil Mengubah Data Booking!' : 'Berhasil Apply Booking!'}
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                         </div>
-                        <form role="form" name="${isEditing ? 'editFormModal' : 'bookingFormModal'}" id="${isEditing ? 'editForm' : 'bookingForm'}${Booking.id_booking}" method="post">
-                            <input type="hidden" id="${isEditing ? 'editIdModal' : 'idModal'}${Booking.id_booking}" value="${Booking.id_booking}" ${isEditing ? '' : 'disabled'}>
+                        <form role="form" name="${formId}" id="${formId}" method="post">
+                            <input type="hidden" id="${idFieldId}" value="${Booking.id_booking}">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="${isEditing ? 'editNama' : 'nama'}">Nama</label>
-                                    <input type="text" id="${isEditing ? 'editNamaModal' : 'namaModal'}${Booking.id_booking}" name="${isEditing ? 'editNama' : 'nama'}" autocomplete="off" class="form-control" ${isEditing ? `list="editdatalist_nama${Booking.id_booking}" onchange="editReverencePelanggan(${Booking.id_booking})"` : ''} required value="${Booking.nama_booking}" ${isEditing ? '' : 'disabled'}>
+                                    <label for="${namaFieldId}">Nama</label>
+                                    <input type="text" id="${namaFieldId}" name="nama" autocomplete="off" class="form-control" ${Action === 'edit' ? `list="datalist_nama${Booking.id_booking}" onchange="editReverencePelanggan(${Booking.id_booking})"` : ''} required value="${Booking.nama_booking}" ${Action === 'edit' ? '' : 'disabled'}>
                                 </div>
-                                ${isEditing ? `<datalist id="editdatalist_nama${Booking.id_booking}"></datalist>` : ''}
+                                ${Action === 'edit' ? `<datalist id="datalist_nama${Booking.id_booking}"></datalist>` : ''}
                                 <div class="form-group col-md-6">
-                                    <label for="${isEditing ? 'editNomorHP' : 'telp'}">Nomor HP</label>
-                                    <input type="text" name="${isEditing ? 'editNomorHP' : 'telp'}" id="${isEditing ? 'editNomorHPModal' : 'telpModal'}${Booking.id_booking}" class="form-control" required value="${Booking.nomerhp_booking}" ${isEditing ? '' : 'disabled'}>
+                                    <label for="${nomorHPFieldId}">Nomor HP</label>
+                                    <input type="text" name="telp" id="${nomorHPFieldId}" class="form-control" required value="${Booking.nomerhp_booking}" ${Action === 'edit' ? '' : 'disabled'}>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <label for="${isEditing ? 'editTanggal' : 'tanggal'}">Tanggal</label>
-                                    <input type="date" id="${isEditing ? 'editTanggalModal' : 'tanggalModal'}${Booking.id_booking}" name="${isEditing ? 'editTanggal' : 'tanggal'}" required class="form-control" ${isEditing ? '' : 'readonly'} value="${Booking.tanggal_booking}">
+                                    <label for="${tanggalFieldId}">Tanggal</label>
+                                    <input type="date" id="${tanggalFieldId}" name="tanggal" required class="form-control" ${Action === 'edit' ? '' : 'readonly'} value="${Booking.tanggal_booking}">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="${isEditing ? 'editWaktu' : 'waktu'}">Waktu</label>
-                                    ${isEditing ? `<input type="text" id="editWaktuModal${Booking.id_booking}" name="editWaktu" class="form-control" required value="${Booking.waktu_booking}">` : `
-                                    <select id="waktuModal${Booking.id_booking}" name="waktu" required="required" class="form-control" disabled>
+                                    <label for="${waktuFieldId}">Waktu</label>
+                                    ${Action === 'edit' ? `<input type="text" id="${waktuFieldId}" name="waktu" class="form-control" required value="${Booking.waktu_booking}">` : `
+                                    <select id="${waktuFieldId}" name="waktu" required="required" class="form-control" disabled>
                                         <option selected>${Booking.waktu_booking}</option>
                                     </select>`}
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="${isEditing ? 'editPesan' : 'pesan'}">Pesan</label>
-                                <input type="text" id="${isEditing ? 'editPesanModal' : 'pesanModal'}${Booking.id_booking}" name="${isEditing ? 'editPesan' : 'pesan'}" class="form-control" required value="${Booking.pesan_booking}" ${isEditing ? '' : 'disabled'}>
+                                <label for="${pesanFieldId}">Pesan</label>
+                                <input type="text" id="${pesanFieldId}" name="pesan" class="form-control" required value="${Booking.pesan_booking}" ${Action === 'edit' ? '' : 'disabled'}>
                             </div>
                             <div class="form-group service-data-container${Booking.id_booking}">
                         
                             </div>
-                            <div id="total-hargas${Booking.id_booking}">
+                            <div id="${TotalHarga}">
                                 Total Harga: Rp. 0
                             </div>
-                            <input type="hidden" id="hargas${Booking.id_booking}" name="hargas" value="${Booking.pesan_booking}">
-                            <button id="${isEditing ? 'editSubmitBtnModal' : 'submitBtnModal'}${Booking.id_booking}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">${submitBtnText}</button>
+                            <input type="hidden" id="${Harga}" name="harga" value="${Booking.pesan_booking}">
+                            <button id="${submitBtnId}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">${submitBtnText}</button>
                         </form>
                     </div>
                 </div>
@@ -75,31 +93,34 @@ function BookingModal(Booking, isEditing) {
         </div>
     `;
 
-    modalElement.querySelector(`#${isEditing ? 'editSubmitBtnModal' : 'submitBtnModal'}${Booking.id_booking}`).addEventListener('click', function() {
-        submitBooking(Booking.id_booking, isEditing);
+    modalElement.querySelector(`#${submitBtnId}`).addEventListener('click', function() {
+        SubmitButton(Booking.id_booking, Action);
     });
 
-    modalElement.querySelector(`#${isEditing ? 'closeEditModal' : 'closeBookingModal'}${Booking.id_booking}`).addEventListener('click', function() {
+    modalElement.querySelector(`#${closeModalId}`).addEventListener('click', function() {
         resetTable();
     });
 
     return modalElement;
 }
 
-function submitBooking(booId, isEdit) {
-    var closeButtonId = isEdit ? `editModal${booId}` : `bookingModal${booId}`;
-    var buttonId = isEdit ? `editSubmitBtnModal${booId}` : `submitBtnModal${booId}`;
-    var idFieldId = isEdit ? `editIdModal${booId}` : `idModal${booId}`;
-    var namaFieldId = isEdit ? `editNamaModal${booId}` : `namaModal${booId}`;
-    var nomerhpFieldId = isEdit ? `editNomorHPModal${booId}` : `telpModal${booId}`;
-    var tanggalFieldId = isEdit ? `editTanggalModal${booId}` : `tanggalModal${booId}`;
-    var waktuFieldId = isEdit ? `editWaktuModal${booId}` : `waktuModal${booId}`;
-    var pesanFieldId = isEdit ? `editPesanModal${booId}` : `pesanModal${booId}`;
-    var missingFieldsListId = isEdit ? `editmissingFieldsListModal${booId}` : `missingFieldsListModal${booId}`;
-    var alertContainerId = isEdit ? `editalertContainerModal${booId}` : `alertContainerModal${booId}`;
-    var editsuccessAlertContainerId = isEdit ? `editsuccessAlertContainerModal${booId}` : `successAlertContainerModal${booId}`;
+function SubmitButton(booId, Action) {
 
-    var button = document.getElementById(buttonId);
+    var CloseButtonId = `CloseModal${Action}${booId}`;
+    var ButtonId = `SubmitBtn${Action}${booId}`;
+    var IdFieldId = `Id${Action}${booId}`;
+    var NamaFieldId = `Nama${Action}${booId}`;
+    var NomerhpFieldId = `NomorHP${Action}${booId}`;
+    var TanggalFieldId = `Tanggal${Action}${booId}`;
+    var WaktuFieldId = `Waktu${Action}${booId}`;
+    var PesanFieldId = `Pesan${Action}${booId}`;
+    var MissingFieldsListId = `MissingFieldsList${Action}${booId}`;
+    var AlertContainerId = `AlertContainer${Action}${booId}`;
+    var SuccessAlertContainerId = `SuccessAlertContainer${Action}${booId}`;
+    var Harga = `Harga${Action}${booId}`;
+
+    var button = document.getElementById(ButtonId);
+    console.log('idFieldId:', IdFieldId);
 
     // Menonaktifkan tombol
     button.disabled = true;
@@ -109,13 +130,13 @@ function submitBooking(booId, isEdit) {
         button.disabled = false;
     }, 5000);
 
-    var id = document.getElementById(idFieldId).value;
-    var nama_booking = document.getElementById(namaFieldId).value;
-    var nomerhp_booking = document.getElementById(nomerhpFieldId).value;
-    var tanggal = document.getElementById(tanggalFieldId).value;
-    var waktu = document.getElementById(waktuFieldId).value;
-    var pesan = document.getElementById(pesanFieldId).value;
-    var harga = document.getElementById(`hargas${booId}`).value;
+    var id = document.getElementById(IdFieldId).value;
+    var nama_booking = document.getElementById(NamaFieldId).value;
+    var nomerhp_booking = document.getElementById(NomerhpFieldId).value;
+    var tanggal = document.getElementById(TanggalFieldId).value;
+    var waktu = document.getElementById(WaktuFieldId).value;
+    var pesan = document.getElementById(PesanFieldId).value;
+    var harga = document.getElementById(Harga).value;
 
     var checkboxes = document.getElementsByName(`services${booId}[]`);
     
@@ -150,13 +171,13 @@ function submitBooking(booId, isEdit) {
     }
 
     if (fieldsNotFilled.length > 0) {
-        document.getElementById(missingFieldsListId).innerHTML = fieldsNotFilled.map(function(field) {
+        document.getElementById(MissingFieldsListId).innerHTML = fieldsNotFilled.map(function(field) {
             return "<li>" + field + "</li>";
         }).join("");
-        document.getElementById(alertContainerId).classList.remove("d-none");
+        document.getElementById(AlertContainerId).classList.remove("d-none");
         if (isEdit === true){
             setTimeout(function() {
-                document.getElementById(alertContainerId).classList.add("d-none"); 
+                document.getElementById(AlertContainerId).classList.add("d-none"); 
             }, 5000); 
         }
         return;
@@ -182,11 +203,11 @@ function submitBooking(booId, isEdit) {
 
     xhr.onload = function() {
         if (xhr.status === 200) {
-            document.getElementById(editsuccessAlertContainerId).classList.remove("d-none");
+            document.getElementById(SuccessAlertContainerId).classList.remove("d-none");
             setTimeout(function() {
                 window.location.href = '?Booking';
-                document.getElementById(editsuccessAlertContainerId).classList.add("d-none"); 
-                document.getElementById(closeButtonId).getElementsByClassName("close")[0].click();
+                document.getElementById(SuccessAlertContainerId).classList.add("d-none"); 
+                document.getElementById(CloseButtonId).getElementsByClassName("close")[0].click();
                 
             }, 2000); 
         } else {
@@ -227,4 +248,4 @@ function editReverencePelanggan(BooId) {
     });
 }
 
-export { BookingModal };
+export { HistoryAndEditingModal };

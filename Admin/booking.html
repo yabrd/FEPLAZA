@@ -1,106 +1,69 @@
 <div class="mt-5 pt-2">
     <div class="container mt-5 pt-5">
         <div class="row">
-            <div class="col-xl-4 align-center col-lg-12 col-md-12 col-sm-12 col-12 bg-white p-5 rounded">
-                <div id="alertContainer" class="mt-3 d-none">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Perhatian!</strong> Ada field yang belum terisi:
-                        <ul id="missingFieldsList" class="mb-0"></ul>
-                    </div>
-                </div>
-                <div id="successAlertContainer" class="mt-3 d-none">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Booking berhasil ditambahkan! 
-                    </div>
-                </div>
-                <h3>Tambah Pelanggan</h3>
-                <form role="form" name="bookingForm" id="bookingForm" method="post">
-                    <div class="form-group">
-                        <label>Nama</label>
-                        <input type="text" id="nama" name="nama" class="form-control" autocomplete="off" list="datalist_nama" onchange="ReverencePelanggan()" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Nomer Hp</label>
-                        <input type="text" name="telp" id="telp" class="form-control" required>
-                    </div>
-                    <div class="form-group service-data ">
-                    </div>
-                    <div id="total-harga">
-                        Total Harga: Rp. 0
-                    </div>
-                    <div class="form-group">
-                        <label>Tanggal</label>
-                        <input type="date" id="tanggal" name="tanggal" required="required" class="form-control" data-validation-required-message="Silahkan masukan tanggal booking" onchange="enableWaktu()" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Waktu</label>
-                        <select id="waktu" name="waktu" required="required" class="form-control" disabled>
-                            <option value="" disabled selected>Pilih Tanggal Dahulu</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Pesan</label>
-                        <input type="text" id="pesan" name="pesan" class="form-control" required>
-                    </div>
-                    <button id="submitBtn" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button" onclick="submitBookingAdm()">Tambah Booking</button>
-                </form>
-            </div>
             <div class="col-xl-7 align-center col-lg-12 col-md-12 col-sm-12 col-12 bg-white p-5 rounded ms-lg-2 mt-5 mt-xl-0 ms-xl-2">
-                <h3>Daftar Bookingan Pelanggan</h3>
-                <table class="table table-responsive table-hover dtabel " id="bookingTable">
-                    <thead>
-                        <tr>
-                            <th>Nomor</th>
-                            <th>Nama</th>
-                            <th>Nomer HP</th>
-                            <th>Waktu</th>
-                            <th>Tanggal</th>
-                            <th>Pesan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="tbody-dataBo">
-                            <!-- ISI DATA API -->
-                    </tbody>
-                </table>
-                <button id="PrevBookingListTable">Prev</button>
-                <span id="pageInfoTable1">Page 1 / 1</span>
-                <button id="NextBookingListTable">Next</button>
-                
-                <hr class="mb-3" style="border: none; background-color: rgba(0, 0, 0, 0); height: 1px;">
-                
-                <div id="gagalDelete" class="mt-3 d-none">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Gagal Menghapus data Booking
+                <!-- Akhir modal -->
+                <div class="container-flex">
+                    <div class="Kiri">
+                        <h3>Daftar Bookingan Pelanggan</h3>
+                        <table class="table table-responsive table-hover dtabel " id="bookingTable">
+                            <thead>
+                                <tr>
+                                    <th>Nomor</th>
+                                    <th>Nama</th>
+                                    <th>Nomer HP</th>
+                                    <th>Waktu</th>
+                                    <th>Tanggal</th>
+                                    <th>Pesan</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="tbody-dataBo">
+                                    <!-- ISI DATA API -->
+                            </tbody>
+                        </table>
+                        <button id="PrevBookingListTable">Prev</button>
+                        <span id="pageInfoTable1">Page 1 / 1</span>
+                        <button id="NextBookingListTable">Next</button>
+                        
+                        <hr class="mb-3" style="border: none; background-color: rgba(0, 0, 0, 0); height: 1px;">
+                        
+                        <div id="gagalDelete" class="mt-3 d-none">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                Gagal Menghapus data Booking
+                            </div>
+                        </div>
+                        <div id="successDelete" class="mt-3 d-none">
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                Berhasil Menghapus data Booking
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Kanan">
+                        <h3 class="mt-2">Daftar Riwayat Potong Rambut</h3>
+                        <table class="table table-responsive table-hover dtabel" id="HistoryTable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>NomerHp</th>
+                                    <th>Waktu</th>
+                                    <th>Tanggal</th>
+                                    <th>Pesan</th>
+                                    <th>Service</th>
+                                    <th>Harga</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="BoSudahACC">
+                                <!-- ISI DATA API -->
+                            </tbody>
+                        </table>
+                        <button id="PrevBookingHistoryTable">Prev</button>
+                        <span id="pageInfoTable2">Page 1 / 1</span>
+                        <button id="NextBookingHistoryTable">Next</button> 
                     </div>
                 </div>
-                <div id="successDelete" class="mt-3 d-none">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Berhasil Menghapus data Booking
-                    </div>
-                </div>
-                <h3 class="mt-2">Daftar Riwayat Potong Rambut</h3>
-                <table class="table table-responsive table-hover dtabel">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama</th>
-                            <th>NomerHp</th>
-                            <th>Waktu</th>
-                            <th>Tanggal</th>
-                            <th>Pesan</th>
-                            <th>Service</th>
-                            <th>Harga</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="BoSudahACC">
-                        <!-- ISI DATA API -->
-                    </tbody>
-                </table>
-                <button id="PrevBookingHistoryTable">Prev</button>
-                <span id="pageInfoTable2">Page 1 / 1</span>
-                <button id="NextBookingHistoryTable">Next</button> 
             </div>
         </div>
     </div>

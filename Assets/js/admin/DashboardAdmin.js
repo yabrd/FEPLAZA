@@ -1,6 +1,6 @@
-import { BookingListTable } from './BookingList.js';
-import { BookingHistoryTable } from './BookingHistory.js';
 import { displayBookingTable } from './BookingAll.js';
+import { createBookingForm } from './addBooking.js'
+
 let CurrentBookingListTable = 1;
 let CurrentBookingHistoryTable = 1;
 
@@ -15,8 +15,8 @@ function fetchGetDataBooking() {
         // Panggil fungsi pertama kali untuk menampilkan data awal untuk masing-masing tabel
         // BookingListTable(data, 0);
         // BookingHistoryTable(data, 0);
-        displayBookingTable(data, 0, false);
-        displayBookingTable(data, 0, true);
+        displayBookingTable(data, 0, 'apply');
+        displayBookingTable(data, 0, 'edit');
     })
     .catch(error => {
         // Handle error
@@ -31,5 +31,6 @@ function resetTable() {
 }
 
 fetchGetDataBooking();
+createBookingForm();
 
 export {resetTable};

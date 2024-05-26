@@ -1,3 +1,75 @@
+import { enableWaktu } from "./utils.js";
+
+function createBookingForm() {
+    // Mendapatkan elemen tempat Anda ingin menambahkan formulir
+    var formContainer = document.getElementById('formContainer');
+
+    // Menyiapkan HTML untuk formulir
+    var formHTML = `
+        <form role="form" name="bookingForm" id="bookingForm" method="post" class="booking-form">
+            <!-- Bagian Pertama -->
+            <div class="section section-1">
+                <div class="form-group">
+                    <label for="nama_booking">Nama</label>
+                    <input type="text" id="nama" name="nama" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" required="required" class="form-control" data-validation-required-message="Silahkan masukan tanggal booking" required>
+                </div>
+            </div>
+            <!-- Bagian Kedua -->
+            <div class="section section-2">
+                <div class="form-group">
+                    <label for="nomerhp_booking">Nomor HP</label>
+                    <input type="text" name="telp" id="telp" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="waktu">Waktu</label>
+                    <select id="waktu" name="waktu" required="required" class="form-control" disabled>
+                        <option value="" disabled selected>Pilih Tanggal Dahulu</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Bagian Ketiga -->
+            <div class="section section-3">
+                <div class="form-group service-data "></div>
+            </div>
+            <!-- Bagian Keempat -->
+            <div class="section section-4">
+                <div class="form-group">
+                    <label for="pesan">Pesan</label>
+                    <textarea type="text" id="pesan" name="pesan" class="form-control" required></textarea>
+                </div>
+            </div>
+            <!-- Bagian Kelima -->
+            <div class="section section-5">
+                <div class="form-group">
+                    <div class="form-group service-data "></div>
+                    <button id="submitBtn" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
+                </div>
+            </div>
+            <!-- Bagian Keenam -->
+            <div class="section section-6">
+                <div id="total-harga">
+                    Total Harga: Rp. 0
+                </div>
+            </div>
+        </form>
+    `;
+
+    // Menambahkan formulir ke dalam kontainer
+    formContainer.innerHTML = formHTML;
+
+    formContainer.querySelector(`#submitBtn`).addEventListener('click', function() {
+        submitBookingAdm();
+    });
+        // Ambil elemen input tanggal
+    var tanggalInput = document.getElementById("tanggal");
+
+    // Tambahkan event listener untuk peristiwa change
+    tanggalInput.addEventListener("change", enableWaktu);
+}
 // Memunculkan Referensi Pelanggan dari database
 function ReverencePelanggan() {
     const url = 'http://localhost/BEPLAZA/API/api.php/User';
@@ -23,7 +95,6 @@ function ReverencePelanggan() {
         console.error('Error:', error);
     });
 }
-// ReverencePelanggan()
 
 // Menampilkan layanan yang tersedia pada halaman booking admin
 function DataService() {
@@ -53,79 +124,7 @@ function DataService() {
         console.error('Error:', error);
     });
 }
-DataService()
-
-// Menampilkan Data Service
-var totalHarga = 0; 
-function doSomethingWithCheckboxes() {
-    var checkboxes = document.querySelectorAll('.service-checkbox');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            totalHarga = 0;
-            checkboxes.forEach(function(cb) {
-                if (cb.checked) {
-                    totalHarga += parseFloat(cb.getAttribute('data-harga'));
-                }
-            });
-            var formattedHarga = 'Rp. ' + formatRupiah(totalHarga.toFixed(0));
-            document.getElementById('total-harga').textContent = 'Total Harga: ' + formattedHarga;
-            
-
-        });
-    });
-    let hargaElement = document.getElementById('harga');
-    if (hargaElement) {
-        hargaElement.value = totalHarga;
-    } else {
-        let hargaContainer = document.querySelector('#total-harga');
-        let hargaElementBaru = document.createElement('input');
-        hargaElementBaru.setAttribute('type', 'hidden');
-        hargaElementBaru.setAttribute('id', 'harga');
-        hargaElementBaru.setAttribute('name', 'harga');
-        hargaElementBaru.value = totalHarga;
-        hargaContainer.appendChild(hargaElementBaru);
-    }
-}
-setInterval(doSomethingWithCheckboxes, 1000);
-
-function fetchGetBookedTimes(tanggal) {
-    const tanggalFormatted = tanggal.split('-').join('');
-    const url = `http://localhost/BEPLAZA/API/api.php/booking/${tanggalFormatted}`;
-
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayBookedTimes(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
-function displayBookedTimes(bookedTimes) {
-    // Data waktu yang tersedia
-    const availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
-
-    // Menyimpan waktu yang tersedia ke dalam elemen select
-    var waktuSelect = document.getElementById("waktu");
-    waktuSelect.disabled = false;
-    waktuSelect.innerHTML = "";
-
-    availableTimes.forEach(function(waktu) {
-        // Menghapus detik dari waktu
-        var displayTime = waktu.slice(0);
-        
-        var option = document.createElement("option");
-        option.text = displayTime;
-        option.value = waktu;
-        waktuSelect.add(option);
-    });
-}
+DataService();
 
 // Ketika mengklik tombol submit booking
 function submitBookingAdm() {
@@ -139,15 +138,28 @@ function submitBookingAdm() {
         button.disabled = false;
     }, 5000);
 
-    var nama_booking = document.getElementById("nama").value;
-    var nomerhp_booking = document.getElementById("telp").value;
-    var tanggal = document.getElementById("tanggal").value;
-    var waktu = document.getElementById("waktu").value;
-    var pesan = document.getElementById("pesan").value;
-    var harga = document.getElementById("harga").value;
 
+    var nama_booking = document.getElementById("nama").value;
+    console.log("Nama Booking:", nama_booking);
+    
+    var nomerhp_booking = document.getElementById("telp").value;
+    console.log("Nomor HP Booking:", nomerhp_booking);
+    
+    var tanggal = document.getElementById("tanggal").value;
+    console.log("Tanggal:", tanggal);
+    
+    var waktu = document.getElementById("waktu").value;
+    console.log("Waktu:", waktu);
+    
+    var pesan = document.getElementById("pesan").value;
+    console.log("Pesan:", pesan);
+    
 
     var checkboxes = document.getElementsByName("service[]");
+    console.log("checkboxes:", checkboxes);
+
+    var harga = document.getElementById("harga").value;
+    console.log("Harga:", harga);
     
     var selectedServices = [];
     for (var i = 0; i < checkboxes.length; i++) {
@@ -246,29 +258,4 @@ function resetForm() {
     }
 }
 
-// Menonaktifkan waktu yang sebelu tanggal saat ini
-function enableWaktu() {
-    var tanggalInput = document.getElementById("tanggal");
-    var tanggal = tanggalInput.value;
-
-    if (tanggal) {
-        fetchGetBookedTimes(tanggal);
-    } else {
-        var waktuSelect = document.getElementById("waktu");
-        waktuSelect.disabled = true;
-        waktuSelect.innerHTML = "";
-    }
-}
-
-function setMinDate() {
-    var inputTanggal = document.getElementById('tanggal');
-    if (inputTanggal) {
-        
-        var Hours = new Date();
-        Hours.setHours(Hours.getHours() + 7);
-        var today = Hours.toISOString().split('T')[0];
-        inputTanggal.min = today;
-    } else {
-        setTimeout(setMinDate, 1000);
-    }
-};
+export { createBookingForm }

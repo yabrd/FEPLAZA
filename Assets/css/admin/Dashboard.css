@@ -1,0 +1,210 @@
+/* CSS untuk Page Header */
+.page-header {
+    position: relative;
+    margin-bottom: 45px;
+    padding: 150px 0 90px 0;
+    text-align: center;
+    background: #00235B;
+    border-bottom: 4px solid #f84200;
+}
+
+.page-header h2 {
+    color: #fff;
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.page-header a {
+    padding: 0 12px;
+    font-size: 22px;
+    color: #00235B;
+    text-decoration: none;
+}
+
+.page-header a:hover {
+    color: #fff;
+}
+
+.page-header a::after {
+    content: "/";
+    width: 8px;
+    height: 8px;
+    top: -2px;
+    right: -7px;
+    text-align: center;
+    color: #00235B;
+    position: absolute;
+}
+
+.page-header a:last-child::after {
+    display: none;
+}
+
+/* CSS untuk Section Header */
+.section-header {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 45px;
+    text-align: center;
+}
+
+.section-header p {
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+    color: #00235B;
+}
+
+@media (max-width: 767.98px) {
+    .section-header h3 {
+        font-size: 24px;
+    }
+}
+
+/* CSS untuk tabel */
+#bookingTable, #HistoryTable {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    table-layout: fixed; /* Menetapkan layout tabel ke fixed */
+}
+
+#bookingTable th, #bookingTable td, #HistoryTable th, #HistoryTable td {
+    padding: 0.75rem;
+    vertical-align: middle; /* Perbaikan untuk vertikal tengah */
+    border-top: 1px solid #dee2e6;
+    /* overflow: hidden; Menyembunyikan teks yang meluap
+    text-overflow: ellipsis; Menampilkan tiga titik untuk teks yang meluap
+    white-space: nowrap; Menghindari teks meluber */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #00235B;
+    color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* CSS untuk tombol */
+.btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-warning, .btn-danger {
+    display: inline-block;
+    width: 100%; /* Atur lebar menjadi 100% untuk ukuran tombol yang sama */
+    margin-bottom: 4px; /* Ruang antara tombol */
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column; /* Atur arah flex ke kolom untuk menampilkan tombol secara vertikal */
+    gap: 4px; /* Ruang antara tombol */
+}
+
+/* CSS untuk pesan alert */
+.alert {
+    position: relative;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75rem 1.25rem;
+    color: inherit;
+}
+
+.container-fluid{
+    padding-top: 20px; /* Menyetel padding atas */
+    padding-bottom: 20px; /* Menyetel padding bawah */
+    padding-left: 80px; /* Menyetel padding kiri */
+    padding-right: 80px; /* Menyetel padding kanan */
+}
+
+.container-fluid .row .col-md-12{
+    padding-top: 60px; /* Menyetel padding atas */
+    padding-bottom: 60px; /* Menyetel padding bawah */
+    padding-left: 60px; /* Menyetel padding kiri */
+    padding-right: 60px; /* Menyetel padding kanan */
+    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+    background-color: #00235B; /* Warna latar belakang */
+}
+
+.container-fluid .row .col-md-12 .mb-5{
+    margin-bottom: 30px; /* Ukuran margin bawah */
+    padding: 20px; /* Ukuran padding di dalam */
+    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+    background-color: white; /* Warna latar belakang */
+}
+
+/* ======= */
+/* Booking */
+/* ======= */
+/* Style untuk Form Label */
+.booking-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Membagi kolom menjadi tiga bagian */
+    grid-template-rows: auto auto auto; /* Secara default, baris akan menyesuaikan dengan konten */
+    gap: 10px; /* Jarak antar bagian */
+    grid-template-areas:
+        "section1 section2 section3"
+        "section4 section4 section3" /* Section 5 dan 6 berada di bawah Section 4 */
+        "section5 section6 section3" /* Section 5 dan 6 berada di bawah Section 4 */
+}
+
+.section-1 {
+    grid-area: section1; /* Menetapkan posisi section-1 di grid */
+}
+
+.section-2 {
+    grid-area: section2; /* Menetapkan posisi section-2 di grid */
+}
+
+.section-3 {
+    grid-area: section3; /* Menetapkan posisi section-3 di grid */
+}
+
+.section-4 {
+    grid-area: section4; /* Menetapkan posisi section-4 di grid */
+}
+
+.section-5 {
+    grid-area: section5; /* Menetapkan posisi section-5 di grid */
+}
+
+.section-6 {
+    grid-area: section6; /* Menetapkan posisi section-6 di grid */
+}

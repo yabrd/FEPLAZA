@@ -1,0 +1,87 @@
+/* ===================== */
+/* Kolom di BookingTable */
+/* ===================== */
+
+/* Menentukan lebar kolom Nomor */
+#bookingTable th:nth-child(1), #bookingTable td:nth-child(1) {
+    width: 5%; /* Lebar 5% dari tabel */
+}
+
+/* Menentukan lebar kolom Nama */
+#bookingTable th:nth-child(2), #bookingTable td:nth-child(2) {
+    width: 13%; /* Lebar 20% dari tabel */
+}
+
+/* Menentukan lebar kolom No HP */
+#bookingTable th:nth-child(3), #bookingTable td:nth-child(3) {
+    width: 13%; /* Lebar 15% dari tabel */
+}
+
+/* Menentukan lebar kolom Waktu */
+#bookingTable th:nth-child(4), #bookingTable td:nth-child(4) {
+    width: 13%; /* Lebar 15% dari tabel */
+}
+
+/* Menentukan lebar kolom Tanggal */
+#bookingTable th:nth-child(5), #bookingTable td:nth-child(5) {
+    width: 10%; /* Lebar 15% dari tabel */
+}
+
+/* Menentukan lebar kolom pesan */
+#bookingTable th:nth-child(6), #bookingTable td:nth-child(6) {
+    width: 36%; /* Lebar 20% dari tabel */
+}
+
+/* Mengatur lebar kolom Aksi */
+#bookingTable th:nth-child(7), #bookingTable td:nth-child(7) {
+    width: 10%; /* Lebar 10% dari tabel */
+}
+
+/* ===================== */
+/* Kolom di HistoryTable */
+/* ===================== */
+
+/* Menentukan lebar kolom Nomor */
+#HistoryTable th:nth-child(1), #HistoryTable td:nth-child(1) {
+    width: 5%;
+}
+
+/* Menentukan lebar kolom nama */
+#HistoryTable th:nth-child(2), #HistoryTable td:nth-child(2) {
+    width: 13%;
+}
+
+/* Menentukan lebar kolom no hp */
+#HistoryTable th:nth-child(3), #HistoryTable td:nth-child(3) {
+    width: 13%;
+}
+
+/* Menentukan lebar kolom waktu */
+#HistoryTable th:nth-child(4), #HistoryTable td:nth-child(4) {
+    width: 13%;
+}
+
+/* Menentukan lebar kolom tanggal */
+#HistoryTable th:nth-child(5), #HistoryTable td:nth-child(5) {
+    width: 10%;
+}
+
+/* Menentukan lebar kolom pesan */
+#HistoryTable th:nth-child(6), #HistoryTable td:nth-child(6) {
+    width: 14%;
+}
+
+/* Menentukan lebar kolom service */
+#HistoryTable th:nth-child(7), #HistoryTable td:nth-child(7) {
+    width: 14%;
+}
+
+/* Menentukan lebar kolom harga */
+#HistoryTable th:nth-child(8), #HistoryTable td:nth-child(8) {
+    width: 8%;
+}
+
+/* Menentukan lebar kolom button aksi */
+#HistoryTable th:nth-child(9), #HistoryTable td:nth-child(9) {
+    width: 10%;
+}

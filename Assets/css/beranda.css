@@ -1,0 +1,435 @@
+.brand-name {
+    font-family: 'Open Sans', sans-serif; /* Gunakan font Open Sans */
+    font-weight: bold; /* Teks tebal */
+    font-style: italic; /* Teks miring */
+    font-size: 48px; /* Ukuran font */
+    text-align: center; /* Pusatkan teks */
+    margin-top: 50px; /* Sesuaikan dengan kebutuhan Anda */
+}
+
+/*******************************/
+/********** Hero CSS ***********/
+/*******************************/
+.hero {
+    position: relative;
+    width: 100%;
+    margin-bottom: 45px;
+    height: calc(100vh - 60px);
+    background: #00235B;
+    overflow: hidden;
+}
+
+.hero .container-fluid {
+    padding: 0;
+}
+
+.hero .hero-image{
+    position: relative;
+    padding-left: 70px;
+    padding-right: 30px;
+    height: calc(100vh - 60px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero .hero-text {
+    position: relative;
+    padding-left: 30px;
+    padding-right: 70px;
+    height: calc(100vh - 60px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero .hero-image img {
+    max-width: 88%;
+    max-height: 80%;
+}
+
+.hero .hero-text h1 {
+    color: #ffffff;
+    font-size: 45px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero .hero-text p {
+    color: #ffffff;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.hero .hero-text .btn {
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #f84200;
+    background: none;
+    border: 2px solid #f84200;
+    border-radius: 0;
+    transition: .3s;
+}
+
+.hero .hero-text .btn:hover {
+    color: #00235B;
+    background: #f84200;
+}
+
+.hero .btn-play {
+    position: absolute;
+    z-index: 1;
+    top: 80%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    box-sizing: content-box;
+    display: block;
+    width: 32px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    padding: 18px 20px 18px 28px;
+}
+
+.hero .btn-play:before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: block;
+    width: 80px;
+    height: 80px;
+    background: #00235B;
+    border-radius: 50%;
+    animation: pulse-border 1500ms ease-out infinite;
+}
+
+.hero .btn-play:after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    display: block;
+    width: 80px;
+    height: 80px;
+    background: #00235B;
+    border-radius: 50%;
+    transition: all 200ms;
+}
+
+.hero .btn-play:hover:after {
+    background-color: rgba(0, 35, 91, 0.9); 
+}
+
+
+.hero .btn-play img {
+    position: relative;
+    z-index: 3;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+}
+
+.hero .btn-play span {
+    display: block;
+    position: relative;
+    z-index: 3;
+    width: 0;
+    height: 0;
+    border-left: 32px solid #ffffff;
+    border-top: 22px solid transparent;
+    border-bottom: 22px solid transparent;
+}
+
+@keyframes pulse-border {
+  0% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+    opacity: 0;
+  }
+}
+
+#videoModal .modal-dialog {
+    position: relative;
+    max-width: 800px;
+    margin: 60px auto;
+}
+
+#videoModal .modal-body {
+    position: relative;
+    padding: 0px;
+}
+
+#videoModal .close {
+    position: absolute;
+    right: 0px;
+    top: -12px;
+    z-index: 999;
+    font-size: 50px;
+    font-weight: normal;
+    color: #ffffff;
+    opacity: 1;
+}
+
+@media (max-width: 575.98px) {
+    .hero .hero-image,
+    .hero .hero-text {
+        padding: 0 20px; /* Memberikan padding yang seimbang di sisi kanan dan kiri */
+        height: auto; /* Mengatur ketinggian agar disesuaikan dengan konten */
+        display: flex;
+        align-items: center; /* Mengatur agar konten berada di tengah */
+        justify-content: center;
+        flex-direction: column; /* Mengatur agar konten ditampilkan dalam kolom */
+    }
+
+    .hero .hero-text h1 {
+        font-size: 25px;
+        text-align: center; /* Mengatur agar teks berada di tengah pada mode ponsel */
+    }
+
+    .hero .hero-text p {
+        font-size: 14px;
+        text-align: center; /* Mengatur agar teks berada di tengah pada mode ponsel */
+    }
+
+    .hero .hero-text .btn {
+        padding: 8px 20px;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0;
+    }
+}
+
+/*******************************/
+/********** About CSS **********/
+/*******************************/
+.about {
+    position: relative;
+    width: 100%;
+    padding: 45px 0;
+}
+
+.about .section-header {
+    margin-bottom: 30px;
+    margin-left: 0;
+}
+
+.about .about-img {
+    position: relative;
+    height: 100%;
+    margin: 60px 0 0 60px;
+}
+
+.about .about-img img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+/* .about .about-img::before {
+    position: absolute;
+    content: "";
+    top: -60px;
+    right: 60px;
+    bottom: 60px;
+    left: -60px;
+    background: #00235B;
+    z-index: 0;
+} */
+
+/* .about .about-img::after {
+    position: absolute;
+    content: "";
+    top: -30px;
+    right: 30px;
+    bottom: 30px;
+    left: -30px;
+    background: transparent;
+    border: 1px solid #ffffff;
+    z-index: 2;
+} */
+
+.about .about-text p {
+    font-size: 16px;
+}
+
+.about .about-text a.btn {
+    position: relative;
+    margin-top: 15px;
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #00235B;
+    border: 2px solid #00235B;
+    border-radius: 0;
+    background: none;
+    transition: .3s;
+}
+
+.about .about-text a.btn:hover {
+    color: #f84200;
+    background: #00235B;
+}
+
+/* Mode Ponsel */
+@media (max-width: 767.98px) {
+    .about .row.align-items-center {
+        flex-direction: column; /* Menampilkan dalam satu kolom di ponsel */
+        text-align: center; /* Untuk mengatur teks ke tengah */
+    }
+
+    .about .about-img {
+        margin: 0 auto 30px auto; /* Mengatur margin untuk memposisikan gambar di tengah */
+        height: auto; /* Mengatur tinggi agar disesuaikan dengan konten */
+    }
+}
+
+/*******************************/
+/********* Service CSS *********/
+/*******************************/
+.service {
+    position: relative;
+    width: 100%;
+    padding: 45px 0 15px 0;
+}
+
+.service .service-item {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+    background: rgba(29, 36, 52, .04);
+}
+
+.service .service-img {
+    position: relative;
+    width: 100%;
+}
+
+.service .service-img img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* .service .service-img::after {
+    position: absolute;
+    content: "";
+    top: 15px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    background: transparent;
+    border: 1px solid #ffffff;
+    z-index: 1;
+} */
+
+.service .service-item h3 {
+    margin: 0;
+    padding: 25px 15px 15px 15px;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.service .service-item p {
+    margin: 0;
+    padding: 0 25px 25px 25px;
+    font-size: 16px;
+}
+
+.service .service-item a.btn {
+    position: relative;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #00235B;
+    border: 2px solid #00235B;
+    border-radius: 0;
+    background: none;
+    transition: .3s;
+}
+
+.service .service-item:hover a.btn {
+    color: #f84200;
+    background: #00235B;
+    border-color: #00235B;
+}
+
+/*******************************/
+/*********** Team CSS **********/
+/*******************************/
+.team {
+    position: relative;
+    width: 100%;
+    padding: 45px 0 15px 0;
+}
+
+.team .team-item {
+    margin-bottom: 30px;
+}
+
+.team .team-img {
+    position: relative;
+}
+
+/* .team .team-img::after {
+    position: absolute;
+    content: "";
+    top: 15px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    background: transparent;
+    border: 1px solid #F6F6F7;
+    transition: .3s;
+    z-index: 1;
+} */
+
+.team .team-img img {
+    width: 100%;
+}
+
+.team .team-text {
+    position: relative;
+    margin: -60px 15px 0 15px;
+    padding: 30px 15px;
+    text-align: center;
+    background: #F6F6F7;
+    transition: .3s;
+    z-index: 2;
+}
+
+.team .team-text h2 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.team .team-text p {
+    margin: 0;
+    color: #333333;
+}
+
+.team .team-item:hover .team-text {
+    background: #f84200;
+}
+
+.team .team-item:hover .team-img::after {
+    border-color: #f84200;
+}

@@ -1,21 +1,35 @@
-import { BookingModal } from "./modal.js";
+import { HistoryAndEditingModal } from "./modal.js";
 import { formatRupiah } from './utils.js';
 import { resetTable } from './DashboardAdmin.js';
 
 let CurrentBookingHistoryTable = 1;
 let CurrentBookingListTable = 1;
 
-function displayBookingTable(BookingData, startIndex, isBookingListTable) {
-    const tableContainer = document.querySelector(isBookingListTable ? '.tbody-dataBo' : '.BoSudahACC');
+function displayBookingTable(BookingData, startIndex, Action) {
+    let selectorTarget;
+    let tableId;
+    let pageInfoId;
+    
+    if (Action === 'apply') {
+        selectorTarget = '#ListTableDisplay';
+        tableId = 'NextBookingListTable';
+        pageInfoId = 'PageListTable';
+    } else if (Action === 'edit') {
+        selectorTarget = '#HistoryTableDisplay';
+        tableId = 'NextBookingHistoryTable';
+        pageInfoId = 'PageHistoryTable';
+    }
+    
+    const tableContainer = document.querySelector(selectorTarget);
     tableContainer.innerHTML = '';
 
     let iteration = 1;
 
     for (let i = startIndex; i < BookingData.length; i++) {
         const Booking = BookingData[i];
-        const hasPriceAndService = Booking.harga_booking === '' && Booking.order_layanan === '';
+        const NullPriceAndService = Booking.harga_booking === '' && Booking.order_layanan === '';
 
-        if ((isBookingListTable && hasPriceAndService) || (!isBookingListTable && !hasPriceAndService)) {
+        if ((Action === 'apply' && NullPriceAndService) || (Action === 'edit' && !NullPriceAndService)) {
             let innerHTML = `
                 <td>${startIndex + iteration}</td>
                 <td>${Booking.nama_booking}</td>
@@ -25,151 +39,128 @@ function displayBookingTable(BookingData, startIndex, isBookingListTable) {
                 <td>${Booking.pesan_booking}</td>
             `;
 
-            if (!isBookingListTable) {
+            if (Action === 'edit') {
                 innerHTML += `
                     <td>${Booking.order_layanan}</td>
                     <td>${Booking.harga_booking}</td>
-                    <td class="row">
-                        <button class="btn-warning rounded mb-1 text-white" data-toggle="modal" data-target="#editModal${Booking.id_booking}">Edit</button>
-                        <button id="deleteBtn${Booking.id_booking}" class="btn-danger rounded">Hapus</button>
+                    <td class="text-center">
+                        <div class="btn-container">
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
+                            <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
+                        </div>
                     </td>
                 `;
-            } else {
+            } else if (Action === 'apply') {
                 innerHTML += `
-                    <td><button class="btn-success rounded applyButton" data-toggle="modal" data-target="#bookingModal${Booking.id_booking}">APPLY</button></td>
+                    <td class="text-center">
+                        <div class="btn-container">
+                            <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
+                        </div>
+                    </td>
                 `;
             }
+
 
             const BookingElement = document.createElement('tr');
             BookingElement.innerHTML = innerHTML;
             tableContainer.appendChild(BookingElement);
 
-            const modalElement = BookingModal(Booking, !isBookingListTable);
+            const modalElement = HistoryAndEditingModal(Booking, Action);
             document.body.appendChild(modalElement);
 
-            fetchAndDisplayServices(Booking);
+            fetchAndDisplayServices(Booking.id_booking, Action);
 
-            if (!isBookingListTable) {
+            if (Action === 'edit') {
                 const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
                 deleteButton.addEventListener('click', function() {
                     deleteBooking(Booking.id_booking);
                 });
             }
-
             iteration++;
         }
     }
 
-    const tableId = isBookingListTable ? 'NextBookingHistoryTable' : 'NextBookingListTable';
     document.getElementById(tableId).disabled = true;
 
     const totalPages = 1;
-    const pageInfoId = isBookingListTable ? 'pageInfoTable2' : 'pageInfoTable1';
-    document.getElementById(pageInfoId).innerText = `Page ${isBookingListTable ? CurrentBookingHistoryTable : CurrentBookingListTable} / ${totalPages}`;
+    // document.getElementById(pageInfoId).innerText = `Page ${pageInfoId} / ${totalPages}`;
 }
 
-function fetchAndDisplayServices(Booking) {
+function fetchAndDisplayServices(BookingID, Action) {
     const url = 'http://localhost/BEPLAZA/API/api.php/layanan';
-    const orderUrl = `http://localhost/BEPLAZA/API/api.php/BookingOrder/${Booking.id_booking}`;
 
     fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            displayServices(Booking, data);
-            
-            if (Booking.isHistory) {
-                fetch(orderUrl)
-                    .then(response => response.json())
-                    .then(orderData => {
-                        const checkboxes = document.querySelectorAll(`.service-checkboxs${Booking.id_booking}`);
-                        const totalHarga = {};
-                        totalHarga[Booking.id_booking] = 0;
+    .then(response => response.json())
+    .then(data => {
+        const layananContainer = document.querySelector(`.service-data-container${BookingID}`);
+        layananContainer.innerHTML = `<label>Service</label>`;
 
-                        const checkedServiceIds = orderData.map(order => order.id_pelayanan);
-
-                        checkboxes.forEach(checkbox => {
-                            const serviceId = parseInt(checkbox.value);
-                            checkedServiceIds.forEach(idorder => {
-                                if (idorder === serviceId) {
-                                    checkbox.checked = true;
-                                    updateTotalHarga(checkboxes, totalHarga, Booking.id_booking);
-                                }
-                            });
-                        });
-
-                        // Tambahkan event listener setelah menandai checkbox yang sesuai
-                        checkboxes.forEach(function (checkbox) {
-                            checkbox.addEventListener('change', function () {
-                                updateTotalHarga(checkboxes, totalHarga, Booking.id_booking);
-                            });
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching order data:', error);
-                    });
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching layanan data:', error);
-        });
-}
-
-function displayServices(Booking, layananData) {
-    const layananContainer = document.createElement('div');
-    layananContainer.innerHTML = `<label>Service</label>`;
-
-    layananData.forEach(Layanan => {
-        if ((Layanan.tampilkan === '1' && !Booking.isHistory) || Booking.isHistory) {
-            const formattedNumber = new Intl.NumberFormat('id-ID', { style: 'decimal', minimumFractionDigits: 0 }).format(Layanan.harga);
+        data.forEach(Layanan => {
+            const formattedNumber = new Intl.NumberFormat('id-ID', { style: 'decimal', minimumFrActionDigits: 0 }).format(Layanan.harga);
             const layananElement = document.createElement('div');
             layananElement.classList.add('form-check');
 
             let labelContent = `${Layanan.nama} = Rp. ${formattedNumber}`;
-            if (!Booking.isHistory && Layanan.tampilkan !== '1') {
+            if (Layanan.tampilkan !== '1') {
                 labelContent += ` <span class="text-danger">[ Tidak Ditampilkan ]</span>`;
             }
 
             layananElement.innerHTML = `
-                <input class="form-check-input service-checkboxs${Booking.id_booking}" type="checkbox" name="services${Booking.id_booking}[]" value="${Layanan.id_pelayanan}" id="${Layanan.id_pelayanan}" data-hargas="${Layanan.harga}">
+                <input class="form-check-input service-checkboxs${BookingID}" type="checkbox" name="services${BookingID}[]" value="${Layanan.id_pelayanan}" id="${Layanan.id_pelayanan}" data-harga="${Layanan.harga}">
                 <label class="form-check-label" for="service${Layanan.id_pelayanan}">${labelContent}</label>
             `;
             layananContainer.appendChild(layananElement);
-        }
-    });
-
-    // Menambahkan container layanan ke dalam form
-    const serviceDataContainer = document.querySelector(`.service-data-container${Booking.id_booking}`);
-    serviceDataContainer.appendChild(layananContainer);
-
-    var totalHargaPerBooking = 0;
-
-    // Menambahkan event listener ke setiap checkbox
-    var checkboxes = document.querySelectorAll(`.service-checkboxs${Booking.id_booking}`);
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            totalHargaPerBooking = 0;
-            checkboxes.forEach(function(cb) {
-                if (cb.checked) {
-                    totalHargaPerBooking += parseFloat(cb.getAttribute('data-hargas'));
-                }
-            });
-            var formattedHarga = 'Rp. ' + formatRupiah(totalHargaPerBooking.toFixed(0));
-            document.getElementById(`total-hargas${Booking.id_booking}`).textContent = 'Total Harga: ' + formattedHarga;
-            document.getElementById(`hargas${Booking.id_booking}`).value = totalHargaPerBooking;
         });
+
+        const checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`);
+        const totalHarga = {};
+        totalHarga[BookingID] = 0;
+
+        fetchOrderData(checkboxes, totalHarga, BookingID, Action);
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 }
 
-function updateTotalHarga(checkboxes, totalHarga, booId) {
+function fetchOrderData(checkboxes, totalHarga, booId, Action) {
+    const orderUrl = `http://localhost/BEPLAZA/API/api.php/BookingOrder/${booId}`;
+    fetch(orderUrl).then(response => response.json())
+    .then(orderData => {
+        const checkedServiceIds = orderData.map(order => order.id_pelayanan);
+
+        checkboxes.forEach(checkbox => {
+            const serviceId = parseInt(checkbox.value);
+            checkedServiceIds.forEach(idorder => {
+                if (idorder == serviceId) {
+                    checkbox.checked = true;
+                    updateTotalHarga(checkboxes, totalHarga, booId, Action);
+                }
+            });
+        });
+
+        // Tambahkan event listener setelah menandai checkbox yang sesuai
+        checkboxes.forEach(function (checkbox) {
+            checkbox.addEventListener('change', function () {
+                updateTotalHarga(checkboxes, totalHarga, booId, Action);
+            });
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function updateTotalHarga(checkboxes, totalHarga, booId, Action) {
     totalHarga[booId] = 0;
     checkboxes.forEach(function(cb) {
         if (cb.checked) {
-            totalHarga[booId] += parseFloat(cb.getAttribute('data-hargas'));
+            totalHarga[booId] += parseFloat(cb.getAttribute('data-harga'));
         }
     });
     var formattedHarga = 'Rp. ' + formatRupiah(totalHarga[booId].toFixed(0));
-    document.getElementById(`total-hargas${booId}`).textContent = 'Total Harga: ' + formattedHarga;
-    document.getElementById(`hargas${booId}`).value = totalHarga[booId];
+    document.getElementById(`TotalHarga${Action}${booId}`).textContent = 'Total Harga: ' + formattedHarga;
+    document.getElementById(`Harga${Action}${booId}`).value = totalHarga[booId];
 }
 
 function deleteBooking(booId) {
@@ -183,18 +174,23 @@ function deleteBooking(booId) {
 
         var xhr = new XMLHttpRequest();
         xhr.open("DELETE", "http://localhost/BEPLAZA/API/api.php/booking/" + booId, true);
+        console.log("After Delete");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function() {
             if (xhr.status === 200) {
                 document.getElementById(`successDelete`).classList.remove("d-none");
+                console.log("After none 1");
                 resetTable();
                 setTimeout(function() {
                     document.getElementById(`successDelete`).classList.add("d-none"); // Menambahkan kembali class d-none setelah alert ditampilkan
+                    console.log("After none 2");
                 }, 3000); 
             } else {
                 document.getElementById(`gagalDelete`).classList.remove("d-none");
+                console.log("After none 3");
                 setTimeout(function() {
                     document.getElementById(`gagalDelete`).classList.add("d-none"); // Menambahkan kembali class d-none setelah alert ditampilkan
+                    console.log("After none 4");
                 }, 3000); 
                 console.error("Gagal menghapus booking:", xhr.statusText);
             }
