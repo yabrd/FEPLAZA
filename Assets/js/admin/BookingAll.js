@@ -130,14 +130,53 @@ function fetchAndDisplayServices(BookingID, Action) {
             layananContainer.appendChild(layananElement);
         });
 
-        const checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`);
-        const totalHarga = {};
-        totalHarga[BookingID] = 0;
+        if (Action != 'add') {
+            const checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`);
+            const totalHarga = {};
+            totalHarga[BookingID] = 0;
+    
+            fetchOrderData(checkboxes, totalHarga, BookingID, Action);
+        } else if (Action == 'add') {
+            const totalHarga = {};
+            totalHarga[BookingID] = 0;
+            SetHargaCheckbox(BookingID, totalHarga, Action)
+        }
 
-        fetchOrderData(checkboxes, totalHarga, BookingID, Action);
+
     })
     .catch(error => {
         console.error('Error:', error);
+    });
+}
+
+
+function SetHargaCheckbox(BookingID, totalHarga, Action) {
+    var checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`); // Perbaiki nama kelas
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            totalHarga[BookingID] = 0; // Reset total harga
+            checkboxes.forEach(function(cb) {
+                if (cb.checked) {
+                    totalHarga[BookingID] += parseFloat(cb.getAttribute('data-harga'));
+                }
+            });
+            var formattedHarga = 'Rp. ' + formatRupiah(totalHarga[BookingID].toFixed(0));
+            document.getElementById(`TotalHarga${Action}${BookingID}`).textContent = 'Total Harga: ' + formattedHarga;
+
+            // Periksa kembali apakah elemen harga sudah ada
+            let hargaElement = document.getElementById(`Harga${Action}${BookingID}`);
+            if (hargaElement) {
+                hargaElement.value = totalHarga[BookingID];
+            } else {
+                let hargaContainer = document.getElementById(`TotalHarga${Action}${BookingID}`);
+                let hargaElementBaru = document.createElement('input');
+                hargaElementBaru.setAttribute('type', 'hidden');
+                hargaElementBaru.setAttribute('id', `Harga${Action}${BookingID}`);
+                hargaElementBaru.setAttribute('name', 'harga');
+                hargaElementBaru.value = totalHarga[BookingID];
+                hargaContainer.appendChild(hargaElementBaru);
+            }
+        });
     });
 }
 
@@ -221,8 +260,10 @@ function deleteBooking(BookingID) {
 }
 
 function SubmitButton(BookingID, Action) {
+    var MissingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
+    var AlertContainerId = `AlertContainer${Action}${BookingID}`;
+    var SuccessAlertContainerId = `SuccessAlertContainer${Action}${BookingID}`;
     var ButtonId = `SubmitBtn${Action}${BookingID}`;
-    var IdFieldId = `Id${Action}${BookingID}`;
     var NamaFieldId = `Nama${Action}${BookingID}`;
     var NomerhpFieldId = `NomorHP${Action}${BookingID}`;
     var TanggalFieldId = `Tanggal${Action}${BookingID}`;
@@ -231,7 +272,6 @@ function SubmitButton(BookingID, Action) {
     var Harga = `Harga${Action}${BookingID}`;
 
     var button = document.getElementById(ButtonId);
-    var id = document.getElementById(IdFieldId).value;
     var nama_booking = document.getElementById(NamaFieldId).value;
     var nomerhp_booking = document.getElementById(NomerhpFieldId).value;
     var tanggal = document.getElementById(TanggalFieldId).value;
@@ -261,9 +301,6 @@ function SubmitButton(BookingID, Action) {
 
     if (Action === 'apply' || Action === 'edit') {
         var CloseButtonId = `CloseModal${Action}${BookingID}`;
-        var MissingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
-        var AlertContainerId = `AlertContainer${Action}${BookingID}`;
-        var SuccessAlertContainerId = `SuccessAlertContainer${Action}${BookingID}`;
         API = `http://localhost/BEPLAZA/API/api.php/bookingUpdate/${BookingID}`;
     } else if (Action === 'add') {
         API = `http://localhost/BEPLAZA/API/api.php/booking-admin`;
@@ -343,5 +380,6 @@ function SubmitButton(BookingID, Action) {
 
     xhr.send(jsonData);
 }
+
 
 export { displayBookingTable, fetchAndDisplayServices, SubmitButton };

@@ -6,6 +6,10 @@ function createBookingForm(Action) {
     // Mendapatkan elemen tempat Anda ingin menambahkan formulir
     var formContainer = document.getElementById('formContainer');
     const BookingID = 1;
+    const closeModalId = `CloseModal${Action}${BookingID}`;
+    const alertContainerId = `AlertContainer${Action}${BookingID}`;
+    const missingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
+    const successAlertContainerId = `SuccessAlertContainer${Action}${BookingID}`;
     const formId = `Form${Action}${BookingID}`;
     const idFieldId = `Id${Action}${BookingID}`;
     const namaFieldId = `Nama${Action}${BookingID}`;
@@ -19,6 +23,20 @@ function createBookingForm(Action) {
 
     // Menyiapkan HTML untuk formulir
     var formHTML = `
+        <div id="${alertContainerId}" class="mt-3 d-none">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Perhatian!</strong> Ada field yang belum terisi:
+                <ul id="${missingFieldsListId}" class="mb-0"></ul>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="${closeModalId}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div id="${successAlertContainerId}" class="mt-3 d-none">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Booking berhasil ditambahkan! 
+            </div>
+        </div>
         <form role="form" name="${formId}" id="${formId}" method="post" class="booking-form">
             <!-- Bagian Pertama -->
             <div class="section section-1">
@@ -80,10 +98,10 @@ function createBookingForm(Action) {
         enableWaktu(tanggalFieldId, waktuFieldId);
     });
 
-    // var submitbutton = formContainer.querySelector(`#${submitBtnId}`);
-    // submitbutton.addEventListener('click', function() {
-    //     SubmitButton(BookingID, Action);
-    // });
+    var submitbutton = formContainer.querySelector(`#${submitBtnId}`);
+    submitbutton.addEventListener('click', function() {
+        SubmitButton(BookingID, Action);
+    });
 }
 // Memunculkan Referensi Pelanggan dari database
 function ReverencePelanggan() {
@@ -109,145 +127,6 @@ function ReverencePelanggan() {
     .catch(error => {
         console.error('Error:', error);
     });
-}
-
-function formatRupiah(angka) {
-    var reverse = angka.toString().split('').reverse().join(''),
-        ribuan = reverse.match(/\d{1,3}/g);
-    ribuan = ribuan.join('.').split('').reverse().join('');
-    return ribuan;
-}
-
-// Ketika mengklik tombol submit booking
-function submitBookingAdm() {
-    var button = document.getElementById("submitBtn");
-
-    // Menonaktifkan tombol
-    button.disabled = true;
-
-    // Menunggu 5 detik sebelum mengaktifkan kembali tombol
-    setTimeout(function() {
-        button.disabled = false;
-    }, 5000);
-
-
-    var nama_booking = document.getElementById("nama").value;
-    console.log("Nama Booking:", nama_booking);
-    
-    var nomerhp_booking = document.getElementById("telp").value;
-    console.log("Nomor HP Booking:", nomerhp_booking);
-    
-    var tanggal = document.getElementById("tanggal").value;
-    console.log("Tanggal:", tanggal);
-    
-    var waktu = document.getElementById("waktu").value;
-    console.log("Waktu:", waktu);
-    
-    var pesan = document.getElementById("pesan").value;
-    console.log("Pesan:", pesan);
-    
-
-    var checkboxes = document.getElementsByName("service[]");
-    console.log("checkboxes:", checkboxes);
-
-    var harga = document.getElementById("harga").value;
-    console.log("Harga:", harga);
-    
-    var selectedServices = [];
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            selectedServices.push(checkboxes[i].value);
-        }
-    }
-
-    var countSelectedServices = selectedServices.length;
-
-    var fieldsNotFilled = [];
-
-    if (nama_booking === "") {
-        fieldsNotFilled.push("Nama Booking");
-    }
-    if (nomerhp_booking === "") {
-        fieldsNotFilled.push("Nomer HP Booking");
-    }
-    if (harga < 1 || countSelectedServices < 1 ) {
-        fieldsNotFilled.push("Service");
-    }
-    if (tanggal === "") {
-        fieldsNotFilled.push("Tanggal");
-    }
-    if (waktu === "") {
-        fieldsNotFilled.push("Waktu");
-    }
-    if (pesan === "") {
-        fieldsNotFilled.push("Pesan");
-    }
-
-    if (fieldsNotFilled.length > 0) {
-        document.getElementById("missingFieldsList").innerHTML = fieldsNotFilled.map(function(field) {
-            return "<li>" + field + "</li>";
-        }).join("");
-        document.getElementById("alertContainer").classList.remove("d-none");
-        setTimeout(function() {
-            document.getElementById("missingFieldsList").innerHTML = "";
-            document.getElementById("alertContainer").classList.add("d-none");
-        }, 5000);
-        return;
-    }
-
-    var dataToSend = {
-        "nama_booking": nama_booking,
-        "nomerhp_booking": nomerhp_booking,
-        "tanggal": tanggal,
-        "waktu": waktu,
-        "harga": harga,
-        "pesan": pesan,
-        "selectedServices": selectedServices // Menambahkan data selectedServices ke objek dataToSend
-    };
-    console.log(selectedServices)
-    var jsonData = JSON.stringify(dataToSend);
-
-    var xhr = new XMLHttpRequest();
-
-    xhr.open("POST", "http://localhost/BEPLAZA/API/api.php/booking-admin", true); // Mengubah URL ke endpoint order
-
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            document.getElementById("successAlertContainer").classList.remove("d-none");
-            resetTable();
-            resetForm();
-            harga=0;
-            countSelectedServices=0;
-            setTimeout(function() {
-                document.getElementById(`successAlertContainer`).classList.add("d-none"); // Menambahkan kembali class d-none setelah alert ditampilkan
-            }, 5000); 
-        } else {
-            console.error("Gagal menambahkan booking:", xhr.statusText);
-        }
-    };
-
-    xhr.onerror = function() {
-        console.error("Koneksi error.");
-    };
-
-    xhr.send(jsonData);
-}
-
-// Dipanggil setelah mengklik submit button
-function resetForm() {
-    document.getElementById("nama").value = "";
-    document.getElementById("telp").value = "";
-    document.getElementById("tanggal").value = "";
-    document.getElementById("harga").value = "0";
-    document.getElementById("waktu").value = "";
-    document.getElementById("pesan").value = "";
-    document.getElementById('total-harga').textContent = 'Total Harga: Rp. 0';
-    var checkboxes = document.getElementsByName("service[]");
-    for (var i = 0; i < checkboxes.length; i++) {
-        checkboxes[i].checked = false;
-    }
 }
 
 export { createBookingForm, setMinDate }
