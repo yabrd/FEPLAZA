@@ -1,25 +1,27 @@
 import { resetTable } from './DashboardAdmin.js';
+import { enableWaktu, setMinDate } from "./utils.js";
+import { SubmitButton } from './BookingAll.js'
 
 function HistoryAndEditingModal(Booking, Action) {
     const modalElement = document.createElement('div');
 
-    const BooID = Booking.id_booking;
+    const BookingID = Booking.id_booking;
 
-    const modalId = `Modal${Action}${BooID}`;
-    const closeModalId = `CloseModal${Action}${BooID}`;
-    const alertContainerId = `AlertContainer${Action}${BooID}`;
-    const missingFieldsListId = `MissingFieldsList${Action}${BooID}`;
-    const successAlertContainerId = `SuccessAlertContainer${Action}${BooID}`;
-    const formId = `Form${Action}${BooID}`;
-    const idFieldId = `Id${Action}${BooID}`;
-    const namaFieldId = `Nama${Action}${BooID}`;
-    const nomorHPFieldId = `NomorHP${Action}${BooID}`;
-    const tanggalFieldId = `Tanggal${Action}${BooID}`;
-    const waktuFieldId = `Waktu${Action}${BooID}`;
-    const pesanFieldId = `Pesan${Action}${BooID}`;
-    const submitBtnId = `SubmitBtn${Action}${BooID}`;
-    const TotalHarga = `TotalHarga${Action}${BooID}`;
-    const Harga = `Harga${Action}${BooID}`;
+    const modalId = `Modal${Action}${BookingID}`;
+    const closeModalId = `CloseModal${Action}${BookingID}`;
+    const alertContainerId = `AlertContainer${Action}${BookingID}`;
+    const missingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
+    const successAlertContainerId = `SuccessAlertContainer${Action}${BookingID}`;
+    const formId = `Form${Action}${BookingID}`;
+    const idFieldId = `Id${Action}${BookingID}`;
+    const namaFieldId = `Nama${Action}${BookingID}`;
+    const nomorHPFieldId = `NomorHP${Action}${BookingID}`;
+    const tanggalFieldId = `Tanggal${Action}${BookingID}`;
+    const waktuFieldId = `Waktu${Action}${BookingID}`;
+    const pesanFieldId = `Pesan${Action}${BookingID}`;
+    const submitBtnId = `SubmitBtn${Action}${BookingID}`;
+    const TotalHarga = `TotalHarga${Action}${BookingID}`;
+    const Harga = `Harga${Action}${BookingID}`;
     const modalTitle = Action;
     const submitBtnText = Action;
 
@@ -104,142 +106,21 @@ function HistoryAndEditingModal(Booking, Action) {
     return modalElement;
 }
 
-function SubmitButton(booId, Action) {
-
-    var ButtonId = `SubmitBtn${Action}${booId}`;
-    var IdFieldId = `Id${Action}${booId}`;
-    var NamaFieldId = `Nama${Action}${booId}`;
-    var NomerhpFieldId = `NomorHP${Action}${booId}`;
-    var TanggalFieldId = `Tanggal${Action}${booId}`;
-    var WaktuFieldId = `Waktu${Action}${booId}`;
-    var PesanFieldId = `Pesan${Action}${booId}`;
-    var Harga = `Harga${Action}${booId}`;
-
-    var button = document.getElementById(ButtonId);
-    var id = document.getElementById(IdFieldId).value;
-    var nama_booking = document.getElementById(NamaFieldId).value;
-    var nomerhp_booking = document.getElementById(NomerhpFieldId).value;
-    var tanggal = document.getElementById(TanggalFieldId).value;
-    var waktu = document.getElementById(WaktuFieldId).value;
-    var pesan = document.getElementById(PesanFieldId).value;
-    var harga = document.getElementById(Harga).value;
-    var checkboxes = document.getElementsByName(`services${booId}[]`);
-
-    var selectedServices = [];
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-            selectedServices.push(checkboxes[i].value);
-        }
-    }
-
-    var countSelectedServices = selectedServices.length;
-
-    // Menonaktifkan tombol
-    button.disabled = true;
-
-    // Menunggu 5 detik sebelum mengaktifkan kembali tombol
-    setTimeout(function() {
-        button.disabled = false;
-    }, 5000);
-
-    if (Action == 'apply' || Action == 'edit') {
-        var CloseButtonId = `CloseModal${Action}${booId}`;
-        var MissingFieldsListId = `MissingFieldsList${Action}${booId}`;
-        var AlertContainerId = `AlertContainer${Action}${booId}`;
-        var SuccessAlertContainerId = `SuccessAlertContainer${Action}${booId}`;
-        var API = `http://localhost/BEPLAZA/API/api.php/bookingUpdate/"${+booId}`
-    } else if (Action == 'add') {
-        var API = `http://localhost/BEPLAZA/API/api.php/booking-admin`
-    }
-
-    var fieldsNotFilled = [];
-
-    if (nama_booking === "") {
-        fieldsNotFilled.push("Nama Booking");
-    }
-    if (nomerhp_booking === "") {
-        fieldsNotFilled.push("Nomer HP Booking");
-    }
-    if (harga < 1 && countSelectedServices < 1) {
-        fieldsNotFilled.push("Service");
-    }
-    if (tanggal === "") {
-        fieldsNotFilled.push("Tanggal");
-    }
-    if (waktu === "") {
-        fieldsNotFilled.push("Waktu");
-    }
-    if (pesan === "") {
-        fieldsNotFilled.push("Pesan");
-    }
-
-    if (fieldsNotFilled.length > 0) {
-        document.getElementById(MissingFieldsListId).innerHTML = fieldsNotFilled.map(function(field) {
-            return "<li>" + field + "</li>";
-        }).join("");
-        document.getElementById(AlertContainerId).classList.remove("d-none");
-        if (isEdit === true){
-            setTimeout(function() {
-                document.getElementById(AlertContainerId).classList.add("d-none"); 
-            }, 5000); 
-        }
-        return;
-    }
-
-    var dataToSend = {
-        "nama_booking": nama_booking,
-        "nomerhp_booking": nomerhp_booking,
-        "tanggal": tanggal,
-        "waktu": waktu,
-        "harga": harga,
-        "pesan": pesan,
-        "selectedServices": selectedServices // Menambahkan data selectedServices ke objek dataToSend
-    };
-
-    var jsonData = JSON.stringify(dataToSend);
-
-    var xhr = new XMLHttpRequest();
-
-    xhr.open("PUT", API, true); // Mengubah URL ke endpoint order
-
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            document.getElementById(SuccessAlertContainerId).classList.remove("d-none");
-            setTimeout(function() {
-                window.location.href = '?Booking';
-                document.getElementById(SuccessAlertContainerId).classList.add("d-none"); 
-                document.getElementById(CloseButtonId).getElementsByClassName("close")[0].click();
-                
-            }, 2000); 
-        } else {
-            console.error("Gagal menambahkan booking:", xhr.statusText);
-        }
-    };
-
-    xhr.onerror = function() {
-        console.error("Koneksi error.");
-    };
-
-    xhr.send(jsonData);
-}
-
 // Menyimpan data Referensi (Kayaknya ya) 
-function editReverencePelanggan(BooId) {
+function editReverencePelanggan(BookingID) {
     const url = 'http://localhost/BEPLAZA/API/api.php/User';
     fetch(url)
     .then(response => response.json())
     .then(data => {
-        const PelangganContainer = document.querySelector(`#editdatalist_nama${BooId}`);
+        const PelangganContainer = document.querySelector(`#editdatalist_nama${BookingID}`);
         data.forEach(Pelanggan => {
             const PelangganOption = document.createElement('option');
             PelangganOption.value = Pelanggan.username;
             PelangganContainer.appendChild(PelangganOption);
         });
         // isi nomer telepon
-        var namaInput = document.getElementsByName(`editNama${BooId}`)[0].value;
-        var nomorInput = document.getElementById(`editNomorHPModal${BooId}`);
+        var namaInput = document.getElementsByName(`editNama${BookingID}`)[0].value;
+        var nomorInput = document.getElementById(`editNomorHPModal${BookingID}`);
         data.forEach(Pelanggan => {
             if(Pelanggan.username===namaInput){
                 nomorInput.value = Pelanggan.no_telp;
@@ -251,4 +132,4 @@ function editReverencePelanggan(BooId) {
     });
 }
 
-export { HistoryAndEditingModal };
+export { HistoryAndEditingModal, SubmitButton };

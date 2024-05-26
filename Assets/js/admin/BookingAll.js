@@ -202,4 +202,128 @@ function deleteBooking(BookingID) {
     }
 }
 
-export { displayBookingTable, fetchAndDisplayServices };
+function SubmitButton(BookingID, Action) {
+    var ButtonId = `SubmitBtn${Action}${BookingID}`;
+    var IdFieldId = `Id${Action}${BookingID}`;
+    var NamaFieldId = `Nama${Action}${BookingID}`;
+    var NomerhpFieldId = `NomorHP${Action}${BookingID}`;
+    var TanggalFieldId = `Tanggal${Action}${BookingID}`;
+    var WaktuFieldId = `Waktu${Action}${BookingID}`;
+    var PesanFieldId = `Pesan${Action}${BookingID}`;
+    var Harga = `Harga${Action}${BookingID}`;
+
+    var button = document.getElementById(ButtonId);
+    var id = document.getElementById(IdFieldId).value;
+    var nama_booking = document.getElementById(NamaFieldId).value;
+    var nomerhp_booking = document.getElementById(NomerhpFieldId).value;
+    var tanggal = document.getElementById(TanggalFieldId).value;
+    var waktu = document.getElementById(WaktuFieldId).value;
+    var pesan = document.getElementById(PesanFieldId).value;
+    var harga = document.getElementById(Harga).value;
+    var checkboxes = document.getElementsByName(`services${BookingID}[]`);
+
+    var selectedServices = [];
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            selectedServices.push(checkboxes[i].value);
+        }
+    }
+
+    var countSelectedServices = selectedServices.length;
+
+    // Menonaktifkan tombol
+    button.disabled = true;
+
+    // Menunggu 5 detik sebelum mengaktifkan kembali tombol
+    setTimeout(function() {
+        button.disabled = false;
+    }, 5000);
+
+    var API;
+
+    if (Action === 'apply' || Action === 'edit') {
+        var CloseButtonId = `CloseModal${Action}${BookingID}`;
+        var MissingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
+        var AlertContainerId = `AlertContainer${Action}${BookingID}`;
+        var SuccessAlertContainerId = `SuccessAlertContainer${Action}${BookingID}`;
+        API = `http://localhost/BEPLAZA/API/api.php/bookingUpdate/${BookingID}`;
+    } else if (Action === 'add') {
+        API = `http://localhost/BEPLAZA/API/api.php/booking-admin`;
+    }
+
+    var fieldsNotFilled = [];
+
+    if (nama_booking === "") {
+        fieldsNotFilled.push("Nama Booking");
+    }
+    if (nomerhp_booking === "") {
+        fieldsNotFilled.push("Nomer HP Booking");
+    }
+    if (harga < 1 && countSelectedServices < 1) {
+        fieldsNotFilled.push("Service");
+    }
+    if (tanggal === "") {
+        fieldsNotFilled.push("Tanggal");
+    }
+    if (waktu === "") {
+        fieldsNotFilled.push("Waktu");
+    }
+    if (pesan === "") {
+        fieldsNotFilled.push("Pesan");
+    }
+
+    if (fieldsNotFilled.length > 0) {
+        document.getElementById(MissingFieldsListId).innerHTML = fieldsNotFilled.map(function(field) {
+            return "<li>" + field + "</li>";
+        }).join("");
+        document.getElementById(AlertContainerId).classList.remove("d-none");
+        setTimeout(function() {
+            document.getElementById(AlertContainerId).classList.add("d-none"); 
+        }, 5000); 
+        return;
+    }
+
+    var dataToSend = {
+        "nama_booking": nama_booking,
+        "nomerhp_booking": nomerhp_booking,
+        "tanggal": tanggal,
+        "waktu": waktu,
+        "harga": harga,
+        "pesan": pesan,
+        "selectedServices": selectedServices // Menambahkan data selectedServices ke objek dataToSend
+    };
+
+    var jsonData = JSON.stringify(dataToSend);
+
+    var xhr = new XMLHttpRequest();
+
+    if (Action === 'add') {
+        xhr.open("POST", API, true); // Mengubah ke POST untuk menambahkan booking baru
+    } else {
+        xhr.open("PUT", API, true); // Mengubah URL ke endpoint order
+    }
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            document.getElementById(SuccessAlertContainerId).classList.remove("d-none");
+            setTimeout(function() {
+                window.location.href = '?Booking';
+                document.getElementById(SuccessAlertContainerId).classList.add("d-none"); 
+                document.getElementById(CloseButtonId).getElementsByClassName("close")[0].click();
+                
+            }, 2000); 
+        } else {
+            console.error("Gagal menambahkan booking:", xhr.statusText);
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error("Koneksi error.");
+    };
+
+    xhr.send(jsonData);
+}
+
+export { displayBookingTable, fetchAndDisplayServices, SubmitButton };

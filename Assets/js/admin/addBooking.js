@@ -1,5 +1,6 @@
 import { enableWaktu, setMinDate } from "./utils.js";
 import { fetchAndDisplayServices } from "./BookingAll.js"
+import { SubmitButton } from "./modal.js"
 
 function createBookingForm(Action) {
     // Mendapatkan elemen tempat Anda ingin menambahkan formulir
@@ -58,7 +59,7 @@ function createBookingForm(Action) {
             <div class="section section-5">
                 <div class="form-group">
                     <div class="form-group service-data "></div>
-                    <button id="submitBtn${submitBtnId}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
+                    <button id="${submitBtnId}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
                 </div>
             </div>
             <!-- Bagian Keenam -->
@@ -72,18 +73,17 @@ function createBookingForm(Action) {
     formContainer.innerHTML = formHTML;
 
     fetchAndDisplayServices(BookingID, Action);
-    
-    // Menambahkan formulir ke dalam kontainer
-    // formContainer.querySelector(`#submitBtn`).addEventListener('click', function() {
-    //     submitBookingAdm();
-    // });
-        // Ambil elemen input tanggal
-
     setMinDate(tanggalFieldId);
+
     var tanggalInput = document.getElementById(tanggalFieldId);
     tanggalInput.addEventListener("change", function() {
         enableWaktu(tanggalFieldId, waktuFieldId);
     });
+
+    // var submitbutton = formContainer.querySelector(`#${submitBtnId}`);
+    // submitbutton.addEventListener('click', function() {
+    //     SubmitButton(BookingID, Action);
+    // });
 }
 // Memunculkan Referensi Pelanggan dari database
 function ReverencePelanggan() {
