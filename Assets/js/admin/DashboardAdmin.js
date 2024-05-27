@@ -1,5 +1,5 @@
 import { displayBookingTable } from './BookingAll.js';
-import { createBookingForm } from './addBooking.js'
+import { createBookingForm } from './AddBooking.js'
 
 let CurrentBookingListTable = 1;
 let CurrentBookingHistoryTable = 1;
@@ -14,20 +14,16 @@ function fetchGetDataBooking() {
     .then(data => {
 
         BookingData = data;
-        // Panggil fungsi pertama kali untuk menampilkan data awal untuk masing-masing tabel
-        // BookingListTable(data, 0);
-        // BookingHistoryTable(data, 0);
         displayBookingTable(BookingData, CurrentBookingListTable, 'apply');
         displayBookingTable(BookingData, CurrentBookingHistoryTable, 'edit');
     })
     .catch(error => {
-        // Handle error
         console.error('Error:', error);
     });
 }
 
 function resetTable() {
-    CurrentBookingListTable = 1; // Variabel untuk melacak halaman saat ini untuk tabel pertama
+    CurrentBookingListTable = 1;
     CurrentBookingHistoryTable = 1;
     fetchGetDataBooking();
 }

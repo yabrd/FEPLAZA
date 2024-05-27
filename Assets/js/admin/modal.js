@@ -1,5 +1,4 @@
 import { resetTable } from './DashboardAdmin.js';
-import { enableWaktu, setMinDate } from "./utils.js";
 import { SubmitButton } from './BookingAll.js'
 
 function HistoryAndEditingModal(Booking, Action) {
@@ -104,32 +103,6 @@ function HistoryAndEditingModal(Booking, Action) {
     });
 
     return modalElement;
-}
-
-// Menyimpan data Referensi (Kayaknya ya) 
-function editReverencePelanggan(BookingID) {
-    const url = 'http://localhost/BEPLAZA/API/api.php/User';
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        const PelangganContainer = document.querySelector(`#editdatalist_nama${BookingID}`);
-        data.forEach(Pelanggan => {
-            const PelangganOption = document.createElement('option');
-            PelangganOption.value = Pelanggan.username;
-            PelangganContainer.appendChild(PelangganOption);
-        });
-        // isi nomer telepon
-        var namaInput = document.getElementsByName(`editNama${BookingID}`)[0].value;
-        var nomorInput = document.getElementById(`editNomorHPModal${BookingID}`);
-        data.forEach(Pelanggan => {
-            if(Pelanggan.username===namaInput){
-                nomorInput.value = Pelanggan.no_telp;
-            }
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
 }
 
 export { HistoryAndEditingModal, SubmitButton };

@@ -2,9 +2,6 @@ import { HistoryAndEditingModal } from "./modal.js";
 import { formatRupiah } from './utils.js';
 import { resetTable } from './DashboardAdmin.js';
 
-let CurrentBookingHistoryTable = 1;
-let CurrentBookingListTable = 1;
-
 function displayBookingTable(BookingData, currentPage, Action) {
     let selectorTarget;
     let tableId;
@@ -149,7 +146,6 @@ function fetchAndDisplayServices(BookingID, Action) {
     });
 }
 
-
 function SetHargaCheckbox(BookingID, totalHarga, Action) {
     var checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`); // Perbaiki nama kelas
     checkboxes.forEach(function(checkbox) {
@@ -272,13 +268,14 @@ function SubmitButton(BookingID, Action) {
     var Harga = `Harga${Action}${BookingID}`;
 
     var button = document.getElementById(ButtonId);
-    var nama_booking = document.getElementById(NamaFieldId).value;
-    var nomerhp_booking = document.getElementById(NomerhpFieldId).value;
-    var tanggal = document.getElementById(TanggalFieldId).value;
-    var waktu = document.getElementById(WaktuFieldId).value;
-    var pesan = document.getElementById(PesanFieldId).value;
-    var harga = document.getElementById(Harga).value;
+    var nama_booking = document.getElementById(NamaFieldId)?.value || "";
+    var nomerhp_booking = document.getElementById(NomerhpFieldId)?.value || "";
+    var tanggal = document.getElementById(TanggalFieldId)?.value || "";
+    var waktu = document.getElementById(WaktuFieldId)?.value || "";
+    var pesan = document.getElementById(PesanFieldId)?.value || "";
+    var harga = document.getElementById(Harga)?.value || 0;
     var checkboxes = document.getElementsByName(`services${BookingID}[]`);
+
 
     var selectedServices = [];
     for (var i = 0; i < checkboxes.length; i++) {
@@ -288,6 +285,7 @@ function SubmitButton(BookingID, Action) {
     }
 
     var countSelectedServices = selectedServices.length;
+    console.log(countSelectedServices);
 
     // Menonaktifkan tombol
     button.disabled = true;
@@ -314,7 +312,7 @@ function SubmitButton(BookingID, Action) {
     if (nomerhp_booking === "") {
         fieldsNotFilled.push("Nomer HP Booking");
     }
-    if (harga < 1 && countSelectedServices < 1) {
+    if (countSelectedServices < 1) {
         fieldsNotFilled.push("Service");
     }
     if (tanggal === "") {
@@ -380,6 +378,5 @@ function SubmitButton(BookingID, Action) {
 
     xhr.send(jsonData);
 }
-
 
 export { displayBookingTable, fetchAndDisplayServices, SubmitButton };
