@@ -1,0 +1,69 @@
+/* CSS untuk filter section */
+#filterSectionContainer {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+}
+
+#filterSectionContainer h4 {
+    text-align: center;
+}
+
+#filterSectionContainer .btn-group-center {
+    margin: 0 auto; /* Tengah secara horizontal */
+    display: flex;
+    justify-content: space-between; /* Memberikan ruang di antara tombol */
+    width: 80%;
+    margin-top: 10px;
+}
+
+#filterSectionContainer .btn-group-center .btn {
+    border-radius: 0; /* Menghilangkan lengkungan pada tombol */
+    flex-grow: 1; /* Tombol akan mengisi ruang yang tersedia secara proporsional */
+    text-align: center;
+}
+
+#filterSectionContainer #manualFilterSection {
+    margin: 0 auto; /* Tengah secara horizontal */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+}
+
+#filterSectionContainer .form-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Jarak antara input fields */
+    width: 100%;
+    margin: 10px 0; /* Menambah margin untuk jarak atas dan bawah */
+}
+
+#filterSectionContainer .form-group {
+    flex: 1; /* Membuat form-group menempati ruang yang tersedia */
+    margin: 0; /* Hapus margin dari input */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#filterSectionContainer .form-group input {
+    width: 100%; /* Atur lebar input */
+    padding: 10px; /* Tambahkan padding untuk input */
+}
+
+#filterSectionContainer .filter-button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Jarak antara input fields */
+    width: 100%;
+    height: 40%; /* Menetapkan tinggi button menjadi 50 piksel */
+}
+
+#filterSectionContainer #filterButton {
+    width: 100px; /* Menetapkan lebar button menjadi 200 piksel */
+}

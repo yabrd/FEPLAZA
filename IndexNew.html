@@ -18,8 +18,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../Assets/css/admin/idx.css" rel="stylesheet">
-  
+    <!-- <link href="Assets/css/style.css" rel="stylesheet"> -->
+    <link href="Assets/css/user/idx.css" rel="stylesheet">
 </head>
 
 <body>
@@ -32,11 +32,7 @@
             </button>
 
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
-                    <a href="?Booking" class="nav-item nav-link">Booking</a>
-                    <a href="?Service" class="nav-item nav-link">Layanan</a>
-                    <a href="?Cetak" class="nav-item nav-link">REKAP</a>
-                    <a href="../Auth/?Login" class="nav-item nav-link" id="loginLink">Login</a>
+                <div class="navbar-nav ml-auto" id="navbarNav">
                 </div>
             </div>
         </div>
@@ -81,79 +77,115 @@
     </div>
     <!-- Footer End -->
 
-
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="../Assets/lib/easing/easing.min.js"></script>
-    <script src="../Assets/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../Assets/lib/isotope/isotope.pkgd.min.js"></script>
+    <script src="Assets/lib/easing/easing.min.js"></script>
+    <script src="Assets/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="Assets/lib/isotope/isotope.pkgd.min.js"></script>
 
     <!-- Contact Javascript File -->
-    <script src="../Assets/mail/jqBootstrapValidation.min.js"></script>
-    <script src="../Assets/mail/contact.js"></script>
+    <script src="Assets/mail/jqBootstrapValidation.min.js"></script>
+    <script src="Assets/mail/contact.js"></script>
 
     <!-- Template Javascript -->
-    <script src="../Assets/js/main.js"></script>
-    <!-- <script src="../Assets/js/booking.js"></script> -->
+    <script src="Assets/js/booking.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const loginLinkElement = document.getElementById('loginLink');
+            const navbarNav = document.getElementById('navbarNav');
+            const loginLinkElement = document.createElement('a');
+            loginLinkElement.classList.add('nav-item', 'nav-link');
+            loginLinkElement.id = 'loginLink';
             const userId = sessionStorage.getItem('id');
             const userRole = sessionStorage.getItem('role');
-            var pageToLoad = "booking.html";
-    
-            if (userId) {
+            let pageToLoad = "beranda.html";
+
+            if (userRole === 'admin') {
+                const bookingLink = createNavLink('Booking', '?Booking');
+                const serviceLink = createNavLink('Layanan', '?Service');
+                const cetakLink = createNavLink('REKAP', '?Cetak');
+
+                navbarNav.appendChild(bookingLink);
+                navbarNav.appendChild(serviceLink);
+                navbarNav.appendChild(cetakLink);
+
                 loginLinkElement.innerText = 'Logout';
-                loginLinkElement.setAttribute('href', '../Auth/?Logout');
+                loginLinkElement.href = 'Auth/?Logout';
                 loginLinkElement.addEventListener('click', function() {
                     sessionStorage.removeItem('id');
                     sessionStorage.removeItem('role');
                 });
             } else {
+                const berandaLink = createNavLink('Beranda', '?Beranda');
+                const priceLink = createNavLink('Harga', '?Price');
+                const galeriLink = createNavLink('Galeri', '?Galeri');
+                const bookingLink = createNavLink('Pemesanan', '?Booking');
+
+                navbarNav.appendChild(berandaLink);
+                navbarNav.appendChild(priceLink);
+                navbarNav.appendChild(galeriLink);
+                navbarNav.appendChild(bookingLink);
+
                 loginLinkElement.innerText = 'Login';
-                loginLinkElement.setAttribute('href', '../Auth/?Login');
+                loginLinkElement.href = 'Auth/?Login';
+            }
+
+            navbarNav.appendChild(loginLinkElement);
+
+            function createNavLink(text, href) {
+                const link = document.createElement('a');
+                link.classList.add('nav-item', 'nav-link');
+                link.innerText = text;
+                link.href = href;
+                return link;
             }
     
-            // Mendapatkan URL tanpa query string
-            var urlWithoutQuery = window.location.href.split('?')[0];
-    
-            var scriptToLoad = null;
-
-            if (window.location.search.includes('?Service')) {
-                pageToLoad = "serviceAdm.html";
-                scriptToLoad = "../Assets/js/admin/serviceAdm.js";  
-            } 
-            else if (window.location.search.includes('?Booking')) {
-                // pageToLoad = "booking.html";
-                pageToLoad = "Booking.html";
+            if (userRole === 'admin') {
+                if (window.location.search.includes('?Service')) {
+                    pageToLoad = "Admin/serviceAdm.html";
+                    scriptToLoad = "Assets/js/admin/serviceAdm.js";  
+                } 
+                else if (window.location.search.includes('?Booking')) {
+                    pageToLoad = "Admin/Booking.html";
+                    
+                    var script0 = document.createElement('script');
+                    script0.src = "Assets/js/admin/DashboardAdmin.js";
+                    script0.type = "module"; // Tambahkan atribut type
+                    document.head.appendChild(script0);
+                }
+                else if (window.location.search.includes('?Cetak')) {
+                    pageToLoad = "Admin/cetakBooking.html"; 
+                    scriptToLoad = "Assets/js/admin/cetakBooking.js";  
+                } 
+                else {
+                    pageToLoad = "Admin/booking.html";
+                    scriptToLoad = "Assets/js/admin/adminBooking.js";     
+                }
                 
-                var script0 = document.createElement('script');
-                script0.src = "../Assets/js/admin/DashboardAdmin.js";
-                script0.type = "module"; // Tambahkan atribut type
-                document.head.appendChild(script0);
-                // scriptToLoad = "../Assets/js/admin/DashboardAdmin.js";
+            } else {
+                if (window.location.search.includes('?Beranda')) {
+                    pageToLoad = "beranda.html";
+                } else if (window.location.search.includes('?Price')) {
+                    pageToLoad = "price.html";
+                    var scriptToLoad = "Assets/js/user/harga.js";
+                } else if (window.location.search.includes('?Galeri')) {
+                    pageToLoad = "galeri.html";
+                } else if (window.location.search.includes('?Booking')) {
+                    if (userId) {
+                        pageToLoad = "booking.html";
+                        fetchUserById(userId);
+                    } else {
+                        window.location.href = 'Auth/?Login';
+                    }
+                }
             }
-            else if (window.location.search.includes('?Cetak')) {
-                pageToLoad = "cetakBooking.html"; 
-                scriptToLoad = "../Assets/js/admin/cetakBooking.js";  
-            } 
-            else {
-                pageToLoad = "booking.html";
-                scriptToLoad = "../Assets/js/admin/adminBooking.js";     
-            }
-
-            
-            // Membuat instance objek XMLHttpRequest
+    
             var xhttp = new XMLHttpRequest();
-            
-            // Mendefinisikan apa yang harus dilakukan setelah mendapatkan respon dari server
+    
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    // Memasukkan isi halaman ke dalam div
                     document.getElementById("contentFromIndexHTML").innerHTML = this.responseText;
     
-                    // Memuat skrip tambahan jika ada
                     if (scriptToLoad) {
                         var scriptElement = document.createElement('script');
                         scriptElement.src = scriptToLoad;
@@ -162,17 +194,8 @@
                 }
             };
     
-            if(userRole === 'admin') {
-                xhttp.open("GET", pageToLoad, true);
-                xhttp.send();
-            }
-            else if(userRole === 'pelanggan'){
-                window.location.href = '../?Beranda';
-            }
-            else {
-                window.location.href = '../Auth/';
-            }
-            
+            xhttp.open("GET", pageToLoad, true);
+            xhttp.send();
         });
     </script>    
 </body>

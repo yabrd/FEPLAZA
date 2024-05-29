@@ -1,5 +1,6 @@
 import { displayBookingTable } from './BookingAll.js';
-import { createBookingForm } from './AddBooking.js'
+import { createBookingForm } from './AddBooking.js';
+import { injectFilterSection } from './rekap.js';
 
 let CurrentBookingListTable = 1;
 let CurrentBookingHistoryTable = 1;
@@ -56,6 +57,9 @@ document.getElementById('NextBookingHistoryTable').addEventListener('click', fun
     }
 });
 
+// Contoh penggunaan:
+// Baris ini akan menyuntikkan bagian filter ke dalam sebuah kontainer dengan id 'filterSectionContainer'
+injectFilterSection();
 fetchGetDataBooking();
 createBookingForm('add');
 
