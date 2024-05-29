@@ -176,6 +176,12 @@
     background-color: white; /* Warna latar belakang */
 }
 
+.container-fluid .row .col-md-12 .mb-5 h2 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
 /*****************************/
 /********** Booking **********/
 /*****************************/

@@ -1,7 +1,7 @@
 function injectFilterSection() {
     const filterSectionHTML = `
         <div class="filter-section-container">
-            <h4>Periode Riwayat</h4>
+            <h3>Periode Riwayat</h3>
             <div class="btn-group-center">
                 <button id="filterToday" type="button" class="btn btn-primary">Hari Ini</button>
                 <button id="filterWeek" type="button" class="btn btn-primary">1 Minggu</button>
