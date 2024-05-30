@@ -76,4 +76,48 @@ const WatchData = [
     "14:00 - 14:30", "14:30 - 15:00", "15:00 - 15:30", "15:30 - 16:00", "16:00 - 16:30"
 ];
 
-export { formatRupiah, enableWaktu, setMinDate };
+function isDateAfter(dateString, period) {
+    const parts = dateString.split("-");
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1;
+    const day = parseInt(parts[2], 10);
+
+    // Membuat objek Date dari tanggal yang diuraikan
+    const dateFromDatabase = new Date(year, month, day);
+    dateFromDatabase.setHours(0, 0, 0, 0); // Mengatur waktu menjadi 00:00:00
+
+    // Mengatur tanggal referensi berdasarkan periode yang dipilih
+    let referenceDate = new Date();
+    referenceDate.setHours(0, 0, 0, 0); // Mengatur waktu menjadi 00:00:00
+
+    switch (period) {
+        case 'filterToday':
+            break;
+        case 'filterWeek':
+            referenceDate.setDate(referenceDate.getDate() - 7); // 1 minggu yang lalu
+            break;
+        case 'filterMonth':
+            referenceDate.setMonth(referenceDate.getMonth() - 1); // 1 bulan yang lalu
+            break;
+        case 'filterThreeMonths':
+            referenceDate.setMonth(referenceDate.getMonth() - 3); // 3 bulan yang lalu
+            break;
+        default:
+            return "Invalid period"; // Jika input tidak valid
+    }
+
+    // Mengatur tanggal hari ini ke 00:00:00
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Fungsi pembantu untuk membandingkan hanya tanggal tanpa waktu
+    function formatDate(date) {
+        return date.toISOString().split('T')[0];
+    }
+
+    // Mengembalikan true jika tanggal dari database setelah referenceDate
+    // dan tidak lebih dari hari ini
+    return formatDate(dateFromDatabase) >= formatDate(referenceDate) && formatDate(dateFromDatabase) <= formatDate(today);
+}
+
+export { formatRupiah, enableWaktu, setMinDate, isDateAfter };

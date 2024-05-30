@@ -1,8 +1,8 @@
 import { HistoryAndEditingModal } from "./modal.js";
-import { formatRupiah } from './utils.js';
+import { formatRupiah, isDateAfter } from './utils.js';
 import { resetTable } from './DashboardAdmin.js';
 
-function displayBookingTable(BookingData, currentPage, Action) {
+function displayBookingTable(BookingData, currentPage, Action, filter) {
     let selectorTarget;
     let tableId;
     let pageInfoId;
@@ -28,9 +28,10 @@ function displayBookingTable(BookingData, currentPage, Action) {
 
     const itemsPerPage = 5;
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, BookingData.length);
+    const endIndex = startIndex + itemsPerPage;
 
     let displayedDataCount = 0; // Variable untuk menghitung data yang ditampilkan
+    let totalDisplayed = 0; // Variable untuk menghitung total data yang sesuai dengan kategori
 
     for (let i = 0; i < BookingData.length; i++) {
         const Booking = BookingData[i];
@@ -40,66 +41,80 @@ function displayBookingTable(BookingData, currentPage, Action) {
         const isHistoryData = Booking.order_layanan && Booking.harga_booking;
 
         if ((Action === 'apply' && isListData) || (Action === 'edit' && isHistoryData)) {
-            // Tampilkan hanya jika sesuai dengan kategori yang diproses
-            if (displayedDataCount >= startIndex && displayedDataCount < endIndex) {
-                let innerHTML = `
-                    <td>${displayedDataCount + 1}</td>
-                    <td>${Booking.nama_booking}</td>
-                    <td>${Booking.nomerhp_booking}</td>
-                    <td>${Booking.waktu_booking}</td>
-                    <td>${Booking.tanggal_booking}</td>
-                    <td>${Booking.pesan_booking}</td>
-                `;
+            let Validation;
 
-                if (Action === 'edit') {
-                    innerHTML += `
-                        <td>${Booking.order_layanan}</td>
-                        <td>${formatRupiah(Booking.harga_booking)}</td>
-                        <td class="text-center">
-                            <div class="btn-container">
-                                <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
-                                <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
-                            </div>
-                        </td>
-                    `;
-                } else if (Action === 'apply') {
-                    innerHTML += `
-                        <td class="text-center">
-                            <div class="btn-container">
-                                <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
-                            </div>
-                        </td>
-                    `;
-                }
-
-                const BookingElement = document.createElement('tr');
-                BookingElement.innerHTML = innerHTML;
-                tableContainer.appendChild(BookingElement);
-
-                const modalElement = HistoryAndEditingModal(Booking, Action);
-                document.body.appendChild(modalElement);
-
-                fetchAndDisplayServices(Booking.id_booking, Action);
-
-                if (Action === 'edit') {
-                    const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
-                    deleteButton.addEventListener('click', function() {
-                        deleteBooking(Booking.id_booking);
-                    });
-                }
+            if (Action === 'apply' || filter === 'filterAllTime' ) { Validation = true;}
+            else if (Action === 'edit' && filter != 'filterAllTime') {
+                const TempDate = Booking.tanggal_booking;
+                Validation = isDateAfter(TempDate, filter);
             }
+            
+            if (Validation === true) {
+                totalDisplayed++; // Menghitung total data yang sesuai dengan kategori
 
-            displayedDataCount++; // Tambahkan hitungan data yang ditampilkan
+                // Tampilkan hanya jika sesuai dengan kategori yang diproses
+                if (displayedDataCount >= startIndex && displayedDataCount < endIndex) {
+                    let innerHTML = `
+                        <td>${displayedDataCount + 1}</td>
+                        <td>${Booking.nama_booking}</td>
+                        <td>${Booking.nomerhp_booking}</td>
+                        <td>${Booking.waktu_booking}</td>
+                        <td>${Booking.tanggal_booking}</td>
+                        <td>${Booking.pesan_booking}</td>
+                    `;
+
+                    if (Action === 'edit') {
+                        innerHTML += `
+                            <td>${Booking.order_layanan}</td>
+                            <td>${formatRupiah(Booking.harga_booking)}</td>
+                            <td class="text-center">
+                                <div class="btn-container">
+                                    <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
+                                    <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
+                                </div>
+                            </td>
+                        `;
+                    } else if (Action === 'apply') {
+                        innerHTML += `
+                            <td class="text-center">
+                                <div class="btn-container">
+                                    <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
+                                </div>
+                            </td>
+                        `;
+                    }
+
+                    const BookingElement = document.createElement('tr');
+                    BookingElement.innerHTML = innerHTML;
+                    tableContainer.appendChild(BookingElement);
+
+                    const modalElement = HistoryAndEditingModal(Booking, Action);
+                    document.body.appendChild(modalElement);
+
+                    fetchAndDisplayServices(Booking.id_booking, Action);
+
+                    if (Action === 'edit') {
+                        const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
+                        deleteButton.addEventListener('click', function() {
+                            deleteBooking(Booking.id_booking);
+                        });
+                    }
+                }
+
+                displayedDataCount++; // Tambahkan hitungan data yang ditampilkan hanya jika valid
+            }
         }
     }
 
     // Update pagination info
-    document.getElementById(pageInfoId).innerText = `Page ${currentPage} / ${Math.ceil(displayedDataCount / itemsPerPage)}`;
+    document.getElementById(pageInfoId).innerText = `Page ${currentPage} / ${Math.ceil(totalDisplayed / itemsPerPage)}`;
 
     // Enable/Disable pagination buttons
     document.getElementById(prevButtonId).disabled = currentPage === 1;
-    document.getElementById(nextButtonId).disabled = endIndex >= displayedDataCount;
+    document.getElementById(nextButtonId).disabled = endIndex >= totalDisplayed;
 }
+
+
 
 function fetchAndDisplayServices(BookingID, Action) {
     const url = 'http://localhost/BEPLAZA/API/api.php/layanan';

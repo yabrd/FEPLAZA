@@ -6,7 +6,7 @@ function injectFilterSection() {
                 <button id="filterToday" type="button" class="btn btn-primary">Hari Ini</button>
                 <button id="filterWeek" type="button" class="btn btn-primary">1 Minggu</button>
                 <button id="filterMonth" type="button" class="btn btn-primary">1 Bulan</button>
-                <button id="filterTwoMonths" type="button" class="btn btn-primary">3 Bulan</button>
+                <button id="filterThreeMonths" type="button" class="btn btn-primary">3 Bulan</button>
                 <button id="filterAllTime" type="button" class="btn btn-primary">Semua</button>
                 <button id="filterInputUser" type="button" class="btn btn-primary">Manual</button>
             </div>
