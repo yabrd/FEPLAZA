@@ -65,8 +65,16 @@ function setupFilterButtons() {
         button.addEventListener('click', function () {
             selectedFilter = this.id; // Simpan filter yang dipilih oleh pengguna
             console.log(`Selected filter: ${selectedFilter}`);
-            // Saat filter berubah, tampilkan data dengan filter yang baru dipilih
-            fetchGetDataBooking();
+            if (selectedFilter === 'filterInputUser') {
+                if (filterButton) {
+                    filterButton.addEventListener('click', function() {
+                        fetchGetDataBooking();
+                    });
+                } 
+            }
+            else{
+                fetchGetDataBooking();
+            }
         });
     });
     const DownloadButtons = document.querySelectorAll('.filter-section-container .btn-group-center .btn');

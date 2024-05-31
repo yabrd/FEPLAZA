@@ -1,6 +1,7 @@
 import { HistoryAndEditingModal } from "./modal.js";
-import { formatRupiah, isDateAfter } from './utils.js';
+import { formatRupiah } from './utils.js';
 import { resetTable } from './DashboardAdmin.js';
+import { isDateAfter } from './rekap.js'
 
 function displayBookingTable(BookingData, currentPage, Action, filter) {
     let selectorTarget;
