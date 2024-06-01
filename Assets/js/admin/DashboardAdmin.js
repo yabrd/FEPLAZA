@@ -1,6 +1,6 @@
 import { displayBookingTable } from './BookingAll.js';
 import { createBookingForm } from './AddBooking.js';
-import { injectFilterSection } from './rekap.js';
+import { injectFilterSection, generatePDF } from './rekap.js';
 
 let CurrentBookingListTable = 1;
 let CurrentBookingHistoryTable = 1;
@@ -77,7 +77,12 @@ function setupFilterButtons() {
             }
         });
     });
-    const DownloadButtons = document.querySelectorAll('.filter-section-container .btn-group-center .btn');
+    const DownloadButtons = document.querySelectorAll('#DownloadButton');
+    DownloadButtons.forEach(button => {
+        button.addEventListener('click', function () {    
+            generatePDF();
+        });
+    });
 }
 
 injectFilterSection();

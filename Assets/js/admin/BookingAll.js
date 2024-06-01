@@ -115,8 +115,6 @@ function displayBookingTable(BookingData, currentPage, Action, filter) {
     document.getElementById(nextButtonId).disabled = endIndex >= totalDisplayed;
 }
 
-
-
 function fetchAndDisplayServices(BookingID, Action) {
     const url = 'http://localhost/BEPLAZA/API/api.php/layanan';
 
