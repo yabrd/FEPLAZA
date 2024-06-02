@@ -1,62 +1,78 @@
 import { displayBookingTable } from './BookingAll.js';
 import { createBookingForm } from './AddBooking.js';
-import { injectFilterSection, generatePDF } from './rekap.js';
+import { injectFilterSection, generatePDF, NewPeriodDate } from './rekap.js';
 
 let CurrentBookingListTable = 1;
 let CurrentBookingHistoryTable = 1;
 let BookingData = []; // Store fetched booking data
+let HistoryData = []; // Store fetched booking data
 let selectedFilter = 'filterAllTime'; // Default filter
+let RangeHistory;
 
 // Fungsi untuk mengambil data Booking dari API
-function fetchGetDataBooking() {
-    const url = 'http://localhost/BEPLAZA/API/api.php/booking';
+function fetchBookingData() {
+    const BookingAPI = 'http://localhost/BEPLAZA/API/api.php/bookingNoBookingPrice';
 
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
-        BookingData = data;
-        // Tampilkan data dengan filter yang dipilih
-        displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
-        displayBookingTable(BookingData, CurrentBookingHistoryTable, 'edit', selectedFilter);
-    })
-    .catch(error => {
-        console.error('Error:', error);
+    fetch(BookingAPI)
+        .then(response => response.json())
+        .then(data => {
+            BookingData = data;
+            // Tampilkan data dengan filter yang dipilih
+            displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+    document.getElementById('PrevBookingListTable').addEventListener('click', function () {
+        if (CurrentBookingListTable > 1) {
+            CurrentBookingListTable--;
+            displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
+        }
+    });
+    
+    document.getElementById('NextBookingListTable').addEventListener('click', function () {
+        if (CurrentBookingListTable < Math.ceil(BookingData.length / 5)) {
+            CurrentBookingListTable++;
+            displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
+        }
     });
 }
 
-function resetTable() {
-    CurrentBookingListTable = 1;
-    CurrentBookingHistoryTable = 1;
-    fetchGetDataBooking();
+function fetchHistoryData(RangeHistory) {
+    let HistoryAPI;
+
+    if (!RangeHistory) {
+        HistoryAPI = 'http://localhost/BEPLAZA/API/api.php/bookingNoRange/';
+    } else {
+        HistoryAPI = `http://localhost/BEPLAZA/API/api.php/bookingRange/${RangeHistory}`;
+    }
+
+    fetch(HistoryAPI)
+        .then(response => response.json())
+        .then(data => {
+            HistoryData = data;
+            // Tampilkan data dengan filter yang dipilih
+            displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit', selectedFilter);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        document.getElementById('PrevBookingHistoryTable').addEventListener('click', function () {
+            if (CurrentBookingHistoryTable > 1) {
+                CurrentBookingHistoryTable--;
+                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit', selectedFilter);
+            }
+        });
+        
+        document.getElementById('NextBookingHistoryTable').addEventListener('click', function () {
+            if (CurrentBookingHistoryTable < Math.ceil(HistoryData.length / 5)) {
+                CurrentBookingHistoryTable++;
+                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit', selectedFilter);
+            }
+        });
 }
-
-document.getElementById('PrevBookingListTable').addEventListener('click', function () {
-    if (CurrentBookingListTable > 1) {
-        CurrentBookingListTable--;
-        displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
-    }
-});
-
-document.getElementById('NextBookingListTable').addEventListener('click', function () {
-    if (CurrentBookingListTable < Math.ceil(BookingData.length / 5)) {
-        CurrentBookingListTable++;
-        displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
-    }
-});
-
-document.getElementById('PrevBookingHistoryTable').addEventListener('click', function () {
-    if (CurrentBookingHistoryTable > 1) {
-        CurrentBookingHistoryTable--;
-        displayBookingTable(BookingData, CurrentBookingHistoryTable, 'edit', selectedFilter);
-    }
-});
-
-document.getElementById('NextBookingHistoryTable').addEventListener('click', function () {
-    if (CurrentBookingHistoryTable < Math.ceil(BookingData.length / 5)) {
-        CurrentBookingHistoryTable++;
-        displayBookingTable(BookingData, CurrentBookingHistoryTable, 'edit', selectedFilter);
-    }
-});
 
 // Add event listeners for filter buttons
 function setupFilterButtons() {
@@ -64,16 +80,22 @@ function setupFilterButtons() {
     filterButtons.forEach(button => {
         button.addEventListener('click', function () {
             selectedFilter = this.id; // Simpan filter yang dipilih oleh pengguna
-            console.log(`Selected filter: ${selectedFilter}`);
+            // console.log(`Selected filter: ${selectedFilter}`);
             if (selectedFilter === 'filterInputUser') {
                 if (filterButton) {
                     filterButton.addEventListener('click', function() {
-                        fetchGetDataBooking();
+                        RangeHistory = NewPeriodDate(selectedFilter);
+                        fetchHistoryData(RangeHistory);
                     });
                 } 
             }
+            else if (selectedFilter === 'filterAllTime') {
+                RangeHistory = undefined;
+                fetchHistoryData(RangeHistory);
+            }
             else{
-                fetchGetDataBooking();
+                RangeHistory = NewPeriodDate(selectedFilter);
+                fetchHistoryData(RangeHistory);
             }
         });
     });
@@ -85,8 +107,16 @@ function setupFilterButtons() {
     });
 }
 
+function resetTable() {
+    CurrentBookingListTable = 1;
+    CurrentBookingHistoryTable = 1;
+    fetchBookingData();
+    fetchHistoryData(RangeHistory);
+}
+
+fetchBookingData();
+fetchHistoryData(RangeHistory);
 injectFilterSection();
-fetchGetDataBooking();
 setupFilterButtons();
 createBookingForm('add');
 

@@ -1,7 +1,6 @@
 import { HistoryAndEditingModal } from "./modal.js";
 import { formatRupiah } from './utils.js';
 import { resetTable } from './DashboardAdmin.js';
-import { isDateAfter } from './rekap.js'
 
 function displayBookingTable(BookingData, currentPage, Action, filter) {
     let selectorTarget;
@@ -36,75 +35,58 @@ function displayBookingTable(BookingData, currentPage, Action, filter) {
 
     for (let i = 0; i < BookingData.length; i++) {
         const Booking = BookingData[i];
+        totalDisplayed++; // Menghitung total data yang sesuai dengan kategori
 
-        // Pisahkan data menjadi dua kategori: list dan history
-        const isListData = !Booking.order_layanan && !Booking.harga_booking;
-        const isHistoryData = Booking.order_layanan && Booking.harga_booking;
+        // Tampilkan hanya jika sesuai dengan kategori yang diproses
+        if (displayedDataCount >= startIndex && displayedDataCount < endIndex) {
+            let innerHTML = `
+                <td>${displayedDataCount + 1}</td>
+                <td>${Booking.nama_booking}</td>
+                <td>${Booking.nomerhp_booking}</td>
+                <td>${Booking.waktu_booking}</td>
+                <td>${Booking.tanggal_booking}</td>
+                <td>${Booking.pesan_booking}</td>
+            `;
 
-        if ((Action === 'apply' && isListData) || (Action === 'edit' && isHistoryData)) {
-            let Validation;
-
-            if (Action === 'apply' || filter === 'filterAllTime' ) { Validation = true;}
-            else if (Action === 'edit' && filter != 'filterAllTime') {
-                const TempDate = Booking.tanggal_booking;
-                Validation = isDateAfter(TempDate, filter);
+            if (Action === 'edit') {
+                innerHTML += `
+                    <td>${Booking.order_layanan}</td>
+                    <td>${formatRupiah(Booking.harga_booking)}</td>
+                    <td class="text-center">
+                        <div class="btn-container">
+                            <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
+                            <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </td>
+                `;
+            } else if (Action === 'apply') {
+                innerHTML += `
+                    <td class="text-center">
+                        <div class="btn-container">
+                            <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
+                        </div>
+                    </td>
+                `;
             }
-            
-            if (Validation === true) {
-                totalDisplayed++; // Menghitung total data yang sesuai dengan kategori
 
-                // Tampilkan hanya jika sesuai dengan kategori yang diproses
-                if (displayedDataCount >= startIndex && displayedDataCount < endIndex) {
-                    let innerHTML = `
-                        <td>${displayedDataCount + 1}</td>
-                        <td>${Booking.nama_booking}</td>
-                        <td>${Booking.nomerhp_booking}</td>
-                        <td>${Booking.waktu_booking}</td>
-                        <td>${Booking.tanggal_booking}</td>
-                        <td>${Booking.pesan_booking}</td>
-                    `;
+            const BookingElement = document.createElement('tr');
+            BookingElement.innerHTML = innerHTML;
+            tableContainer.appendChild(BookingElement);
 
-                    if (Action === 'edit') {
-                        innerHTML += `
-                            <td>${Booking.order_layanan}</td>
-                            <td>${formatRupiah(Booking.harga_booking)}</td>
-                            <td class="text-center">
-                                <div class="btn-container">
-                                    <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
-                                    <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
-                                </div>
-                            </td>
-                        `;
-                    } else if (Action === 'apply') {
-                        innerHTML += `
-                            <td class="text-center">
-                                <div class="btn-container">
-                                    <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
-                                </div>
-                            </td>
-                        `;
-                    }
+            const modalElement = HistoryAndEditingModal(Booking, Action);
+            document.body.appendChild(modalElement);
 
-                    const BookingElement = document.createElement('tr');
-                    BookingElement.innerHTML = innerHTML;
-                    tableContainer.appendChild(BookingElement);
+            fetchAndDisplayServices(Booking.id_booking, Action);
 
-                    const modalElement = HistoryAndEditingModal(Booking, Action);
-                    document.body.appendChild(modalElement);
-
-                    fetchAndDisplayServices(Booking.id_booking, Action);
-
-                    if (Action === 'edit') {
-                        const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
-                        deleteButton.addEventListener('click', function() {
-                            deleteBooking(Booking.id_booking);
-                        });
-                    }
-                }
-
-                displayedDataCount++; // Tambahkan hitungan data yang ditampilkan hanya jika valid
+            if (Action === 'edit') {
+                const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
+                deleteButton.addEventListener('click', function() {
+                    deleteBooking(Booking.id_booking);
+                });
             }
         }
+
+        displayedDataCount++; // Tambahkan hitungan data yang ditampilkan hanya jika valid
     }
 
     // Update pagination info

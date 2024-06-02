@@ -1,5 +1,5 @@
-let endDateInput;
-let startDateInput;
+let startDateUI;
+let endDateUI;
 
 function injectFilterSection() {
     const filterSectionHTML = `
@@ -64,12 +64,8 @@ function injectFilterSection() {
                     // Mendapatkan nilai dari startDate dan endDate
                     const startDateValue = document.getElementById('startDate').value;
                     const endDateValue = document.getElementById('endDate').value;
-
-                    startDateInput = new Date(startDateValue);
-                    startDateInput.setHours(0, 0, 0, 0);
-
-                    endDateInput = new Date(endDateValue);
-                    endDateInput.setHours(0, 0, 0, 0);
+                    startDateUI = new Date(startDateValue);
+                    endDateUI = new Date(endDateValue);
                 });
             } else {
                 console.error(`Element with id "filterButton" not found.`);
@@ -91,22 +87,13 @@ function toggleManualFilterSection() {
     }
 }
 
-function isDateAfter(dateString, period) {
-    const parts = dateString.split("-");
-    const year = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const day = parseInt(parts[2], 10);
-
-    // Membuat objek Date dari tanggal yang diuraikan
-    const dateFromDatabase = new Date(year, month, day);
-    dateFromDatabase.setHours(0, 0, 0, 0); // Mengatur waktu menjadi 00:00:00
+function NewPeriodDate(period) {
 
     // Mengatur tanggal referensi berdasarkan periode yang dipilih
     let startDate = new Date();
     let endDate = new Date(); // Ubah dari const ke let
     startDate.setHours(0, 0, 0, 0);
     endDate.setHours(0, 0, 0, 0);
-
     switch (period) {
         case 'filterToday':
             break;
@@ -120,25 +107,22 @@ function isDateAfter(dateString, period) {
             startDate.setMonth(startDate.getMonth() - 3); // 3 bulan yang lalu
             break;
         case 'filterInputUser':
-            startDate = startDateInput;
-            endDate = endDateInput;
+            startDate = startDateUI;
+            endDate = endDateUI;
             break;
         default:
             return "Invalid period"; // Jika input tidak valid
     }
-    
-    // Mengatur waktu menjadi 00:00:00
-    startDate.setHours(0, 0, 0, 0);
-    endDate.setHours(0, 0, 0, 0);
-
-    // Fungsi pembantu untuk membandingkan hanya tanggal tanpa waktu
     function formatDate(date) {
-        return date.toISOString().split('T')[0];
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}${month}${day}`;
     }
-
-    // Mengembalikan true jika tanggal dari database setelah referenceDate
-    // dan tidak lebih dari hari ini
-    return formatDate(dateFromDatabase) >= formatDate(startDate) && formatDate(dateFromDatabase) <= formatDate(endDate);
+    startDate = formatDate(startDate);
+    endDate = formatDate(endDate);
+    const RangeHistory = `${startDate}/${endDate}`;
+    return RangeHistory;
 }
 
 function generatePDF() {
@@ -184,4 +168,4 @@ function generatePDF() {
     doc.save("Data_Booking_Riwayat.pdf");
 }
 
-export { injectFilterSection, isDateAfter, generatePDF };
+export { injectFilterSection, generatePDF, NewPeriodDate };
