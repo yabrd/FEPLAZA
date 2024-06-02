@@ -2,7 +2,7 @@ import { HistoryAndEditingModal } from "./modal.js";
 import { formatRupiah } from './utils.js';
 import { resetTable } from './DashboardAdmin.js';
 
-function displayBookingTable(BookingData, currentPage, Action, filter) {
+function displayBookingTable(BookingData, currentPage, Action) {
     let selectorTarget;
     let tableId;
     let pageInfoId;

@@ -18,7 +18,7 @@ function fetchBookingData() {
         .then(data => {
             BookingData = data;
             // Tampilkan data dengan filter yang dipilih
-            displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
+            displayBookingTable(BookingData, CurrentBookingListTable, 'apply');
         })
         .catch(error => {
             console.error('Error:', error);
@@ -27,14 +27,14 @@ function fetchBookingData() {
     document.getElementById('PrevBookingListTable').addEventListener('click', function () {
         if (CurrentBookingListTable > 1) {
             CurrentBookingListTable--;
-            displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
+            displayBookingTable(BookingData, CurrentBookingListTable, 'apply');
         }
     });
     
     document.getElementById('NextBookingListTable').addEventListener('click', function () {
         if (CurrentBookingListTable < Math.ceil(BookingData.length / 5)) {
             CurrentBookingListTable++;
-            displayBookingTable(BookingData, CurrentBookingListTable, 'apply', selectedFilter);
+            displayBookingTable(BookingData, CurrentBookingListTable, 'apply');
         }
     });
 }
@@ -53,7 +53,7 @@ function fetchHistoryData(RangeHistory) {
         .then(data => {
             HistoryData = data;
             // Tampilkan data dengan filter yang dipilih
-            displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit', selectedFilter);
+            displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit');
         })
         .catch(error => {
             console.error('Error:', error);
@@ -62,14 +62,14 @@ function fetchHistoryData(RangeHistory) {
         document.getElementById('PrevBookingHistoryTable').addEventListener('click', function () {
             if (CurrentBookingHistoryTable > 1) {
                 CurrentBookingHistoryTable--;
-                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit', selectedFilter);
+                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit');
             }
         });
         
         document.getElementById('NextBookingHistoryTable').addEventListener('click', function () {
             if (CurrentBookingHistoryTable < Math.ceil(HistoryData.length / 5)) {
                 CurrentBookingHistoryTable++;
-                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit', selectedFilter);
+                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit');
             }
         });
 }

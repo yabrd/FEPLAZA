@@ -1,6 +1,6 @@
 import { enableWaktu, setMinDate } from "./utils.js";
 import { fetchAndDisplayServices } from "./BookingAll.js"
-import { SubmitButton } from "./modal.js"
+import { SubmitButton } from "./BookingAll.js"
 
 function createBookingForm(Action) {
     // Mendapatkan elemen tempat Anda ingin menambahkan formulir
@@ -104,4 +104,4 @@ function createBookingForm(Action) {
     });
 }
 
-export { createBookingForm, setMinDate }
+export { createBookingForm }

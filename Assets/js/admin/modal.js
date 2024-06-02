@@ -1,5 +1,6 @@
 import { resetTable } from './DashboardAdmin.js';
 import { SubmitButton } from './BookingAll.js'
+import { enableWaktu } from "./utils.js";
 
 function HistoryAndEditingModal(Booking, Action) {
     const modalElement = document.createElement('div');
@@ -69,10 +70,14 @@ function HistoryAndEditingModal(Booking, Action) {
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="${waktuFieldId}">Waktu</label>
-                                    ${Action === 'edit' ? `<input type="text" id="${waktuFieldId}" name="waktu" class="form-control" required value="${Booking.waktu_booking}">` : `
-                                    <select id="${waktuFieldId}" name="waktu" required="required" class="form-control" disabled>
-                                        <option selected>${Booking.waktu_booking}</option>
-                                    </select>`}
+                                    ${Action === 'edit' ?
+                                        `<select id="${waktuFieldId}" name="${waktuFieldId}" required="required" class="form-control">
+                                            <option value="${Booking.waktu_booking}" selected>${Booking.waktu_booking}</option>
+                                        </select>` :
+                                        `<select id="${waktuFieldId}" name="${waktuFieldId}" required="required" class="form-control" readonly>
+                                            <option value="${Booking.waktu_booking}" selected>${Booking.waktu_booking}</option>
+                                        </select>`
+                                    }
                                 </div>
                             </div>
                             <div class="form-group">
@@ -101,8 +106,15 @@ function HistoryAndEditingModal(Booking, Action) {
     modalElement.querySelector(`#${closeModalId}`).addEventListener('click', function() {
         resetTable();
     });
+    
+    modalElement.querySelector(`#${tanggalFieldId}`).addEventListener('change', function() {
+        var tanggal = document.getElementById(tanggalFieldId).value;
+        console.log(tanggal);
+        // Panggil fungsi enableWaktu dengan parameter yang sesuai
+        enableWaktu(tanggalFieldId, waktuFieldId);
+    });
 
     return modalElement;
 }
 
-export { HistoryAndEditingModal, SubmitButton };
+export { HistoryAndEditingModal };
