@@ -108,13 +108,27 @@ function HistoryAndEditingModal(Booking, Action) {
     });
     
     modalElement.querySelector(`#${tanggalFieldId}`).addEventListener('change', function() {
-        var tanggal = document.getElementById(tanggalFieldId).value;
-        console.log(tanggal);
-        // Panggil fungsi enableWaktu dengan parameter yang sesuai
         enableWaktu(tanggalFieldId, waktuFieldId);
     });
 
     return modalElement;
 }
 
-export { HistoryAndEditingModal };
+function getBookingData(BookingID, Action) {
+    const nama = document.getElementById(`Nama${Action}${BookingID}`).value;
+    const nomorHP = document.getElementById(`NomorHP${Action}${BookingID}`).value;
+    const tanggal = document.getElementById(`Tanggal${Action}${BookingID}`).value;
+    const waktu = document.getElementById(`Waktu${Action}${BookingID}`).value;
+    const pesan = document.getElementById(`Pesan${Action}${BookingID}`).value;
+    enableWaktu(`Tanggal${Action}${BookingID}`, `Waktu${Action}${BookingID}`);
+
+    return {
+        nama: nama,
+        nomorHP: nomorHP,
+        tanggal: tanggal,
+        waktu: waktu,
+        pesan: pesan
+    };
+}
+
+export { HistoryAndEditingModal, getBookingData };

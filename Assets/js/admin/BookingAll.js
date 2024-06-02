@@ -1,4 +1,4 @@
-import { HistoryAndEditingModal } from "./modal.js";
+import { HistoryAndEditingModal, getBookingData } from "./modal.js";
 import { formatRupiah } from './utils.js';
 import { resetTable } from './DashboardAdmin.js';
 
@@ -54,7 +54,7 @@ function displayBookingTable(BookingData, currentPage, Action) {
                     <td>${formatRupiah(Booking.harga_booking)}</td>
                     <td class="text-center">
                         <div class="btn-container">
-                            <button class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
+                            <button id="editBtn${Booking.id_booking}" class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
                             <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
                         </div>
                     </td>
@@ -79,6 +79,11 @@ function displayBookingTable(BookingData, currentPage, Action) {
             fetchAndDisplayServices(Booking.id_booking, Action);
 
             if (Action === 'edit') {
+                const editButton = document.getElementById(`editBtn${Booking.id_booking}`);
+                editButton.addEventListener('click', function() {
+                    getBookingData(Booking.id_booking, Action);
+                });
+
                 const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
                 deleteButton.addEventListener('click', function() {
                     deleteBooking(Booking.id_booking);
