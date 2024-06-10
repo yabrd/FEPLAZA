@@ -124,26 +124,29 @@
             var scriptToLoad = null;
 
             if (window.location.search.includes('?Service')) {
-                pageToLoad = "serviceAdm.html";
-                scriptToLoad = "../Assets/js/admin/serviceAdm.js";  
+                pageToLoad = "Service.html";
+                
+                var script0 = document.createElement('script');
+                script0.src = "../Assets/js/admin/Service/index.js";
+                script0.type = "module"; // Tambahkan atribut type
+                document.head.appendChild(script0);
             } 
             else if (window.location.search.includes('?Booking')) {
                 // pageToLoad = "booking.html";
                 pageToLoad = "Booking.html";
                 
                 var script0 = document.createElement('script');
-                script0.src = "../Assets/js/admin/DashboardAdmin.js";
+                script0.src = "../Assets/js/admin/Dashboard/DashboardAdmin.js";
                 script0.type = "module"; // Tambahkan atribut type
                 document.head.appendChild(script0);
-                // scriptToLoad = "../Assets/js/admin/DashboardAdmin.js";
             }
-            else if (window.location.search.includes('?Cetak')) {
-                pageToLoad = "cetakBooking.html"; 
-                scriptToLoad = "../Assets/js/admin/cetakBooking.js";  
-            } 
             else {
-                pageToLoad = "booking.html";
-                scriptToLoad = "../Assets/js/admin/adminBooking.js";     
+                pageToLoad = "Booking.html";
+                
+                var script0 = document.createElement('script');
+                script0.src = "../Assets/js/admin/Dashboard/DashboardAdmin.js";
+                script0.type = "module"; // Tambahkan atribut type
+                document.head.appendChild(script0); 
             }
 
             
