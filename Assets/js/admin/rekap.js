@@ -125,47 +125,4 @@ function NewPeriodDate(period) {
     return RangeHistory;
 }
 
-function generatePDF() {
-    // Membuat objek jsPDF
-    const doc = new jsPDF();
-
-    // Judul PDF
-    doc.text("Data Booking Riwayat", 10, 10);
-
-    // Mengambil tabel data
-    const table = document.getElementById('HistoryTableDisplay');
-
-    // Mengatur kolom
-    const columns = [];
-    const headerCells = table.querySelectorAll('thead th');
-    headerCells.forEach(cell => {
-        columns.push(cell.textContent.trim());
-    });
-
-    // Mengatur posisi awal tabel
-    let y = 30;
-
-    // Menambahkan header kolom ke dalam dokumen PDF
-    let x = 10;
-    columns.forEach(column => {
-        doc.text(column, x, y);
-        x += 40; // Menambahkan jarak antar kolom
-    });
-
-    // Mengambil data baris
-    const bodyRows = table.querySelectorAll('tbody tr');
-    bodyRows.forEach(row => {
-        y += 10; // Menambahkan jarak antar baris
-        let x = 10; // Mengatur posisi awal kolom
-        const cells = row.querySelectorAll('td');
-        cells.forEach(cell => {
-            doc.text(cell.textContent.trim(), x, y);
-            x += 40; // Menambahkan jarak antar kolom
-        });
-    });
-
-    // Menyimpan dokumen PDF
-    doc.save("Data_Booking_Riwayat.pdf");
-}
-
-export { injectFilterSection, generatePDF, NewPeriodDate };
+export { injectFilterSection, NewPeriodDate };

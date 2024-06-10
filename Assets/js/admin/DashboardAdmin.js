@@ -1,6 +1,6 @@
 import { displayBookingTable } from './BookingAll.js';
 import { createBookingForm } from './AddBooking.js';
-import { injectFilterSection, generatePDF, NewPeriodDate } from './rekap.js';
+import { injectFilterSection, NewPeriodDate } from './rekap.js';
 
 let CurrentBookingListTable = 1;
 let CurrentBookingHistoryTable = 1;
@@ -74,6 +74,24 @@ function fetchHistoryData(RangeHistory) {
         });
 }
 
+function HistoryDataPrintOut(RangeHistory) {
+    let HistoryAPI;
+    if (!RangeHistory) {
+        HistoryAPI = 'http://localhost/BEPLAZA/API/api.php/bookingNoRange/';
+    } else {
+        HistoryAPI = `http://localhost/BEPLAZA/API/api.php/bookingRange/${RangeHistory}`;
+    }
+    fetch(HistoryAPI)
+        .then(response => response.json())
+        .then(data => {
+            HistoryData = data;
+            // generatePDF(HistoryData);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 // Add event listeners for filter buttons
 function setupFilterButtons() {
     const filterButtons = document.querySelectorAll('.filter-section-container .btn-group-center .btn');
@@ -101,8 +119,11 @@ function setupFilterButtons() {
     });
     const DownloadButtons = document.querySelectorAll('#DownloadButton');
     DownloadButtons.forEach(button => {
-        button.addEventListener('click', function () {    
-            generatePDF();
+        button.addEventListener('click', function () {   
+            if (selectedFilter === 'filterAllTime') {
+                RangeHistory = undefined;
+            }
+            HistoryDataPrintOut(RangeHistory);
         });
     });
 }

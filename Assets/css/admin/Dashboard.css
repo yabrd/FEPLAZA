@@ -71,7 +71,9 @@
     }
 }
 
-/* CSS untuk tabel */
+/**************************************/
+/*********** CSS untuk tabel **********/
+/**************************************/
 #bookingTable, #HistoryTable {
     width: 100%;
     margin-bottom: 1rem;
@@ -103,7 +105,45 @@
     background-color: rgba(0, 0, 0, 0.075);
 }
 
-/* CSS untuk tombol */
+/* Aturan CSS untuk mode ponsel */
+@media (max-width: 767.98px) {
+    /* Menetapkan lebar tabel menjadi 100% */
+    #bookingTable, #HistoryTable {
+        width: 100%;
+        table-layout: auto; /* Menetapkan layout tabel ke fixed */
+    }
+
+    /* Mengurangi padding pada sel-sel tabel */
+    #bookingTable th, #bookingTable td, #HistoryTable th, #HistoryTable td {
+        padding: 0.5rem;
+    }
+
+    /* Menghilangkan garis tepi pada sel-sel tabel */
+    #bookingTable th, #bookingTable td, #HistoryTable th, #HistoryTable td {
+        border-top: none;
+    }
+
+    /* Mengatur warna latar belakang untuk baris ganjil pada tabel */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: transparent; /* Menghapus warna latar belakang pada baris ganjil */
+    }
+
+    /* Mengatur warna latar belakang saat hover pada baris tabel */
+    .table-hover tbody tr:hover {
+        background-color: transparent; /* Menghapus warna latar belakang saat hover */
+    }
+
+    /* Mengatur warna latar belakang dan teks pada header tabel */
+    .table thead th {
+        background-color: transparent; /* Menghapus warna latar belakang */
+        color: #000; /* Warna teks hitam */
+    }
+}
+
+
+/**************************************/
+/********** CSS untuk tombol **********/
+/**************************************/
 .btn {
     font-size: 1rem;
     padding: 0.5rem 1rem;
@@ -134,9 +174,9 @@
     gap: 4px; /* Ruang antara tombol */
 }
 
-/*****************************/
-/*** CSS untuk pesan alert ***/
-/*****************************/
+/**************************************/
+/*** CSS untuk pesan alert dan Body ***/
+/**************************************/
 .alert {
     position: relative;
     padding: 1rem 1.25rem;
@@ -182,6 +222,33 @@
     text-align: center;
 }
 
+/* Aturan CSS untuk mode ponsel */
+@media (max-width: 767.98px) {
+    .container-fluid {
+        padding: 20px; /* Mengurangi padding secara keseluruhan */
+    }
+
+    .container-fluid .row .col-md-12 {
+        padding: 10px; /* Mengurangi padding pada kolom */
+        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+        background-color: #00235B; /* Tetapkan warna latar belakang */
+    }
+
+    .container-fluid .row .col-md-12 .mb-5 {
+        margin-bottom: 10px; /* Mengurangi margin bottom */
+        padding: 20px; /* Mengurangi padding pada elemen mb-5 */
+        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+        background-color: white; /* Tetapkan warna latar belakang */
+    }
+
+    .container-fluid .row .col-md-12 .mb-5 h2 {
+        margin-top: 5px; /* Mengurangi margin top */
+        margin-bottom: 15px; /* Mengurangi margin bottom */
+        text-align: center; /* Tetapkan teks ke tengah */
+    }
+}
+
+
 /*****************************/
 /********** Booking **********/
 /*****************************/
@@ -224,4 +291,16 @@
 /* Mengabaikan aturan CSS untuk kelas ignore-css */
 .ignore-css {
     all: initial;
+}
+
+/* CSS untuk mode ponsel */
+@media (max-width: 767.98px) {
+    .booking-form {
+        display: block; /* Mengubah tata letak menjadi blok */
+    }
+
+    /* Mengatur lebar maksimum untuk setiap bagian agar tidak melebihi lebar layar */
+    .section-1, .section-2, .section-3, .section-4, .section-6, .section-5 {
+        width: 100%;
+    }
 }
