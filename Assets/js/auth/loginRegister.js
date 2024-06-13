@@ -76,7 +76,7 @@ if (loginForm) {
                 console.log('Login berhasil. Selamat datang, ' + user.username + '!');
                 sessionStorage.setItem('id', user.id);
                 sessionStorage.setItem('role', 'admin');
-                window.location.href = '../../FEPLAZA/Admin/?Booking';
+                window.location.href = '../../FEPLAZA/Admin/?Dashboard';
             } 
         }else {
             console.log('Login gagal. Username atau password salah.');

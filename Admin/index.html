@@ -37,7 +37,7 @@
 
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav ml-auto">
-                    <a href="?Booking" class="nav-item nav-link">Booking</a>
+                    <a href="?Dashboard" class="nav-item nav-link">Dashboard</a>
                     <a href="?Service" class="nav-item nav-link">Layanan</a>
                     <a href="../Auth/?Login" class="nav-item nav-link" id="loginLink">Login</a>
                 </div>
@@ -131,9 +131,9 @@
                 script0.type = "module"; // Tambahkan atribut type
                 document.head.appendChild(script0);
             } 
-            else if (window.location.search.includes('?Booking')) {
+            else if (window.location.search.includes('?Dashboard')) {
                 // pageToLoad = "booking.html";
-                pageToLoad = "Booking.html";
+                pageToLoad = "Dashboard.html";
                 
                 var script0 = document.createElement('script');
                 script0.src = "../Assets/js/admin/Dashboard/DashboardAdmin.js";
@@ -141,7 +141,7 @@
                 document.head.appendChild(script0);
             }
             else {
-                pageToLoad = "Booking.html";
+                pageToLoad = "Dashboard.html";
                 
                 var script0 = document.createElement('script');
                 script0.src = "../Assets/js/admin/Dashboard/DashboardAdmin.js";

@@ -1,0 +1,242 @@
+/*******************************/
+/******* Page Header CSS *******/
+/*******************************/
+.page-header {
+    position: relative;
+    margin-bottom: 45px;
+    padding: 150px 0 90px 0;
+    text-align: center;
+    background: #00235B;
+}
+
+.page-header h2 {
+    position: relative;
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.page-header a {
+    position: relative;
+    padding: 0 12px;
+    font-size: 22px;
+    color: #00235B;
+}
+
+.page-header a:hover {
+    color: #ffffff;
+}
+
+.page-header a::after {
+    position: absolute;
+    content: "/";
+    width: 8px;
+    height: 8px;
+    top: -2px;
+    right: -7px;
+    text-align: center;
+    color: #00235B;
+}
+
+.page-header a:last-child::after {
+    display: none;
+}
+
+/******************************/
+/** CSS untuk Section Header **/
+/******************************/
+.section-header {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 45px;
+    text-align: center;
+}
+
+.section-header p {
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 700;
+    color: #00235B;
+}
+
+@media (max-width: 767.98px) {
+    .section-header h3 {
+        font-size: 24px;
+    }
+}
+
+/**************************************/
+/*********** CSS untuk tabel **********/
+/**************************************/
+#ServiceTable{
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    table-layout: fixed; /* Menetapkan layout tabel ke fixed */
+}
+
+#ServiceTable th, #ServiceTable td {
+    padding: 0.75rem;
+    vertical-align: middle; /* Perbaikan untuk vertikal tengah */
+    border-top: 1px solid #dee2e6;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    background-color: #00235B;
+    color: #fff;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+/* Aturan CSS untuk mode ponsel */
+@media (max-width: 767.98px) {
+    /* Menetapkan lebar tabel menjadi 100% */
+    #ServiceTable {
+        width: 100%;
+        table-layout: auto; /* Menetapkan layout tabel ke fixed */
+    }
+
+    /* Mengurangi padding pada sel-sel tabel */
+    #ServiceTable th, #ServiceTable td {
+        padding: 0.5rem;
+        border-top: none;
+    }
+
+    /* Mengatur warna latar belakang untuk baris ganjil pada tabel */
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: transparent; /* Menghapus warna latar belakang pada baris ganjil */
+    }
+
+    /* Mengatur warna latar belakang saat hover pada baris tabel */
+    .table-hover tbody tr:hover {
+        background-color: transparent; /* Menghapus warna latar belakang saat hover */
+    }
+
+    /* Mengatur warna latar belakang dan teks pada header tabel */
+    .table thead th {
+        background-color: transparent; /* Menghapus warna latar belakang */
+        color: #000; /* Warna teks hitam */
+    }
+}
+
+
+/**************************************/
+/********** CSS untuk tombol **********/
+/**************************************/
+.btn {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+}
+
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    color: #fff;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-warning, .btn-danger {
+    display: inline-block;
+    width: 100%; /* Atur lebar menjadi 100% untuk ukuran tombol yang sama */
+    margin-bottom: 4px; /* Ruang antara tombol */
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column; /* Atur arah flex ke kolom untuk menampilkan tombol secara vertikal */
+    gap: 4px; /* Ruang antara tombol */
+}
+
+/**************************************/
+/*** CSS untuk pesan alert dan Body ***/
+/**************************************/
+.alert {
+    position: relative;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+}
+
+.alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75rem 1.25rem;
+    color: inherit;
+}
+
+.container-fluid{
+    padding-top: 20px; /* Menyetel padding atas */
+    padding-bottom: 20px; /* Menyetel padding bawah */
+    padding-left: 80px; /* Menyetel padding kiri */
+    padding-right: 80px; /* Menyetel padding kanan */
+}
+
+.container-fluid .row .col-md-12{
+    padding-top: 60px; /* Menyetel padding atas */
+    padding-bottom: 60px; /* Menyetel padding bawah */
+    padding-left: 60px; /* Menyetel padding kiri */
+    padding-right: 60px; /* Menyetel padding kanan */
+    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+    background-color: #00235B; /* Warna latar belakang */
+}
+
+.container-fluid .row .col-md-12 .mb-5{
+    margin-bottom: 30px; /* Ukuran margin bawah */
+    padding: 20px; /* Ukuran padding di dalam */
+    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+    background-color: white; /* Warna latar belakang */
+}
+
+.container-fluid .row .col-md-12 .mb-5 h2 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Aturan CSS untuk mode ponsel */
+@media (max-width: 767.98px) {
+    .container-fluid {
+        padding: 20px; /* Mengurangi padding secara keseluruhan */
+    }
+
+    .container-fluid .row .col-md-12 {
+        padding: 10px; /* Mengurangi padding pada kolom */
+        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+        background-color: #00235B; /* Tetapkan warna latar belakang */
+    }
+
+    .container-fluid .row .col-md-12 .mb-5 {
+        margin-bottom: 10px; /* Mengurangi margin bottom */
+        padding: 20px; /* Mengurangi padding pada elemen mb-5 */
+        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+        background-color: white; /* Tetapkan warna latar belakang */
+    }
+
+    .container-fluid .row .col-md-12 .mb-5 h2 {
+        margin-top: 5px; /* Mengurangi margin top */
+        margin-bottom: 15px; /* Mengurangi margin bottom */
+        text-align: center; /* Tetapkan teks ke tengah */
+    }
+}

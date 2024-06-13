@@ -7,7 +7,7 @@ document.getElementById('searchButton').addEventListener('click', function() {
     var input, filter, table, tr, td, i, txtValue;
     input = document.getElementById("searchInput");
     filter = input.value.toUpperCase();
-    table = document.getElementById("data_table");
+    table = document.getElementById("ServiceTable");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[1]; // Column index 1 is for "Nama"
