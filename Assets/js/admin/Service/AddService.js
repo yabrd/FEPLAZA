@@ -1,7 +1,6 @@
 import { IsImage, CloseModal } from "./utils.js";
 
 function AddServiceModal() {
-    console.log('Panggil')
     const modalWrapper = document.createElement('div');
     modalWrapper.innerHTML += `
         <!-- Modal Tambah Pelayanan -->
@@ -24,7 +23,7 @@ function AddServiceModal() {
                                 Layanan berhasil ditambahkan! 
                             </div>
                         </div>
-                    <!-- Formulir untuk menambah pelayanan baru -->
+                        <!-- Formulir untuk menambah pelayanan baru -->
                         <form id="formTambahPelayanan" onsubmit="return false;">
                             <div class="mb-3">
                                 <label for="namaPelayanan" class="form-label">Nama Pelayanan</label>
@@ -54,7 +53,6 @@ function AddServiceModal() {
                             </div>
                             <button id="simpanPelayanan" class="btn btn-primary">Simpan</button>
                         </form>
-
                     </div>
                 </div>
             </div>
@@ -65,7 +63,7 @@ function AddServiceModal() {
         CloseModal('tambahPelayananModal');
     });
 
-    modalWrapper.querySelector('#gambarPelayanan').addEventListener('click', function() {
+    modalWrapper.querySelector('#gambarPelayanan').addEventListener('change', function() {
         previewImage(this);
     });
     
@@ -80,7 +78,8 @@ function AddServiceModal() {
 function previewImage(input) {
     var previewContainer = document.getElementById('previewContainer');
     previewContainer.innerHTML = ''; // Kosongkan container sebelum menambah gambar baru
-
+    console.log("Jalan")
+    console.log(input.files)
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
