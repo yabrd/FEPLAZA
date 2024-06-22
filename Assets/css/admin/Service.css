@@ -186,7 +186,7 @@
     color: inherit;
 }
 
-.container-fluid{
+.container-fluid .row {
     padding-top: 20px; /* Menyetel padding atas */
     padding-bottom: 20px; /* Menyetel padding bawah */
     padding-left: 80px; /* Menyetel padding kiri */
@@ -217,7 +217,7 @@
 
 /* Aturan CSS untuk mode ponsel */
 @media (max-width: 767.98px) {
-    .container-fluid {
+    .container-fluid .row {
         padding: 20px; /* Mengurangi padding secara keseluruhan */
     }
 

@@ -1,8 +1,8 @@
-import { resetTable } from './DashboardAdmin.js';
-import { SubmitButton } from './BookingAll.js'
+import { resetTable } from './dashboardAdmin.js';
+import { SubmitButton } from './bookingAll.js'
 import { enableWaktu } from "./utils.js";
 
-function HistoryAndEditingModal(Booking, Action) {
+function historyAndEditingModal(Booking, Action) {
     const modalElement = document.createElement('div');
 
     const BookingID = Booking.id_booking;
@@ -131,4 +131,4 @@ function getBookingData(BookingID, Action) {
     };
 }
 
-export { HistoryAndEditingModal, getBookingData };
+export { historyAndEditingModal, getBookingData };

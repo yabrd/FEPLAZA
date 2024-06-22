@@ -1,0 +1,152 @@
+/*******************************/
+/******* Page Header CSS *******/
+/*******************************/
+.page-header {
+    position: relative;
+    margin-bottom: 45px;
+    padding: 150px 0 90px 0;
+    text-align: center;
+    background: #00235B;
+}
+
+.page-header h2 {
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.page-header a {
+    padding: 0 12px;
+    font-size: 22px;
+    color: #00235B;
+    text-decoration: none; /* Menghapus garis bawah default */
+}
+
+.page-header a:hover {
+    color: #ffffff;
+}
+
+.page-header a::after {
+    content: "/";
+    width: 8px;
+    height: 8px;
+    top: -2px;
+    right: -7px;
+    text-align: center;
+    color: #00235B;
+    position: absolute;
+}
+
+.page-header a:last-child::after {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .page-header h2 {
+        font-size: 35px;
+    }
+    
+    .page-header a {
+        font-size: 18px;
+    }
+}
+
+/*******************************/
+/******* Section Header ********/
+/*******************************/
+.section-header {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 45px;
+    text-align: center; /* Mengatur teks ke tengah */
+}
+
+.section-header p {
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 50px;
+    font-weight: 700;
+}
+
+@media (max-width: 767.98px) {
+    .section-header h2 {
+        font-size: 30px;
+    }
+}
+
+/*******************************/
+/******* History Section *******/
+/*******************************/
+
+.section-header {
+    margin-bottom: 50px;
+}
+
+.section-header h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.container-fluid .row {
+    border-radius: 0.25rem;
+    display: flex; /* Menambahkan Flexbox */
+    flex-wrap: wrap; /* Mengizinkan konten untuk membungkus jika diperlukan */
+    justify-content: center; /* Menengahkan konten secara horizontal */
+    margin: 40px;
+    background: #00235B;
+    color: #fff;
+}
+
+#HeadPending, #HeadSuccess {
+    border-radius: 0.25rem;
+    display: flex; /* Menambahkan Flexbox */
+    flex-wrap: wrap; /* Mengizinkan konten untuk membungkus jika diperlukan */
+    justify-content: center; /* Menengahkan konten secara horizontal */
+    box-sizing: border-box; /* Pastikan padding dan border termasuk dalam perhitungan lebar total */
+    margin: 40px; /* Opsional: Menambahkan margin antar elemen */
+    background-color: #fff;
+    overflow: hidden;
+    width: 100%; /* Set both elements to have the same width */
+    max-width: 100%;
+}
+
+#HeadPending h4, #HeadSuccess h4 {
+    margin-top: 20px; /* Menghapus margin atas pada judul */
+    margin-bottom: 20px; /* Sesuaikan margin bawah judul */
+    color: #333;
+    text-align: center;
+}
+
+#HistoryPending, #HistorySuccess {
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 100%; /* Atur lebar tabel agar konsisten */
+    max-width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+}
+
+#pendingPagination, #successPagination {
+    margin-top: 10px; /* Sesuaikan margin bawah judul */
+    margin-bottom: 20px; /* Sesuaikan margin bawah judul */
+    margin-left: 20px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container-fluid .row {
+        margin: 10px; /* Opsional: Menambahkan margin antar elemen */
+    }
+
+    #HeadPending, #HeadSuccess {
+        margin: 10px; /* Opsional: Menambahkan margin antar elemen */
+    }
+}

@@ -125,4 +125,5 @@ function NewPeriodDate(period) {
     return RangeHistory;
 }
 
+
 export { injectFilterSection, NewPeriodDate };

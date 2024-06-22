@@ -99,6 +99,32 @@ input[type="submit"] {
     cursor: pointer; /* Menambahkan cursor pointer ketika diarahkan ke tombol submit */
 }
 
+.alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    max-width: 300px; /* Maksimum lebar alert */
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    display: none; /* Sembunyikan alert awalnya */
+}
+
+.alert-success {
+    background-color: #dff0d8; /* Warna background untuk alert sukses */
+    border: 1px solid #c8e5bc;
+    color: #3c763d; /* Warna teks untuk alert sukses */
+}
+
+.alert-danger {
+    background-color: #f2dede; /* Warna background untuk alert gagal */
+    border: 1px solid #ebccd1;
+    color: #a94442; /* Warna teks untuk alert gagal */
+}
+
 @media (max-width: 350px) {
     .login-frame {
         display: flex;

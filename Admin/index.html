@@ -5,45 +5,39 @@
     <meta charset="utf-8">
     <title>Plaza Barbershop</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="icon" type="image/png" href="../Assets/img/Logo-White.png">
 
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap JavaScript (Popper.js harus dimuat terlebih dahulu, diikuti oleh Bootstrap JS) -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-    <!-- Print PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="../Assets/css/admin/idx.css" rel="stylesheet">
-  
+    <link href="../Assets/css/index.css" rel="stylesheet">
 </head>
 
 <body>
     <!-- Nav Bar Start -->
-    <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a href="?Beranda" class="navbar-brand"><span>PLAZA</span></a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <a class="navbar-brand" href="?Beranda">PLAZA</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
+                <div class="navbar-nav ml-auto" id="navbarItems">
                     <a href="?Dashboard" class="nav-item nav-link">Dashboard</a>
                     <a href="?Service" class="nav-item nav-link">Layanan</a>
                     <a href="../Auth/?Login" class="nav-item nav-link" id="loginLink">Login</a>
                 </div>
             </div>
         </div>
-    </div>
+    </nav>
 
     <!-- Data dari /Beranda/index.html akan ditampilkan di sini -->
     <div id="contentFromIndexHTML"></div>
@@ -86,8 +80,6 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="../Assets/lib/easing/easing.min.js"></script>
     <script src="../Assets/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="../Assets/lib/isotope/isotope.pkgd.min.js"></script>
@@ -98,7 +90,7 @@
 
     <!-- Template Javascript -->
     <script src="../Assets/js/main.js"></script>
-    <!-- <script src="../Assets/js/booking.js"></script> -->
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const loginLinkElement = document.getElementById('loginLink');
@@ -125,28 +117,21 @@
 
             if (window.location.search.includes('?Service')) {
                 pageToLoad = "Service.html";
-                
-                var script0 = document.createElement('script');
-                script0.src = "../Assets/js/admin/Service/index.js";
-                script0.type = "module"; // Tambahkan atribut type
-                document.head.appendChild(script0);
+                scriptToLoad = "../Assets/js/admin/serviceAdm.js";  
             } 
             else if (window.location.search.includes('?Dashboard')) {
                 // pageToLoad = "booking.html";
                 pageToLoad = "Dashboard.html";
                 
                 var script0 = document.createElement('script');
-                script0.src = "../Assets/js/admin/Dashboard/DashboardAdmin.js";
+                script0.src = "../Assets/js/admin/Dashboard/dashboardAdmin.js";
                 script0.type = "module"; // Tambahkan atribut type
                 document.head.appendChild(script0);
+                // scriptToLoad = "../Assets/js/admin/DashboardAdmin.js";
             }
             else {
                 pageToLoad = "Dashboard.html";
-                
-                var script0 = document.createElement('script');
-                script0.src = "../Assets/js/admin/Dashboard/DashboardAdmin.js";
-                script0.type = "module"; // Tambahkan atribut type
-                document.head.appendChild(script0); 
+                scriptToLoad = "../Assets/js/admin/Dashboard/dashboardAdmin.js";     
             }
 
             

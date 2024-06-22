@@ -1,0 +1,71 @@
+<link href="Assets/css/user/history.css" rel="stylesheet">
+
+<!-- Page Header Start -->
+<div class="page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>RIWAYAT</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row"> <!-- Menengahkan .col-md-6-custom -->
+        <div id="HeadPending">
+            <h4>Pesanan Aktif</h4>
+            <div id="HistoryPending" class="table-responsive">
+                <table id="HistoryTablePending" class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Nomer HP</th>
+                            <th>Waktu</th>
+                            <th>Tanggal</th>
+                            <th>Pesan</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DisplayHistoryDataPending">
+                        <!-- ISI DATA API -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="pendingPagination">
+                <!-- Pagination Controls for Pending Bookings -->
+                <button id="prevPending" onclick="changePage(CurrentBookingListTable - 1, 'pending')">Prev</button>
+                <button id="nextPending" onclick="changePage(CurrentBookingListTable + 1, 'pending')">Next</button>
+            </div>
+        </div>
+        <div id="HeadSuccess">
+            <h4>Pesanan Berhasil</h4>
+            <div id="HistorySuccess" class="table-responsive">
+                <table id="HistoryTableSuccess" class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama</th>
+                            <th>Nomer HP</th>
+                            <th>Waktu</th>
+                            <th>Tanggal</th>
+                            <th>Pesan</th>
+                            <th>Service</th>
+                            <th>Harga</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="DisplayHistoryDataSuccess">
+                        <!-- ISI DATA API -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="successPagination">
+                <!-- Pagination Controls for Success Bookings -->
+                <button id="prevSuccess" onclick="changePage(CurrentBookingHistoryTable - 1, 'success')">Prev</button>
+                <button id="nextSuccess" onclick="changePage(CurrentBookingHistoryTable + 1, 'success')">Next</button>
+            </div>
+        </div>
+    </div>
+</div>

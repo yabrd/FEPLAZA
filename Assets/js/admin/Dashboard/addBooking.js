@@ -1,6 +1,6 @@
 import { enableWaktu, setMinDate } from "./utils.js";
-import { fetchAndDisplayServices } from "./BookingAll.js"
-import { SubmitButton } from "./BookingAll.js"
+import { fetchAndDisplayServices } from "./bookingAll.js"
+import { SubmitButton } from "./bookingAll.js"
 
 function createBookingForm(Action) {
     // Mendapatkan elemen tempat Anda ingin menambahkan formulir

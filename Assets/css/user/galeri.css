@@ -81,23 +81,21 @@
 /*******************************/
 /******** Portfolio CSS ********/
 /*******************************/
-.portfolio {
+.container-fluid .row {
     width: 100%;
-    margin: 45px 0;
     background: white;
     border-radius: 16px; /* Menambahkan border-radius */
-    padding: 20px; /* Menambahkan padding */
+    margin: 0 auto; /* Pusatkan konten */
 }
 
-.portfolio #portfolio-flters {
+.container-fluid #portfolio-flters {
     padding: 0;
-    margin: -15px 0 25px 0;
-    list-style: none;
     font-size: 0;
+    list-style: none;
     text-align: center;
 }
 
-.portfolio #portfolio-flters li {
+.container-fluid #portfolio-flters li {
     cursor: pointer;
     display: inline-block;
     margin: 5px;
@@ -111,29 +109,29 @@
     transition: .3s;
 }
 
-.portfolio #portfolio-flters li:hover,
-.portfolio #portfolio-flters li.filter-active {
+.container-fluid #portfolio-flters li:hover,
+.container-fluid #portfolio-flters li.filter-active {
     background: #00235B;
     color: #f84200;
 }
 
-.portfolio .portfolio-item {
+.container-fluid .portfolio-item {
     margin-bottom: 30px;
     overflow: hidden;
     transition: .3s;
     border-radius: 16px; /* Menambahkan border-radius */
 }
 
-.portfolio .portfolio-item:hover {
+.container-fluid .portfolio-item:hover {
     transform: translateY(-10px); /* Mengubah margin-top ke transform */
 }
 
-.portfolio .portfolio-wrap {
+.container-fluid .portfolio-wrap {
     position: relative;
     width: 100%;
 }
 
-.portfolio img {
+.container-fluid img {
     width: 100%; 
     height: 100%; 
     object-fit: cover;

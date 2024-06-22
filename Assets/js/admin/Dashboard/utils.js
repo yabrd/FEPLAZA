@@ -33,7 +33,7 @@ function enableWaktu(tanggalFieldId, waktuFieldId) {
 
 function fetchGetBookedTimes(tanggal, waktuFieldId) {
     const tanggalFormatted = tanggal.split('-').join('');
-    const url = `http://localhost/BEPLAZA/API/api.php/booking/${tanggalFormatted}`;
+    const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
 
     fetch(url)
         .then(response => {

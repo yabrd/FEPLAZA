@@ -1,5 +1,5 @@
 function AllService() {
-    const url = 'http://localhost/BEPLAZA/API/api.php/layanan';
+    const url = 'https://beplazabarber.my.id/API/api.php/layanan';
     fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -17,8 +17,8 @@ function AllService() {
                     </td>
                     <td>${Service.harga}</td>
                     <td class="text-center" style="min-width: 170px;">
-                        <button class="btn btn-warning text-white" onclick="editService(${Service.id_pelayanan})">Edit</button>
-                        <button id="btn_delete${Service.id_pelayanan}" class="btn btn-danger text-white" onclick="deleteService(${Service.id_pelayanan})">Delete</button>
+                        <button class="btn btn-warning text-white" onclick="editService(${Service.id})">Edit</button>
+                        <button id="btn_delete${Service.id_pelayanan}" class="btn btn-danger text-white" onclick="deleteService(${Service.id})">Delete</button>
                     </td>
                 `;
                 serviceContainer.appendChild(ServiceElement);
@@ -31,11 +31,11 @@ function AllService() {
 
 function editService(serviceId) {
     // Dapatkan data layanan dari server berdasarkan serviceId dan isi modal edit
-    const url = `http://localhost/BEPLAZA/API/api.php/layanan/${serviceId}`;
+    const url = `https://beplazabarber.my.id/API/api.php/layanan/${serviceId}`;
     fetch(url)
         .then(response => response.json())
         .then(service => {
-            document.getElementById('editIdPelayanan').value = service.id_pelayanan;
+            document.getElementById('editIdPelayanan').value = service.id;
             document.getElementById('editnamaPelayanan').value = service.nama;
             document.getElementById('editketeranganPelayanan').value = service.keterangan;
             document.getElementById('edithargaPelayanan').value = service.harga;
@@ -149,7 +149,7 @@ function simpanDataGambar() {
 
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost/BEPLAZA/API/api.php/gambarlayanan", true);
+    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/gambarlayanan", true);
     xhr.onload = function() {
         if (xhr.status === 200) {
             document.getElementById("successAlertContainer").classList.remove("d-none");
@@ -180,7 +180,7 @@ function editsimpanDataGambar(id) {
 
 
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://localhost/BEPLAZA/API/api.php/gambarlayanan/"+id, true);
+    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/gambarlayanan/"+id, true);
     xhr.onload = function() {
         if (xhr.status === 200) {
             document.getElementById("editsuccessAlertContainer").classList.remove("d-none");
@@ -263,7 +263,7 @@ function simpanDataPelayanan() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "http://localhost/BEPLAZA/API/api.php/layanan", true);
+    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/layanan", true);
 
     xhr.setRequestHeader("Content-Type", "application/json");
 
@@ -287,13 +287,9 @@ function deleteService(ServiceId) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
         var button = document.getElementById(`btn_delete${ServiceId}`);
 
-        button.disabled = true;
-        setTimeout(function() {
-            button.disabled = false;
-        }, 5000);
 
         var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", "http://localhost/BEPLAZA/API/api.php/layanan/" + ServiceId, true);
+        xhr.open("DELETE", "https://beplazabarber.my.id/API/api.php/layanan/" + ServiceId, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function() {
             if (xhr.status === 200) {
@@ -400,7 +396,7 @@ function saveEditedService() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open("PUT", "http://localhost/BEPLAZA/API/api.php/layanan/"+id, true);
+    xhr.open("PUT", "https://beplazabarber.my.id/API/api.php/layanan/"+id, true);
 
     xhr.setRequestHeader("Content-Type", "application/json");
 

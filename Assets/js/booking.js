@@ -1,5 +1,8 @@
+const id = sessionStorage.getItem('id');
+
 function fetchUserById(id) {
-    const url = `http://localhost/BEPLAZA/API/api.php/User/${id}`;
+    // const url = `http://localhost/BEPLAZA/API/api.php/User/${id}`;
+    const url = `https://beplazabarber.my.id/API/api.php/User/${id}`;
 
     fetch(url)
         .then(response => {
@@ -11,9 +14,12 @@ function fetchUserById(id) {
         .then(data => {
             // Mengisi nilai ke dalam elemen HTML
             document.getElementById('nama_booking').value = data.username;
-            document.getElementById('nomerhp_booking').value = data.no_telp;  
+            document.getElementById('nomerhp_booking').value = data.no_telp;
+            console.log(data.username);
+            console.log(data.no_telp);
         })
 }
+fetchUserById(id)
 
 const WatchData = [
     "08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11.00",
@@ -23,7 +29,8 @@ const WatchData = [
 
 function fetchGetBookedTimes(tanggal) {
     const tanggalFormatted = tanggal.split('-').join('');
-    const url = `http://localhost/BEPLAZA/API/api.php/booking/${tanggalFormatted}`;
+    // const url = `http://localhost/BEPLAZA/API/api.php/booking/${tanggalFormatted}`;
+    const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
 
     fetch(url)
         .then(response => {
@@ -59,7 +66,6 @@ function displayBookedTimes(bookedTimes) {
         waktuSelect.add(option);
     });
 }
-
 
 function enableWaktu() {
     var tanggalInput = document.getElementById("tanggal");
@@ -138,7 +144,8 @@ function submitBooking() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "http://localhost/BEPLAZA/API/api.php/booking", true);
+    // xhr.open("POST", "http://localhost/BEPLAZA/API/api.php/booking", true);
+    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/booking", true);
 
     xhr.setRequestHeader("Content-Type", "application/json");
 

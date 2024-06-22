@@ -1,0 +1,152 @@
+/*******************************/
+/******* Page Header CSS *******/
+/*******************************/
+.page-header {
+    position: relative;
+    margin-bottom: 45px;
+    padding: 150px 0 90px 0;
+    text-align: center;
+    background: #00235B;
+}
+
+.page-header h2 {
+    color: #ffffff;
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.page-header a {
+    padding: 0 12px;
+    font-size: 22px;
+    color: #00235B;
+    text-decoration: none;
+}
+
+.page-header a:hover {
+    color: #ffffff;
+}
+
+.page-header a::after {
+    content: "/";
+    width: 8px;
+    height: 8px;
+    top: -2px;
+    right: -7px;
+    text-align: center;
+    color: #00235B;
+    position: absolute;
+}
+
+.page-header a:last-child::after {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    .page-header h2 {
+        font-size: 35px;
+    }
+    
+    .page-header a {
+        font-size: 18px;
+    }
+}
+
+/*******************************/
+/******* Section Header ********/
+/*******************************/
+.section-header {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 45px;
+    text-align: center;
+}
+
+.section-header p {
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 50px;
+    font-weight: 700;
+}
+
+@media (max-width: 767.98px) {
+    .section-header h2 {
+        font-size: 30px;
+    }
+}
+
+/*******************************/
+/********* Pricing CSS *********/
+/*******************************/
+.container-fluid {
+    padding: 0 15px;
+}
+
+.container-fluid .row {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.container-fluid .price-item {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: .3s;
+    border: 2px solid rgba(0, 35, 91, 0.3); /* Bingkai pudar sejak awal */
+    margin-bottom: 10px; /* Menambahkan margin bawah */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Menambahkan bayangan */
+}
+
+.container-fluid .price-item:hover {
+    border-color: #00235B; /* Mengubah warna bingkai saat hover */
+}
+
+.container-fluid .price-img {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0, 35, 91, 0.3); /* Bingkai bawah gambar pudar */
+    border-top-left-radius: 12px; /* Melengkungkan bagian atas kiri */
+    border-top-right-radius: 12px; /* Melengkungkan bagian atas kanan */
+    transition: transform .3s ease; /* Menambahkan transition untuk efek zoom */
+    padding: 10px; /* Menambahkan padding di sekitar gambar */
+}
+
+.container-fluid .price-img img {
+    padding: 0;
+    width: 100%;
+    height: auto; /* Mengatur tinggi gambar agar proporsional */
+    object-fit: cover; /* Menyesuaikan gambar agar pas */
+    border-top-left-radius: 12px; /* Melengkungkan bagian atas kiri gambar */
+    border-top-right-radius: 12px; /* Melengkungkan bagian atas kanan gambar */
+}
+
+.container-fluid .price-item:hover .price-img img {
+    transform: scale(1.1); /* Menambahkan efek zoom pada gambar saat hover */
+}
+
+.container-fluid .price-text {
+    padding: 15px;
+}
+
+.container-fluid .price-text h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.container-fluid .price-text h3 {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333333;
+    margin-bottom: 5px;
+}
+
+.container-fluid .price-text p {
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 2px;
+}

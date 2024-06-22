@@ -85,14 +85,8 @@
 /*******************************/
 /********* Contact CSS *********/
 /*******************************/
-.contact {
-    position: relative;
-    width: 100%;
-    margin: 45px 0;
-    background: white;
-}
 
-.contact .container-fluid {
+.container-fluid .row {
     background: #00235B;
     max-width: 35%; /* Penyesuaian ukuran */
     margin: 0 auto; /* Pusatkan konten */
@@ -100,24 +94,24 @@
     box-shadow: 5px 5px 5px #aaaaaa;;
 }
 
-.contact .contact-form {
+.contact-form {
     padding: 15px 15px;
     padding-bottom: 50px;
     display: flex;
     flex-direction: column; /* Menjadikan susunan vertikal */
 }
 
-.contact .contact-form input,
-.contact .contact-form textarea,
-.contact .contact-form .btn,
-.contact .contact-form select.form-control,
-.contact .contact-form .alert {
+.contact-form input,
+.contact-form textarea,
+.contact-form .btn,
+.contact-form select.form-control,
+.contact-form .alert {
     margin: 0 auto; /* Menengahkan elemen */
     width: 100%; /* Membuat elemen mengambil lebar penuh */
     max-width: 500px; /* Membatasi lebar maksimum */
 }
 
-.contact .contact-form .btn {
+.contact-form .btn {
     width: auto; /* Mengembalikan lebar ke ukuran default */
     margin-top: 10px; /* Jarak antara tombol dan input fields */
     padding: 15px 30px; /* Mengembalikan padding */
@@ -131,12 +125,12 @@
     transition: .3s;
 }
 
-.contact .contact-form .btn:hover {
+.contact-form .btn:hover {
     color: #00235B;
     background: #f84200;
 }
 
-.contact .help-block ul {
+.help-block ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
@@ -186,11 +180,11 @@
         font-size: 30px; /* Mengurangi ukuran font */
     }
 
-    .contact .container-fluid {
-        max-width: 90%; /* Penyesuaian ukuran */
+    .container-fluid .row {
+        max-width: 100%; /* Penyesuaian ukuran */
     }
 
-    .contact .contact-form {
+    .contact-form {
         padding: 15px 15px; /* Menyesuaikan padding */
     }
 

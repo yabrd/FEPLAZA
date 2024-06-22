@@ -1,6 +1,6 @@
-import { HistoryAndEditingModal, getBookingData } from "./modal.js";
+import { historyAndEditingModal, getBookingData } from "./modalData.js";
 import { formatRupiah } from './utils.js';
-import { resetTable } from './DashboardAdmin.js';
+import { resetTable } from './dashboardAdmin.js';
 
 function displayBookingTable(BookingData, currentPage, Action) {
     let selectorTarget;
@@ -12,7 +12,7 @@ function displayBookingTable(BookingData, currentPage, Action) {
     if (Action === 'apply') {
         selectorTarget = '#ListTableDisplay';
         tableId = 'NextBookingListTable';
-        pageInfoId = 'PageListTable';
+        pageInfoId = 'PageListTable'; 
         prevButtonId = 'PrevBookingListTable';
         nextButtonId = 'NextBookingListTable';
     } else if (Action === 'edit') {
@@ -73,7 +73,7 @@ function displayBookingTable(BookingData, currentPage, Action) {
             BookingElement.innerHTML = innerHTML;
             tableContainer.appendChild(BookingElement);
 
-            const modalElement = HistoryAndEditingModal(Booking, Action);
+            const modalElement = historyAndEditingModal(Booking, Action);
             document.body.appendChild(modalElement);
 
             fetchAndDisplayServices(Booking.id_booking, Action);
@@ -103,7 +103,7 @@ function displayBookingTable(BookingData, currentPage, Action) {
 }
 
 function fetchAndDisplayServices(BookingID, Action) {
-    const url = 'http://localhost/BEPLAZA/API/api.php/layanan';
+    const url = 'https://beplazabarber.my.id/API/api.php/layanan';
 
     fetch(url)
     .then(response => response.json())
@@ -122,7 +122,7 @@ function fetchAndDisplayServices(BookingID, Action) {
             }
 
             layananElement.innerHTML = `
-                <input class="form-check-input service-checkboxs${BookingID}" type="checkbox" name="services${BookingID}[]" value="${Layanan.id_pelayanan}" id="${Layanan.id_pelayanan}" data-harga="${Layanan.harga}">
+                <input class="form-check-input service-checkboxs${BookingID}" type="checkbox" name="services${BookingID}[]" value="${Layanan.id}" id="${Layanan.id}" data-harga="${Layanan.harga}">
                 <label class="form-check-label" for="service${Layanan.id_pelayanan}">${labelContent}</label>
             `;
             layananContainer.appendChild(layananElement);
@@ -178,7 +178,7 @@ function SetHargaCheckbox(BookingID, totalHarga, Action) {
 }
 
 function fetchOrderData(checkboxes, totalHarga, BookingID, Action) {
-    const orderUrl = `http://localhost/BEPLAZA/API/api.php/BookingOrder/${BookingID}`;
+    const orderUrl = `https://beplazabarber.my.id/API/api.php/BookingOrder/${BookingID}`;
     fetch(orderUrl).then(response => response.json())
     .then(orderData => {
         const checkedServiceIds = orderData.map(order => order.id_pelayanan);
@@ -227,7 +227,7 @@ function deleteBooking(BookingID) {
         }, 5000);
 
         var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", "http://localhost/BEPLAZA/API/api.php/booking/" + BookingID, true);
+        xhr.open("DELETE", "https://beplazabarber.my.id/API/api.php/booking/" + BookingID, true);
         console.log("After Delete");
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onload = function() {
@@ -288,6 +288,11 @@ function SubmitButton(BookingID, Action) {
     var countSelectedServices = selectedServices.length;
     console.log(countSelectedServices);
 
+    // Validasi nama_booking (hanya huruf dan spasi)
+    // Validasi nomerhp_booking (hanya angka dan minimal 10 digit)
+    var namaValid = /^[A-Za-z\s]+$/.test(nama_booking);
+    var nomerhpValid = /^\d{10,}$/.test(nomerhp_booking);
+    
     // Menonaktifkan tombol
     button.disabled = true;
 
@@ -300,29 +305,29 @@ function SubmitButton(BookingID, Action) {
 
     if (Action === 'apply' || Action === 'edit') {
         var CloseButtonId = `CloseModal${Action}${BookingID}`;
-        API = `http://localhost/BEPLAZA/API/api.php/bookingUpdate/${BookingID}`;
+        API = `https://beplazabarber.my.id/API/api.php/bookingUpdate/${BookingID}`;
     } else if (Action === 'add') {
-        API = `http://localhost/BEPLAZA/API/api.php/booking-admin`;
+        API = `https://beplazabarber.my.id/API/api.php/booking-admin`;
     }
 
     var fieldsNotFilled = [];
 
-    if (nama_booking === "") {
-        fieldsNotFilled.push("Nama Booking");
+    if (!namaValid) {
+        fieldsNotFilled.push("Nama Booking hanya boleh berisi huruf dan spasi");
     }
-    if (nomerhp_booking === "") {
-        fieldsNotFilled.push("Nomer HP Booking");
+    if (!nomerhpValid) {
+        fieldsNotFilled.push("Nomor HP Booking hanya boleh berupa angka dan minimal 10 digit");
     }
     if (countSelectedServices < 1) {
         fieldsNotFilled.push("Service");
     }
-    if (tanggal === "") {
+    if (!tanggal) {
         fieldsNotFilled.push("Tanggal");
     }
-    if (waktu === "") {
+    if (!waktu) {
         fieldsNotFilled.push("Waktu");
     }
-    if (pesan === "") {
+    if (!pesan) {
         fieldsNotFilled.push("Pesan");
     }
 
@@ -363,7 +368,7 @@ function SubmitButton(BookingID, Action) {
         if (xhr.status === 200) {
             document.getElementById(SuccessAlertContainerId).classList.remove("d-none");
             setTimeout(function() {
-                window.location.href = '?Booking';
+                window.location.href = '?Dashboard';
                 document.getElementById(SuccessAlertContainerId).classList.add("d-none"); 
                 document.getElementById(CloseButtonId).getElementsByClassName("close")[0].click();
                 

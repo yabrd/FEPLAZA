@@ -5,43 +5,41 @@
     <meta charset="utf-8">
     <title>Plaza Barbershop</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="icon" type="image/png" href="../Assets/img/Logo-Blue.png">
 
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap JavaScript (Popper.js harus dimuat terlebih dahulu, diikuti oleh Bootstrap JS) -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <!-- <link href="Assets/css/style.css" rel="stylesheet"> -->
-    <link href="Assets/css/user/idx.css" rel="stylesheet">
+    <link href="Assets/css/index.css" rel="stylesheet">
 </head>
 
 <body>
     <!-- Nav Bar Start -->
-    <div class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a href="?Beranda" class="navbar-brand"><span>PLAZA</span></a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <a class="navbar-brand" href="?Beranda">PLAZA</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav ml-auto">
-                    <a href="?Beranda" class="nav-item nav-link">Beranda</a>
-                    <a href="?Price" class="nav-item nav-link">Harga</a>
-                    <a href="?Galeri" class="nav-item nav-link">Galeri</a>
-                    <a href="?Booking" class="nav-item nav-link">Pemesanan</a>
-                    <a href="Auth/?Login" class="nav-item nav-link" id="loginLink">Login</a>
-                </div>
+                <ul class="navbar-nav ml-auto" id="navbarItems">
+                    <li class="nav-item"><a class="nav-link" href="?Beranda">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?Layanan">Layanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?Galeri">Galeri</a></li>
+                    <li class="nav-item"><a class="nav-link" href="?Booking">Pemesanan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="Auth/?Login" id="loginLink">Login</a></li>
+                </ul>
             </div>
         </div>
-    </div>
+    </nav>
 
     <!-- Data dari /Beranda/index.html akan ditampilkan di sini -->
     <div id="contentFromIndexHTML"></div>
@@ -83,8 +81,6 @@
     <!-- Footer End -->
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="Assets/lib/easing/easing.min.js"></script>
     <script src="Assets/lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="Assets/lib/isotope/isotope.pkgd.min.js"></script>
@@ -92,54 +88,69 @@
     <!-- Contact Javascript File -->
     <script src="Assets/mail/jqBootstrapValidation.min.js"></script>
     <script src="Assets/mail/contact.js"></script>
+    
+    <!-- Template Javascript -->
+    <script src="Assets/js/main.js"></script>
 
     <!-- Template Javascript -->
-    <script src="Assets/js/booking.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const loginLinkElement = document.getElementById('loginLink');
             const userId = sessionStorage.getItem('id');
             const userRole = sessionStorage.getItem('role');
             let pageToLoad = "beranda.html";
-    
+
             if (userId) {
+                // User is logged in, modify the login link to logout and add riwayat link
                 loginLinkElement.innerText = 'Logout';
                 loginLinkElement.setAttribute('href', 'Auth/?Logout');
                 loginLinkElement.addEventListener('click', function() {
                     sessionStorage.removeItem('id');
                     sessionStorage.removeItem('role');
                 });
+
+                // Create and add the riwayat link
+                const riwayatNavItem = document.createElement('li');
+                riwayatNavItem.classList.add('nav-item');
+                riwayatNavItem.innerHTML = '<a class="nav-link" href="?Riwayat">Riwayat</a>';
+                document.getElementById('navbarItems').insertBefore(riwayatNavItem, loginLinkElement.parentElement);
             } else {
                 loginLinkElement.innerText = 'Login';
                 loginLinkElement.setAttribute('href', 'Auth/?Login');
             }
-    
+
             if (userRole === 'admin') {
                 window.location.href = 'Admin/';
             } else {
                 if (window.location.search.includes('?Beranda')) {
                     pageToLoad = "beranda.html";
-                } else if (window.location.search.includes('?Price')) {
-                    pageToLoad = "price.html";
-                    var scriptToLoad = "Assets/js/user/harga.js";
+                } else if (window.location.search.includes('?Layanan')) {
+                    pageToLoad = "layanan.html";
+                    var scriptToLoad = "Assets/js/user/layanan.js";
                 } else if (window.location.search.includes('?Galeri')) {
                     pageToLoad = "galeri.html";
                 } else if (window.location.search.includes('?Booking')) {
                     if (userId) {
                         pageToLoad = "booking.html";
-                        fetchUserById(userId);
+                        var scriptToLoad = "Assets/js/booking.js";
+                    } else {
+                        window.location.href = 'Auth/?Login';
+                    }
+                }
+                else if (window.location.search.includes('?Riwayat')){
+                    if (userId) {
+                        var scriptToLoad = "Assets/js/user/riwayat.js";
+                        pageToLoad = "riwayat.html";
                     } else {
                         window.location.href = 'Auth/?Login';
                     }
                 }
             }
-    
+
             var xhttp = new XMLHttpRequest();
-    
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("contentFromIndexHTML").innerHTML = this.responseText;
-    
                     if (scriptToLoad) {
                         var scriptElement = document.createElement('script');
                         scriptElement.src = scriptToLoad;
@@ -147,11 +158,10 @@
                     }
                 }
             };
-    
             xhttp.open("GET", pageToLoad, true);
             xhttp.send();
         });
-    </script>    
+    </script>
 </body>
 
 </html>

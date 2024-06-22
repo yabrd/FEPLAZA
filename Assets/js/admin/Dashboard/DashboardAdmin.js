@@ -1,94 +1,77 @@
-import { displayBookingTable } from './BookingAll.js';
-import { createBookingForm } from './AddBooking.js';
-import { injectFilterSection, NewPeriodDate } from './rekap.js';
+import { displayBookingTable } from './bookingAll.js';
+import { createBookingForm } from './addBooking.js';
+import { injectFilterSection, NewPeriodDate } from './filterData.js';
+import { printCetakTable } from './printData.js'
 
-let CurrentBookingListTable = 1;
-let CurrentBookingHistoryTable = 1;
-let BookingData = []; // Store fetched booking data
-let HistoryData = []; // Store fetched booking data
+let currentBookingListTable = 1;
+let currentBookingHistoryTable = 1;
+let bookingData = []; // Store fetched booking data
+let historyData = []; // Store fetched booking data
 let selectedFilter = 'filterAllTime'; // Default filter
-let RangeHistory;
+let rangeHistory;
 
 // Fungsi untuk mengambil data Booking dari API
-function fetchBookingData() {
-    const BookingAPI = 'http://localhost/BEPLAZA/API/api.php/bookingNoBookingPrice';
+function fetchbookingData() {
+    const bookingAPI = 'https://beplazabarber.my.id/API/api.php/bookingNoBookingPrice';
 
-    fetch(BookingAPI)
+    fetch(bookingAPI)
         .then(response => response.json())
         .then(data => {
-            BookingData = data;
+            bookingData = data;
             // Tampilkan data dengan filter yang dipilih
-            displayBookingTable(BookingData, CurrentBookingListTable, 'apply');
+            displayBookingTable(bookingData, currentBookingListTable, 'apply');
         })
         .catch(error => {
             console.error('Error:', error);
         });
 
     document.getElementById('PrevBookingListTable').addEventListener('click', function () {
-        if (CurrentBookingListTable > 1) {
-            CurrentBookingListTable--;
-            displayBookingTable(BookingData, CurrentBookingListTable, 'apply');
+        if (currentBookingListTable > 1) {
+            currentBookingListTable--;
+            displayBookingTable(bookingData, currentBookingListTable, 'apply');
         }
     });
     
     document.getElementById('NextBookingListTable').addEventListener('click', function () {
-        if (CurrentBookingListTable < Math.ceil(BookingData.length / 5)) {
-            CurrentBookingListTable++;
-            displayBookingTable(BookingData, CurrentBookingListTable, 'apply');
+        if (currentBookingListTable < Math.ceil(bookingData.length / 5)) {
+            currentBookingListTable++;
+            displayBookingTable(bookingData, currentBookingListTable, 'apply');
         }
     });
 }
 
-function fetchHistoryData(RangeHistory) {
-    let HistoryAPI;
+function fetchhistoryData(rangeHistory) {
+    let historyAPI;
 
-    if (!RangeHistory) {
-        HistoryAPI = 'http://localhost/BEPLAZA/API/api.php/bookingNoRange/';
+    if (!rangeHistory) {
+        historyAPI = 'https://beplazabarber.my.id/API/api.php/bookingNoRange/';
     } else {
-        HistoryAPI = `http://localhost/BEPLAZA/API/api.php/bookingRange/${RangeHistory}`;
+        historyAPI = `https://beplazabarber.my.id/API/api.php/bookingRange/${rangeHistory}`;
     }
 
-    fetch(HistoryAPI)
+    fetch(historyAPI)
         .then(response => response.json())
         .then(data => {
-            HistoryData = data;
+            historyData = data;
             // Tampilkan data dengan filter yang dipilih
-            displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit');
+            displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
         })
         .catch(error => {
             console.error('Error:', error);
         });
 
         document.getElementById('PrevBookingHistoryTable').addEventListener('click', function () {
-            if (CurrentBookingHistoryTable > 1) {
-                CurrentBookingHistoryTable--;
-                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit');
+            if (currentBookingHistoryTable > 1) {
+                currentBookingHistoryTable--;
+                displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
             }
         });
         
         document.getElementById('NextBookingHistoryTable').addEventListener('click', function () {
-            if (CurrentBookingHistoryTable < Math.ceil(HistoryData.length / 5)) {
-                CurrentBookingHistoryTable++;
-                displayBookingTable(HistoryData, CurrentBookingHistoryTable, 'edit');
+            if (currentBookingHistoryTable < Math.ceil(historyData.length / 5)) {
+                currentBookingHistoryTable++;
+                displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
             }
-        });
-}
-
-function HistoryDataPrintOut(RangeHistory) {
-    let HistoryAPI;
-    if (!RangeHistory) {
-        HistoryAPI = 'http://localhost/BEPLAZA/API/api.php/bookingNoRange/';
-    } else {
-        HistoryAPI = `http://localhost/BEPLAZA/API/api.php/bookingRange/${RangeHistory}`;
-    }
-    fetch(HistoryAPI)
-        .then(response => response.json())
-        .then(data => {
-            HistoryData = data;
-            // generatePDF(HistoryData);
-        })
-        .catch(error => {
-            console.error('Error:', error);
         });
 }
 
@@ -102,41 +85,41 @@ function setupFilterButtons() {
             if (selectedFilter === 'filterInputUser') {
                 if (filterButton) {
                     filterButton.addEventListener('click', function() {
-                        RangeHistory = NewPeriodDate(selectedFilter);
-                        fetchHistoryData(RangeHistory);
+                        rangeHistory = NewPeriodDate(selectedFilter);
+                        fetchhistoryData(rangeHistory);
                     });
                 } 
             }
             else if (selectedFilter === 'filterAllTime') {
-                RangeHistory = undefined;
-                fetchHistoryData(RangeHistory);
+                rangeHistory = undefined;
+                fetchhistoryData(rangeHistory);
             }
             else{
-                RangeHistory = NewPeriodDate(selectedFilter);
-                fetchHistoryData(RangeHistory);
+                rangeHistory = NewPeriodDate(selectedFilter);
+                fetchhistoryData(rangeHistory);
             }
         });
     });
-    const DownloadButtons = document.querySelectorAll('#DownloadButton');
-    DownloadButtons.forEach(button => {
+    const downloadButton = document.querySelectorAll('#DownloadButton');
+    downloadButton.forEach(button => {
         button.addEventListener('click', function () {   
             if (selectedFilter === 'filterAllTime') {
-                RangeHistory = undefined;
+                rangeHistory = undefined;
             }
-            HistoryDataPrintOut(RangeHistory);
+            printCetakTable(historyData);
         });
     });
 }
 
 function resetTable() {
-    CurrentBookingListTable = 1;
-    CurrentBookingHistoryTable = 1;
-    fetchBookingData();
-    fetchHistoryData(RangeHistory);
+    currentBookingListTable = 1;
+    currentBookingHistoryTable = 1;
+    fetchbookingData();
+    fetchhistoryData(rangeHistory);
 }
 
-fetchBookingData();
-fetchHistoryData(RangeHistory);
+fetchbookingData();
+fetchhistoryData(rangeHistory);
 injectFilterSection();
 setupFilterButtons();
 createBookingForm('add');

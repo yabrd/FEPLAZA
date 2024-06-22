@@ -72,74 +72,78 @@
 }
 
 /**************************************/
-/*********** CSS untuk tabel **********/
+/*** CSS untuk pesan alert dan Body ***/
 /**************************************/
-#bookingTable, #HistoryTable {
-    width: 100%;
+.alert {
+    position: relative;
+    padding: 1rem 1.25rem;
     margin-bottom: 1rem;
-    color: #212529;
-    table-layout: fixed; /* Menetapkan layout tabel ke fixed */
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
 }
 
-#bookingTable th, #bookingTable td, #HistoryTable th, #HistoryTable td {
-    padding: 0.75rem;
-    vertical-align: middle; /* Perbaikan untuk vertikal tengah */
-    border-top: 1px solid #dee2e6;
-    /* overflow: hidden; Menyembunyikan teks yang meluap
-    text-overflow: ellipsis; Menampilkan tiga titik untuk teks yang meluap
-    white-space: nowrap; Menghindari teks meluber */
+.alert-dismissible .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75rem 1.25rem;
+    color: inherit;
 }
 
-.table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgba(0, 0, 0, 0.05);
+.container-fluid  .row {
+    padding-top: 20px; /* Menyetel padding atas */
+    padding-bottom: 20px; /* Menyetel padding bawah */
+    padding-left: 80px; /* Menyetel padding kiri */
+    padding-right: 80px; /* Menyetel padding kanan */
 }
 
-.table thead th {
-    vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6;
-    background-color: #00235B;
-    color: #fff;
+.container-fluid .row .col-md-12{
+    padding-top: 60px; /* Menyetel padding atas */
+    padding-bottom: 60px; /* Menyetel padding bawah */
+    padding-left: 60px; /* Menyetel padding kiri */
+    padding-right: 60px; /* Menyetel padding kanan */
+    border-radius: 5px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+    background-color: #00235B; /* Warna latar belakang */
 }
 
-.table-hover tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.075);
+.container-fluid .row .col-md-12 .mb-5{
+    margin-bottom: 30px; /* Ukuran margin bawah */
+    padding: 20px; /* Ukuran padding di dalam */
+    border-radius: 5px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+    background-color: white; /* Warna latar belakang */
+}
+
+.container-fluid .row .col-md-12 .mb-5 h2 {
+    margin-top: 10px;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
 /* Aturan CSS untuk mode ponsel */
 @media (max-width: 767.98px) {
-    /* Menetapkan lebar tabel menjadi 100% */
-    #bookingTable, #HistoryTable {
-        width: 100%;
-        table-layout: auto; /* Menetapkan layout tabel ke fixed */
+    .container-fluid .row {
+        padding: 20px; /* Mengurangi padding secara keseluruhan */
     }
 
-    /* Mengurangi padding pada sel-sel tabel */
-    #bookingTable th, #bookingTable td, #HistoryTable th, #HistoryTable td {
-        padding: 0.5rem;
+    .container-fluid .row .col-md-12 {
+        padding: 10px; /* Mengurangi padding pada kolom */
+        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+        background-color: #00235B; /* Tetapkan warna latar belakang */
     }
 
-    /* Menghilangkan garis tepi pada sel-sel tabel */
-    #bookingTable th, #bookingTable td, #HistoryTable th, #HistoryTable td {
-        border-top: none;
+    .container-fluid .row .col-md-12 .mb-5 {
+        margin-bottom: 10px; /* Mengurangi margin bottom */
+        padding: 20px; /* Mengurangi padding pada elemen mb-5 */
+        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
+        background-color: white; /* Tetapkan warna latar belakang */
     }
 
-    /* Mengatur warna latar belakang untuk baris ganjil pada tabel */
-    .table-striped tbody tr:nth-of-type(odd) {
-        background-color: transparent; /* Menghapus warna latar belakang pada baris ganjil */
-    }
-
-    /* Mengatur warna latar belakang saat hover pada baris tabel */
-    .table-hover tbody tr:hover {
-        background-color: transparent; /* Menghapus warna latar belakang saat hover */
-    }
-
-    /* Mengatur warna latar belakang dan teks pada header tabel */
-    .table thead th {
-        background-color: transparent; /* Menghapus warna latar belakang */
-        color: #000; /* Warna teks hitam */
+    .container-fluid .row .col-md-12 .mb-5 h2 {
+        margin-top: 5px; /* Mengurangi margin top */
+        margin-bottom: 15px; /* Mengurangi margin bottom */
+        text-align: center; /* Tetapkan teks ke tengah */
     }
 }
-
 
 /**************************************/
 /********** CSS untuk tombol **********/
@@ -172,80 +176,6 @@
     display: flex;
     flex-direction: column; /* Atur arah flex ke kolom untuk menampilkan tombol secara vertikal */
     gap: 4px; /* Ruang antara tombol */
-}
-
-/**************************************/
-/*** CSS untuk pesan alert dan Body ***/
-/**************************************/
-.alert {
-    position: relative;
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
-}
-
-.alert-dismissible .close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.75rem 1.25rem;
-    color: inherit;
-}
-
-.container-fluid{
-    padding-top: 20px; /* Menyetel padding atas */
-    padding-bottom: 20px; /* Menyetel padding bawah */
-    padding-left: 80px; /* Menyetel padding kiri */
-    padding-right: 80px; /* Menyetel padding kanan */
-}
-
-.container-fluid .row .col-md-12{
-    padding-top: 60px; /* Menyetel padding atas */
-    padding-bottom: 60px; /* Menyetel padding bawah */
-    padding-left: 60px; /* Menyetel padding kiri */
-    padding-right: 60px; /* Menyetel padding kanan */
-    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-    background-color: #00235B; /* Warna latar belakang */
-}
-
-.container-fluid .row .col-md-12 .mb-5{
-    margin-bottom: 30px; /* Ukuran margin bawah */
-    padding: 20px; /* Ukuran padding di dalam */
-    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-    background-color: white; /* Warna latar belakang */
-}
-
-.container-fluid .row .col-md-12 .mb-5 h2 {
-    margin-top: 10px;
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-/* Aturan CSS untuk mode ponsel */
-@media (max-width: 767.98px) {
-    .container-fluid {
-        padding: 20px; /* Mengurangi padding secara keseluruhan */
-    }
-
-    .container-fluid .row .col-md-12 {
-        padding: 10px; /* Mengurangi padding pada kolom */
-        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-        background-color: #00235B; /* Tetapkan warna latar belakang */
-    }
-
-    .container-fluid .row .col-md-12 .mb-5 {
-        margin-bottom: 10px; /* Mengurangi margin bottom */
-        padding: 20px; /* Mengurangi padding pada elemen mb-5 */
-        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-        background-color: white; /* Tetapkan warna latar belakang */
-    }
-
-    .container-fluid .row .col-md-12 .mb-5 h2 {
-        margin-top: 5px; /* Mengurangi margin top */
-        margin-bottom: 15px; /* Mengurangi margin bottom */
-        text-align: center; /* Tetapkan teks ke tengah */
-    }
 }
 
 

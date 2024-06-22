@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plaza Barbershop</title>
     <link rel="stylesheet" href="../Assets/css/auth/login-register.css">
+    <link rel="icon" type="image/png" href="../Assets/img/Logo-White.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 
@@ -30,10 +31,10 @@
         }
 
         // Mendefinisikan halaman yang akan dimuat berdasarkan parameter query string
-        var pageToLoad = "PageLogin.html";
+        var pageToLoad = "login.html";
         var scriptToLoad = "../Assets/js/auth/loginRegister.js"; // Menambahkan deklarasi var di sini
         if (window.location.search.includes('?Login')) {
-            pageToLoad = "PageLogin.html";
+            pageToLoad = "login.html";
             history.pushState({}, null, window.location.pathname); // Menambahkan entri ke dalam riwayat penelusuran
         } else if (window.location.search.includes('?Register')) {
             pageToLoad = "register.html";
