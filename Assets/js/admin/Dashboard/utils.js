@@ -20,14 +20,15 @@ function setMinDate(tanggalFieldId) {
 
 function enableWaktu(tanggalFieldId, waktuFieldId) {
     var tanggalInput = document.getElementById(tanggalFieldId);
-    var tanggal = tanggalInput.value;
+    var waktuSelect = document.getElementById(waktuFieldId);
 
-    if (tanggal) {
-        fetchGetBookedTimes(tanggal, waktuFieldId);
+    if (tanggalInput.value) {
+        fetchGetBookedTimes(tanggalInput.value, waktuFieldId);
+        waktuSelect.disabled = false;
     } else {
-        var waktuSelect = document.getElementById(waktuFieldId);
         waktuSelect.disabled = true;
         waktuSelect.innerHTML = "";
+        waktuSelect.innerHTML = '<option value="" disabled selected>Pilih Tanggal Dahulu</option>';
     }
 }
 
@@ -43,31 +44,49 @@ function fetchGetBookedTimes(tanggal, waktuFieldId) {
             return response.json();
         })
         .then(data => {
-            displayBookedTimes(data, waktuFieldId);
+            displayBookedTimes(data, tanggal, waktuFieldId);
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
 
-function displayBookedTimes(bookedTimes, waktuFieldId) {
-    // Data waktu yang tersedia
-    const availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
+function displayBookedTimes(bookedTimes, tanggal, waktuFieldId) {
+    const now = new Date();
+    const selectedDateObj = new Date(tanggal);
 
-    // Menyimpan waktu yang tersedia ke dalam elemen select
-    var waktuSelect = document.getElementById(waktuFieldId);
+    // Data waktu yang tersedia
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const currentTime = `${currentHour < 10 ? '0' : ''}${currentHour}:${currentMinutes < 10 ? '0' : ''}${currentMinutes}`;
+
+    let availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
+
+    if (selectedDateObj.toDateString() === now.toDateString()) {
+        availableTimes = availableTimes.filter(time => {
+            const startTime = time.split(' - ')[0];
+            return startTime > currentTime;
+        });
+    }
+
+    const waktuSelect = document.getElementById(waktuFieldId);
     waktuSelect.disabled = false;
     waktuSelect.innerHTML = "";
 
-    availableTimes.forEach(function(waktu) {
-        // Menghapus detik dari waktu
-        var displayTime = waktu.slice(0);
-        
-        var option = document.createElement("option");
-        option.text = displayTime;
-        option.value = waktu;
+    if (availableTimes.length === 0) {
+        const option = document.createElement("option");
+        option.text = "Tidak ada jadwal tersedia, silakan pilih tanggal lain.";
+        option.value = "";
         waktuSelect.add(option);
-    });
+        waktuSelect.disabled = true;
+    } else {
+        availableTimes.forEach(function(waktu) {
+            const option = document.createElement("option");
+            option.text = waktu;
+            option.value = waktu;
+            waktuSelect.add(option);
+        });
+    }
 }
 
 const WatchData = [

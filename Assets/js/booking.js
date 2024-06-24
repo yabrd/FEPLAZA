@@ -22,63 +22,10 @@ function fetchUserById(id) {
 fetchUserById(id)
 
 const WatchData = [
-    "08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11.00",
-    "11:00 - 11:30", "11:30 - 12:00", "12:00 - 12:30", "12:30 - 13:00", "13:00 - 13:30", "13:30 - 14.00",
+    "08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11:00",
+    "11:00 - 11:30", "11:30 - 12:00", "12:00 - 12:30", "12:30 - 13:00", "13:00 - 13:30", "13:30 - 14:00",
     "14:00 - 14:30", "14:30 - 15:00", "15:00 - 15:30", "15:30 - 16:00", "16:00 - 16:30"
 ];
-
-function fetchGetBookedTimes(tanggal) {
-    const tanggalFormatted = tanggal.split('-').join('');
-    // const url = `http://localhost/BEPLAZA/API/api.php/booking/${tanggalFormatted}`;
-    const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
-
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayBookedTimes(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
-
-function displayBookedTimes(bookedTimes) {
-    // Data waktu yang tersedia
-    const availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
-
-    // Menyimpan waktu yang tersedia ke dalam elemen select
-    var waktuSelect = document.getElementById("waktu");
-    waktuSelect.disabled = false;
-    waktuSelect.innerHTML = "";
-
-    availableTimes.forEach(function(waktu) {
-        // Menghapus detik dari waktu
-        var displayTime = waktu.slice(0);
-        
-        var option = document.createElement("option");
-        option.text = displayTime;
-        option.value = waktu;
-        waktuSelect.add(option);
-    });
-}
-
-function enableWaktu() {
-    var tanggalInput = document.getElementById("tanggal");
-    var tanggal = tanggalInput.value;
-
-    if (tanggal) {
-        fetchGetBookedTimes(tanggal);
-    } else {
-        var waktuSelect = document.getElementById("waktu");
-        waktuSelect.disabled = true;
-        waktuSelect.innerHTML = "";
-    }
-}
 
 function setMinDate() {
     var inputTanggal = document.getElementById('tanggal');
@@ -94,6 +41,79 @@ function setMinDate() {
 }
 
 setMinDate();
+
+function enableWaktu() {
+    var tanggalInput = document.getElementById("tanggal");
+    var waktuSelect = document.getElementById("waktu");
+
+    if (tanggalInput.value) {
+        fetchGetBookedTimes(tanggalInput.value);
+        waktuSelect.disabled = false;
+    } else {
+        waktuSelect.disabled = true;
+        waktuSelect.innerHTML = '<option value="" disabled selected>Pilih Tanggal Dahulu</option>';
+    }
+}
+
+function fetchGetBookedTimes(tanggal) {
+    const tanggalFormatted = tanggal.split('-').join('');
+    // const url = `http://localhost/BEPLAZA/API/api.php/booking/${tanggalFormatted}`;
+    const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayBookedTimes(data, tanggal);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+function displayBookedTimes(bookedTimes, selectedDate) {
+    const now = new Date();
+    const selectedDateObj = new Date(selectedDate);
+
+    // Data waktu yang tersedia
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+    const currentTime = `${currentHour < 10 ? '0' : ''}${currentHour}:${currentMinutes < 10 ? '0' : ''}${currentMinutes}`;
+
+    let availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
+
+    if (selectedDateObj.toDateString() === now.toDateString()) {
+        // Filter out times that are earlier than the current time if the selected date is today
+        availableTimes = availableTimes.filter(time => {
+            const startTime = time.split(' - ')[0];
+            return startTime > currentTime;
+        });
+    }
+
+    // Menyimpan waktu yang tersedia ke dalam elemen select
+    const waktuSelect = document.getElementById("waktu");
+    waktuSelect.disabled = false;
+    waktuSelect.innerHTML = "";
+
+    if (availableTimes.length === 0) {
+        const option = document.createElement("option");
+        option.text = "Tidak ada jadwal tersedia, silakan pilih tanggal lain.";
+        option.value = "";
+        waktuSelect.add(option);
+        waktuSelect.disabled = true; // Men-disable select jika tidak ada waktu tersedia
+    } else {
+        availableTimes.forEach(function(waktu) {
+            const option = document.createElement("option");
+            option.text = waktu;
+            option.value = waktu;
+            waktuSelect.add(option);
+        });
+    }
+}
 
 function submitBooking() {
     var nama_booking = document.getElementById("nama_booking").value;
