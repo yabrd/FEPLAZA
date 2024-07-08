@@ -18,7 +18,6 @@ function fetchbookingData() {
         .then(response => response.json())
         .then(data => {
             bookingData = data;
-            // Tampilkan data dengan filter yang dipilih
             displayBookingTable(bookingData, currentBookingListTable, 'apply');
         })
         .catch(error => {
@@ -53,7 +52,6 @@ function fetchhistoryData(rangeHistory) {
         .then(response => response.json())
         .then(data => {
             historyData = data;
-            // Tampilkan data dengan filter yang dipilih
             displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
         })
         .catch(error => {
@@ -75,12 +73,11 @@ function fetchhistoryData(rangeHistory) {
         });
 }
 
-// Add event listeners for filter buttons
 function setupFilterButtons() {
     const filterButtons = document.querySelectorAll('.filter-section-container .btn-group-center .btn');
     filterButtons.forEach(button => {
         button.addEventListener('click', function () {
-            selectedFilter = this.id; // Simpan filter yang dipilih oleh pengguna
+            selectedFilter = this.id;
             // console.log(`Selected filter: ${selectedFilter}`);
             if (selectedFilter === 'filterInputUser') {
                 if (filterButton) {

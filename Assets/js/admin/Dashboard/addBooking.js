@@ -95,7 +95,7 @@ function createBookingForm(Action) {
 
     var tanggalInput = document.getElementById(tanggalFieldId);
     tanggalInput.addEventListener("change", function() {
-        enableWaktu(tanggalFieldId, waktuFieldId);
+        enableWaktu(tanggalFieldId, waktuFieldId, Action);
     });
 
     var submitbutton = formContainer.querySelector(`#${submitBtnId}`);

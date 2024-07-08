@@ -18,12 +18,12 @@ function setMinDate(tanggalFieldId) {
     }
 }
 
-function enableWaktu(tanggalFieldId, waktuFieldId) {
+function enableWaktu(tanggalFieldId, waktuFieldId, Action) {
     var tanggalInput = document.getElementById(tanggalFieldId);
     var waktuSelect = document.getElementById(waktuFieldId);
 
     if (tanggalInput.value) {
-        fetchGetBookedTimes(tanggalInput.value, waktuFieldId);
+        fetchGetBookedTimes(tanggalInput.value, waktuFieldId, Action);
         waktuSelect.disabled = false;
     } else {
         waktuSelect.disabled = true;
@@ -32,7 +32,7 @@ function enableWaktu(tanggalFieldId, waktuFieldId) {
     }
 }
 
-function fetchGetBookedTimes(tanggal, waktuFieldId) {
+function fetchGetBookedTimes(tanggal, waktuFieldId, Action) {
     const tanggalFormatted = tanggal.split('-').join('');
     const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
 
@@ -44,25 +44,28 @@ function fetchGetBookedTimes(tanggal, waktuFieldId) {
             return response.json();
         })
         .then(data => {
-            displayBookedTimes(data, tanggal, waktuFieldId);
+            displayBookedTimes(data, tanggal, waktuFieldId, Action);
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
 
-function displayBookedTimes(bookedTimes, tanggal, waktuFieldId) {
+function displayBookedTimes(bookedTimes, tanggal, waktuFieldId, Action) {
     const now = new Date();
     const selectedDateObj = new Date(tanggal);
 
-    // Data waktu yang tersedia
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
     const currentTime = `${currentHour < 10 ? '0' : ''}${currentHour}:${currentMinutes < 10 ? '0' : ''}${currentMinutes}`;
 
-    let availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
-
-    if (selectedDateObj.toDateString() === now.toDateString()) {
+    let availableTimes
+    if (Action == 'add'){
+        availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
+    } else{
+        availableTimes = WatchData;
+    }
+    if (Action == 'add' && selectedDateObj.toDateString() === now.toDateString()) {
         availableTimes = availableTimes.filter(time => {
             const startTime = time.split(' - ')[0];
             return startTime > currentTime;
@@ -88,6 +91,7 @@ function displayBookedTimes(bookedTimes, tanggal, waktuFieldId) {
         });
     }
 }
+
 
 const WatchData = [
     "08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11.00",
