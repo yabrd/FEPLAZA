@@ -18,28 +18,27 @@
 }
 
 .container-fluid .row {
-    padding-top: 20px; /* Menyetel padding atas */
-    padding-bottom: 20px; /* Menyetel padding bawah */
-    padding-left: 80px; /* Menyetel padding kiri */
-    padding-right: 80px; /* Menyetel padding kanan */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 80px;
+    padding-right: 80px;
 }
 
 .container-fluid .row .col-md-12{
-    padding-top: 60px; /* Menyetel padding atas */
-    padding-bottom: 10px; /* Menyetel padding bawah */
-    padding-left: 60px; /* Menyetel padding kiri */
-    padding-right: 60px; /* Menyetel padding kanan */
-    border-radius: 5px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-    background-color: #00235B; /* Warna latar belakang */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    background-color: #00235B;
 }
 
-.container-fluid .row .col-md-12 .mb-5{
-    padding: 20px; /* Ukuran padding di dalam */
-    border-radius: 5px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-    background-color: white; /* Warna latar belakang */
+.container-fluid .row .col-md-12 .wrapColoumn{
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white;
+    margin: 20px;
 }
 
-.container-fluid .row .col-md-12 .mb-5 h2 {
+.container-fluid .row .col-md-12 .wrapColoumn h2 {
     font-family: "Open Sans", sans-serif;
     font-weight: bold;
     font-size: 32px;
@@ -48,7 +47,7 @@
     text-align: center;
 }
 
-.container-fluid .row .col-md-12 .mb-5 .table-responsive {
+.container-fluid .row .col-md-12 .wrapColoumn .table-responsive {
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
 }
@@ -56,26 +55,21 @@
 /* Aturan CSS untuk mode ponsel */
 @media (max-width: 768px) {
     .container-fluid .row {
-        padding: 20px; /* Mengurangi padding secara keseluruhan */
+        padding: 10px;
     }
 
     .container-fluid .row .col-md-12 {
-        padding: 10px; /* Mengurangi padding pada kolom */
-        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-        background-color: #00235B; /* Tetapkan warna latar belakang */
+        padding: 0px;
     }
 
-    .container-fluid .row .col-md-12 .mb-5 {
-        margin-bottom: 10px; /* Mengurangi margin bottom */
-        padding: 20px; /* Mengurangi padding pada elemen mb-5 */
-        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-        background-color: white; /* Tetapkan warna latar belakang */
+    .container-fluid .row .col-md-12 .wrapColoumn {
+        margin: 10px;
     }
 
-    .container-fluid .row .col-md-12 .mb-5 h2 {
-        margin-top: 5px; /* Mengurangi margin top */
-        margin-bottom: 15px; /* Mengurangi margin bottom */
-        text-align: center; /* Tetapkan teks ke tengah */
+    .container-fluid .row .col-md-12 .wrapColoumn h2 {
+        margin-top: 5px;
+        margin-bottom: 15px;
+        text-align: center;
     }
 }
 
@@ -102,14 +96,14 @@
 
 .btn-warning, .btn-danger {
     display: inline-block;
-    width: 100%; /* Atur lebar menjadi 100% untuk ukuran tombol yang sama */
-    margin-bottom: 4px; /* Ruang antara tombol */
+    width: 100%;
+    margin-bottom: 4px;
 }
 
 .btn-container {
     display: flex;
-    flex-direction: column; /* Atur arah flex ke kolom untuk menampilkan tombol secara vertikal */
-    gap: 4px; /* Ruang antara tombol */
+    flex-direction: column;
+    gap: 4px;
 }
 
 
@@ -119,9 +113,9 @@
 /* Style untuk Form Label */
 .booking-form {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Membagi kolom menjadi tiga bagian */
-    grid-template-rows: auto auto auto; /* Secara default, baris akan menyesuaikan dengan konten */
-    gap: 10px; /* Jarak antar bagian */
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 10px;
     grid-template-areas:
         "section1 section2 section3"
         "section4 section4 section3" /* Section 5 dan 6 berada di bawah Section 4 */
@@ -129,41 +123,38 @@
 }
 
 .booking-form .section-1 {
-    grid-area: section1; /* Menetapkan posisi section-1 di grid */
+    grid-area: section1;
 }
 
 .booking-form .section-2 {
-    grid-area: section2; /* Menetapkan posisi section-2 di grid */
+    grid-area: section2;
 }
 
 .booking-form .section-3 {
-    grid-area: section3; /* Menetapkan posisi section-3 di grid */
+    grid-area: section3;
 }
 
 .booking-form .section-4 {
-    grid-area: section4; /* Menetapkan posisi section-4 di grid */
+    grid-area: section4;
 }
 
 .booking-form .section-5 {
-    grid-area: section5; /* Menetapkan posisi section-5 di grid */
+    grid-area: section5;
 }
 
 .section-6 {
-    grid-area: section6; /* Menetapkan posisi section-6 di grid */
+    grid-area: section6;
 }
 
-/* Mengabaikan aturan CSS untuk kelas ignore-css */
 .ignore-css {
     all: initial;
 }
 
-/* CSS untuk mode ponsel */
 @media (max-width: 768px) {
     .booking-form {
-        display: block; /* Mengubah tata letak menjadi blok */
+        display: block;
     }
 
-    /* Mengatur lebar maksimum untuk setiap bagian agar tidak melebihi lebar layar */
     .section-1, .section-2, .section-3, .section-4, .section-6, .section-5 {
         width: 100%;
     }

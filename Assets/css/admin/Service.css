@@ -64,12 +64,6 @@
 /**************************************/
 /********** CSS untuk tombol **********/
 /**************************************/
-.btn {
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0.25rem;
-}
-
 .btn-secondary {
     color: #fff;
     background-color: #6c757d;
@@ -83,16 +77,28 @@
 }
 
 .btn-warning, .btn-danger {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
     display: inline-block;
-    width: 100%; /* Atur lebar menjadi 100% untuk ukuran tombol yang sama */
-    margin-bottom: 4px; /* Ruang antara tombol */
+    width: 100%;
+    margin-bottom: 4px;
 }
 
 .btn-container {
     display: flex;
-    flex-direction: column; /* Atur arah flex ke kolom untuk menampilkan tombol secara vertikal */
-    gap: 4px; /* Ruang antara tombol */
+    flex-direction: column;
+    gap: 4px;
 }
+
+.input-group .btn {
+    margin-left: 0;
+}
+
+.input-group .btn:nth-child(3) {
+    margin-left: 10px;
+}
+
 
 /**************************************/
 /*** CSS untuk pesan alert dan Body ***/
@@ -121,48 +127,29 @@
 }
 
 .container-fluid .row .col-md-12{
-    padding-top: 60px;
-    padding-bottom: 60px;
-    padding-left: 60px;
-    padding-right: 60px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-radius: 5px;
     background-color: #00235B; 
 }
 
-.container-fluid .row .col-md-12 .mb-5{
-    margin-bottom: 30px;
+.container-fluid .row .col-md-12 .tableColoumn{
     padding: 20px;
     border-radius: 5px;
     background-color: white; 
-}
-
-.container-fluid .row .col-md-12 .mb-5 h2 {
-    margin-top: 10px;
-    margin-bottom: 25px;
-    text-align: center;
+    margin: 20px;
 }
 
 @media (max-width: 768px) {
     .container-fluid .row {
-        padding: 20px;
+        padding: 10px;
     }
 
     .container-fluid .row .col-md-12 {
-        padding: 10px;
-        border-radius: 5px;
-        background-color: #00235B;
+        padding: 0px;
     }
 
-    .container-fluid .row .col-md-12 .mb-5 {
-        margin-bottom: 10px;
-        padding: 20px; 
-        border-radius: 5px;
-        background-color: white;
-    }
-
-    .container-fluid .row .col-md-12 .mb-5 h2 {
-        margin-top: 5px;
-        margin-bottom: 15px;
-        text-align: center; 
+    .container-fluid .row .col-md-12 .tableColoumn {
+        margin: 10px;
     }
 }

@@ -12,13 +12,13 @@ function AllService() {
                     <td>${iterasi++}</td>
                     <td class="text-left">${Service.nama}</td>
                     <td class="text-left">${Service.keterangan}</td>
-                    <td class="text-center">
+                    <td class="text-left">
                     ${parseInt(Service.tampilkan) === 1 ? 'Ditampilkan' : 'Tidak'}
                     </td>
                     <td>${Service.harga}</td>
-                    <td class="text-center" style="min-width: 170px;">
-                        <button class="btn btn-warning text-white" onclick="editService(${Service.id})">Ubah</button>
-                        <button id="btn_delete${Service.id_pelayanan}" class="btn btn-danger text-white" onclick="deleteService(${Service.id})">Hapus</button>
+                    <td class="text-left" style="min-width: 170px;">
+                        <button class="btn btn-warning" onclick="editService(${Service.id})">Ubah</button>
+                        <button id="btn_delete${Service.id_pelayanan}" class="btn btn-danger" onclick="deleteService(${Service.id})">Hapus</button>
                     </td>
                 `;
                 serviceContainer.appendChild(ServiceElement);
