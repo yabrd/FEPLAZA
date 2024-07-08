@@ -17,7 +17,7 @@
     color: inherit;
 }
 
-.container-fluid  .row {
+.container-fluid .row {
     padding-top: 20px; /* Menyetel padding atas */
     padding-bottom: 20px; /* Menyetel padding bawah */
     padding-left: 80px; /* Menyetel padding kiri */
@@ -26,7 +26,7 @@
 
 .container-fluid .row .col-md-12{
     padding-top: 60px; /* Menyetel padding atas */
-    padding-bottom: 60px; /* Menyetel padding bawah */
+    padding-bottom: 10px; /* Menyetel padding bawah */
     padding-left: 60px; /* Menyetel padding kiri */
     padding-right: 60px; /* Menyetel padding kanan */
     border-radius: 5px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
@@ -34,14 +34,13 @@
 }
 
 .container-fluid .row .col-md-12 .mb-5{
-    margin-bottom: 30px; /* Ukuran margin bawah */
     padding: 20px; /* Ukuran padding di dalam */
     border-radius: 5px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
     background-color: white; /* Warna latar belakang */
 }
 
 .container-fluid .row .col-md-12 .mb-5 h2 {
-    font-family: "ABeeZee", sans-serif;
+    font-family: "Open Sans", sans-serif;
     font-weight: bold;
     font-size: 32px;
     margin-top: 10px;

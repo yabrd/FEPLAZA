@@ -114,26 +114,26 @@
 }
 
 .container-fluid .row {
-    padding-top: 20px; /* Menyetel padding atas */
-    padding-bottom: 20px; /* Menyetel padding bawah */
-    padding-left: 80px; /* Menyetel padding kiri */
-    padding-right: 80px; /* Menyetel padding kanan */
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 80px;
+    padding-right: 80px;
 }
 
 .container-fluid .row .col-md-12{
-    padding-top: 60px; /* Menyetel padding atas */
-    padding-bottom: 60px; /* Menyetel padding bawah */
-    padding-left: 60px; /* Menyetel padding kiri */
-    padding-right: 60px; /* Menyetel padding kanan */
-    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-    background-color: #00235B; /* Warna latar belakang */
+    padding-top: 60px;
+    padding-bottom: 60px;
+    padding-left: 60px;
+    padding-right: 60px;
+    border-radius: 5px;
+    background-color: #00235B; 
 }
 
 .container-fluid .row .col-md-12 .mb-5{
-    margin-bottom: 30px; /* Ukuran margin bawah */
-    padding: 20px; /* Ukuran padding di dalam */
-    border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-    background-color: white; /* Warna latar belakang */
+    margin-bottom: 30px;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: white; 
 }
 
 .container-fluid .row .col-md-12 .mb-5 h2 {
@@ -142,28 +142,27 @@
     text-align: center;
 }
 
-/* Aturan CSS untuk mode ponsel */
 @media (max-width: 768px) {
     .container-fluid .row {
-        padding: 20px; /* Mengurangi padding secara keseluruhan */
+        padding: 20px;
     }
 
     .container-fluid .row .col-md-12 {
-        padding: 10px; /* Mengurangi padding pada kolom */
-        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-        background-color: #00235B; /* Tetapkan warna latar belakang */
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #00235B;
     }
 
     .container-fluid .row .col-md-12 .mb-5 {
-        margin-bottom: 10px; /* Mengurangi margin bottom */
-        padding: 20px; /* Mengurangi padding pada elemen mb-5 */
-        border-radius: 10px; /* Mengatur sudut menjadi tumpul dengan radius 10px */
-        background-color: white; /* Tetapkan warna latar belakang */
+        margin-bottom: 10px;
+        padding: 20px; 
+        border-radius: 5px;
+        background-color: white;
     }
 
     .container-fluid .row .col-md-12 .mb-5 h2 {
-        margin-top: 5px; /* Mengurangi margin top */
-        margin-bottom: 15px; /* Mengurangi margin bottom */
-        text-align: center; /* Tetapkan teks ke tengah */
+        margin-top: 5px;
+        margin-bottom: 15px;
+        text-align: center; 
     }
 }
