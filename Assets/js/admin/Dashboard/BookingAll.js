@@ -30,22 +30,22 @@ function displayBookingTable(BookingData, currentPage, Action) {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
-    let displayedDataCount = 0; // Variable untuk menghitung data yang ditampilkan
-    let totalDisplayed = 0; // Variable untuk menghitung total data yang sesuai dengan kategori
+    let displayedDataCount = 0;
+    let totalDisplayed = 0;
 
     for (let i = 0; i < BookingData.length; i++) {
         const Booking = BookingData[i];
-        totalDisplayed++; // Menghitung total data yang sesuai dengan kategori
+        totalDisplayed++;
 
-        // Tampilkan hanya jika sesuai dengan kategori yang diproses
         if (displayedDataCount >= startIndex && displayedDataCount < endIndex) {
             let innerHTML = `
-                <td>${displayedDataCount + 1}</td>
-                <td>${Booking.nama_booking}</td>
-                <td>${Booking.nomerhp_booking}</td>
-                <td>${Booking.waktu_booking}</td>
-                <td>${Booking.tanggal_booking}</td>
-                <td>${Booking.pesan_booking}</td>
+                <tr>
+                    <td>${displayedDataCount + 1}</td>
+                    <td>${Booking.nama_booking}</td>
+                    <td>${Booking.nomerhp_booking}</td>
+                    <td>${Booking.waktu_booking}</td>
+                    <td>${Booking.tanggal_booking}</td>
+                    <td>${Booking.pesan_booking}</td>
             `;
 
             if (Action === 'edit') {
@@ -64,42 +64,51 @@ function displayBookingTable(BookingData, currentPage, Action) {
                     <td class="text-center">
                         <div class="btn-container">
                             <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
+                            <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
                         </div>
                     </td>
                 `;
             }
 
-            const BookingElement = document.createElement('tr');
-            BookingElement.innerHTML = innerHTML;
-            tableContainer.appendChild(BookingElement);
+            innerHTML += '</tr>';
+
+            tableContainer.insertAdjacentHTML('beforeend', innerHTML);
 
             const modalElement = historyAndEditingModal(Booking, Action);
             document.body.appendChild(modalElement);
 
             fetchAndDisplayServices(Booking.id_booking, Action);
 
-            if (Action === 'edit') {
-                const editButton = document.getElementById(`editBtn${Booking.id_booking}`);
+            const editButton = document.getElementById(`editBtn${Booking.id_booking}`);
+            if (editButton) {
                 editButton.addEventListener('click', function() {
                     getBookingData(Booking.id_booking, Action);
                 });
-
-                const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
+            }
+            
+            const deleteButton = document.getElementById(`deleteBtn${Booking.id_booking}`);
+            if (deleteButton) {
                 deleteButton.addEventListener('click', function() {
-                    deleteBooking(Booking.id_booking);
+                    deleteBooking(Booking.id_booking, Action);
                 });
             }
         }
 
-        displayedDataCount++; // Tambahkan hitungan data yang ditampilkan hanya jika valid
+        displayedDataCount++;
     }
 
-    // Update pagination info
     document.getElementById(pageInfoId).innerText = `Page ${currentPage} / ${Math.ceil(totalDisplayed / itemsPerPage)}`;
 
-    // Enable/Disable pagination buttons
-    document.getElementById(prevButtonId).disabled = currentPage === 1;
-    document.getElementById(nextButtonId).disabled = endIndex >= totalDisplayed;
+    const prevButton = document.getElementById(prevButtonId);
+    const nextButton = document.getElementById(nextButtonId);
+
+    if (prevButton) {
+        prevButton.disabled = currentPage === 1;
+    }
+
+    if (nextButton) {
+        nextButton.disabled = endIndex >= totalDisplayed;
+    }
 }
 
 function fetchAndDisplayServices(BookingID, Action) {
@@ -112,20 +121,17 @@ function fetchAndDisplayServices(BookingID, Action) {
         layananContainer.innerHTML = `<label>Service</label>`;
 
         data.forEach(Layanan => {
-            const formattedNumber = new Intl.NumberFormat('id-ID', { style: 'decimal', minimumFrActionDigits: 0 }).format(Layanan.harga);
-            const layananElement = document.createElement('div');
-            layananElement.classList.add('form-check');
+            if (Layanan.tampilkan === '1') { // Only display if 'tampilkan' is '1'
+                const formattedNumber = new Intl.NumberFormat('id-ID', { style: 'decimal', minimumFractionDigits: 0 }).format(Layanan.harga);
+                const layananElement = document.createElement('div');
+                layananElement.classList.add('form-check');
 
-            let labelContent = `${Layanan.nama} = Rp. ${formattedNumber}`;
-            if (Layanan.tampilkan !== '1') {
-                labelContent += ` <span class="text-danger">[ Tidak Ditampilkan ]</span>`;
+                layananElement.innerHTML = `
+                    <input class="form-check-input service-checkboxs${BookingID}" type="checkbox" name="services${BookingID}[]" value="${Layanan.id}" id="${Layanan.id}" data-harga="${Layanan.harga}">
+                    <label class="form-check-label" for="service${Layanan.id_pelayanan}">${Layanan.nama} = Rp. ${formattedNumber}</label>
+                `;
+                layananContainer.appendChild(layananElement);
             }
-
-            layananElement.innerHTML = `
-                <input class="form-check-input service-checkboxs${BookingID}" type="checkbox" name="services${BookingID}[]" value="${Layanan.id}" id="${Layanan.id}" data-harga="${Layanan.harga}">
-                <label class="form-check-label" for="service${Layanan.id_pelayanan}">${labelContent}</label>
-            `;
-            layananContainer.appendChild(layananElement);
         });
 
         if (Action != 'add') {
@@ -137,15 +143,14 @@ function fetchAndDisplayServices(BookingID, Action) {
         } else if (Action == 'add') {
             const totalHarga = {};
             totalHarga[BookingID] = 0;
-            SetHargaCheckbox(BookingID, totalHarga, Action)
+            SetHargaCheckbox(BookingID, totalHarga, Action);
         }
-
-
     })
     .catch(error => {
         console.error('Error:', error);
     });
 }
+
 
 function SetHargaCheckbox(BookingID, totalHarga, Action) {
     var checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`); // Perbaiki nama kelas
@@ -160,7 +165,6 @@ function SetHargaCheckbox(BookingID, totalHarga, Action) {
             var formattedHarga = 'Rp. ' + formatRupiah(totalHarga[BookingID].toFixed(0));
             document.getElementById(`TotalHarga${Action}${BookingID}`).textContent = 'Total Harga: ' + formattedHarga;
 
-            // Periksa kembali apakah elemen harga sudah ada
             let hargaElement = document.getElementById(`Harga${Action}${BookingID}`);
             if (hargaElement) {
                 hargaElement.value = totalHarga[BookingID];
@@ -193,7 +197,6 @@ function fetchOrderData(checkboxes, totalHarga, BookingID, Action) {
             });
         });
 
-        // Tambahkan event listener setelah menandai checkbox yang sesuai
         checkboxes.forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
                 updateTotalHarga(checkboxes, totalHarga, BookingID, Action);
@@ -217,44 +220,48 @@ function updateTotalHarga(checkboxes, totalHarga, BookingID, Action) {
     document.getElementById(`Harga${Action}${BookingID}`).value = totalHarga[BookingID];
 }
 
-function deleteBooking(BookingID) {
+function deleteBooking(BookingID, Action) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-        var button = document.getElementById(`deleteBtn${BookingID}`);
+        const button = document.getElementById(`deleteBtn${BookingID}`);
 
-        button.disabled = true;
-        setTimeout(function() {
-            button.disabled = false;
-        }, 5000);
+        if (button) {
+            button.disabled = true;
+            setTimeout(function() {
+                button.disabled = false;
+            }, 5000);
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", "https://beplazabarber.my.id/API/api.php/booking/" + BookingID, true);
-        console.log("After Delete");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                document.getElementById(`successDelete`).classList.remove("d-none");
-                console.log("After none 1");
-                resetTable();
-                setTimeout(function() {
-                    document.getElementById(`successDelete`).classList.add("d-none"); // Menambahkan kembali class d-none setelah alert ditampilkan
-                    console.log("After none 2");
-                }, 3000); 
-            } else {
-                document.getElementById(`gagalDelete`).classList.remove("d-none");
-                console.log("After none 3");
-                setTimeout(function() {
-                    document.getElementById(`gagalDelete`).classList.add("d-none"); // Menambahkan kembali class d-none setelah alert ditampilkan
-                    console.log("After none 4");
-                }, 3000); 
-                console.error("Gagal menghapus booking:", xhr.statusText);
-            }
-        };        
-        xhr.onerror = function() {
-            console.error("Koneksi error.");
-        };
-        xhr.send();
+            const xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "https://beplazabarber.my.id/API/api.php/booking/" + BookingID, true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    const successAlert = document.getElementById(`${Action}SuccessDelete`);
+                    if (successAlert) {
+                        successAlert.classList.remove("d-none");
+                        resetTable();
+                        setTimeout(function() {
+                            successAlert.classList.add("d-none");
+                        }, 3000);
+                    }
+                } else {
+                    const errorAlert = document.getElementById(`${Action}GagalDelete`);
+                    if (errorAlert) {
+                        errorAlert.classList.remove("d-none");
+                        setTimeout(function() {
+                            errorAlert.classList.add("d-none");
+                        }, 3000);
+                    }
+                    console.error("Gagal menghapus booking:", xhr.statusText);
+                }
+            };
+            xhr.onerror = function() {
+                console.error("Koneksi error.");
+            };
+            xhr.send();
+        }
     }
 }
+
 
 function SubmitButton(BookingID, Action) {
     var MissingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
@@ -288,15 +295,11 @@ function SubmitButton(BookingID, Action) {
     var countSelectedServices = selectedServices.length;
     console.log(countSelectedServices);
 
-    // Validasi nama_booking (hanya huruf dan spasi)
-    // Validasi nomerhp_booking (hanya angka dan minimal 10 digit)
     var namaValid = /^[A-Za-z\s]+$/.test(nama_booking);
     var nomerhpValid = /^\d{10,}$/.test(nomerhp_booking);
     
-    // Menonaktifkan tombol
     button.disabled = true;
 
-    // Menunggu 5 detik sebelum mengaktifkan kembali tombol
     setTimeout(function() {
         button.disabled = false;
     }, 5000);
@@ -349,7 +352,7 @@ function SubmitButton(BookingID, Action) {
         "waktu": waktu,
         "harga": harga,
         "pesan": pesan,
-        "selectedServices": selectedServices // Menambahkan data selectedServices ke objek dataToSend
+        "selectedServices": selectedServices
     };
 
     var jsonData = JSON.stringify(dataToSend);
@@ -357,9 +360,9 @@ function SubmitButton(BookingID, Action) {
     var xhr = new XMLHttpRequest();
 
     if (Action === 'add') {
-        xhr.open("POST", API, true); // Mengubah ke POST untuk menambahkan booking baru
+        xhr.open("POST", API, true);
     } else {
-        xhr.open("PUT", API, true); // Mengubah URL ke endpoint order
+        xhr.open("PUT", API, true);
     }
 
     xhr.setRequestHeader("Content-Type", "application/json");

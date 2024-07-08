@@ -51,17 +51,14 @@ function injectFilterSection() {
     if (container) {
         container.innerHTML = filterSectionHTML;
 
-        // Tambahkan event listener setelah elemen ditambahkan ke DOM
         const filterInputUser = document.getElementById('filterInputUser');
         if (filterInputUser) {
             filterInputUser.addEventListener('click', toggleManualFilterSection);
             
             const filterButton = document.getElementById('filterButton');
 
-            // Menambahkan event listener ke tombol filter
             if (filterButton) {
                 filterButton.addEventListener('click', function() {
-                    // Mendapatkan nilai dari startDate dan endDate
                     const startDateValue = document.getElementById('startDate').value;
                     const endDateValue = document.getElementById('endDate').value;
                     startDateUI = new Date(startDateValue);

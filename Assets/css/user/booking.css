@@ -101,6 +101,10 @@
     flex-direction: column; /* Menjadikan susunan vertikal */
 }
 
+#alertContainer, #successAlertContainer {
+    margin-bottom: 15px; /* Atur jarak sesuai kebutuhan Anda */
+}
+
 .contact-form input,
 .contact-form textarea,
 .contact-form .btn,
@@ -135,8 +139,6 @@
     padding: 0;
     list-style-type: none;
 }
-
-
 
 /* Class Balutan untuk Gambar */
 .image-wrapper {
