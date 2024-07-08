@@ -1,0 +1,23 @@
+/*******************************/
+/******* Page Header CSS *******/
+/*******************************/
+.page-header {
+    position: relative;
+    margin-bottom: 45px;
+    padding: 150px 0 90px 0;
+    text-align: center;
+    background: #00235B;
+}
+
+.page-header h2 {
+    color: #ffffff;
+    font-family: "Open Sans", sans-serif;
+    font-size: 64px;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    .page-header h2 {
+        font-size: 44px;
+    }
+}
