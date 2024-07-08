@@ -4,7 +4,7 @@
 .page-header {
     position: relative;
     margin-bottom: 45px;
-    padding: 150px 0 90px 0;
+    padding: 150px 0 100px 0;
     text-align: center;
     background: #00235B;
 }
@@ -54,9 +54,6 @@
 /*******************************/
 /********* Pricing CSS *********/
 /*******************************/
-.container-fluid {
-    padding: 0 15px;
-}
 
 .container-fluid .row {
     margin: 0 auto;

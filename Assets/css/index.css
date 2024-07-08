@@ -75,7 +75,7 @@
     }
 }
 
-@media (max-width: 991.98px) {   
+@media (max-width: 768px) {   
     .navbar {
         padding: 15px;
         background: #00235B !important;
@@ -88,147 +88,88 @@
     .navbar .dropdown-menu {
         box-shadow: none;
     }
+
+    #navbarCollapse {
+        padding-top: 20px;
+    }
+
 }
 
 /*******************************/
 /********* Footer CSS **********/
 /*******************************/
 .footer {
-    position: relative;
     margin-top: 45px;
-    padding-top: 90px;
-    background: #00235B;
+    padding: 150px 0 100px 0;
+    background-color: #00235B;
+    padding: 20px 0;
 }
 
-.footer .footer-contact,
-.footer .footer-link,
-.footer .footer-newsletter {
-    position: relative;
-    margin-bottom: 45px;
-    color: #ffff;
+.footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: left; /* Make text left-aligned */
 }
 
-.footer .footer-contact h2,
-.footer .footer-link h2,
-.footer .footer-newsletter h2{
-    position: relative;
-    margin-bottom: 30px;
-    font-size: 22px;
+.footer h2 {
+    color: #ffffff;
+    font-size: 24px;
     font-weight: 700;
-    color: #ffff;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: left; /* Left align the heading */
 }
 
-.footer .footer-link a {
-    display: block;
-    margin-bottom: 10px;
+.footer p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: white;
+    /* text-align: left; */
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer a:hover {
     color: #f84200;
-    transition: .3s;
+    text-decoration: underline;
 }
 
-.footer .footer-link a::before {
-    position: relative;
-    content: "\f105";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
+.footer .fa {
     margin-right: 10px;
 }
 
-.footer .footer-link a:hover {
-    color: #ffff;
-    letter-spacing: 1px;
-}
-
-.footer .footer-contact p i {
-    width: 25px;
-}
-
-.footer .footer-social {
-    position: relative;
-    margin-top: 20px;
-}
-
-.footer .footer-social a {
-    display: inline-block;
-}
-
-.footer .footer-social a i {
-    margin-right: 15px;
-    font-size: 18px;
-    color: #ffff;
-}
-
-.footer .footer-social a:last-child i {
-    margin: 0;
-}
-
-.footer .footer-social a:hover i {
-    color: #f84200;
-}
-
-.footer .footer-newsletter .form {
-    position: relative;
-    width: 100%;
-}
-
-.footer .footer-newsletter input {
-    height: 60px;
-    border: 2px solid #00235B;
-    border-radius: 0;
-}
-
-.footer .footer-newsletter .btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    height: 44px;
-    padding: 8px 20px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #00235B;
-    background: none;
-    border-radius: 0;
-    border: 2px solid #00235B;
-    transition: .3s;
-}
-
-.footer .footer-newsletter .btn:hover {
-    color: #ffff;
-    background: #00235B;
-}
-
 .footer .copyright {
-    padding: 0 30px;
+    background-color: #00235B;
+    margin-top: 20px;
+    border-top: 1px solid #555;
+    padding-top: 10px;
+    font-size: 14px;
+    text-align: center; /* Center align the copyright text */
 }
 
-.footer .copyright .row {
-    background: #ffffff;
-    width: 121%;
-    padding-top: 25px;
-    padding-bottom: 25px;
-}
-
-.footer .copyright p {
-    margin: 0;
-    color: #949191;
-}
-
-.footer .copyright .col-md-6:last-child p {
-    text-align: left;
-}
-
-.footer .copyright p a {
-    color: #00235B;
+.footer .copyright a {
+    color: #ffffff;
     font-weight: 700;
 }
 
-.footer .copyright p a:hover {
+.footer .copyright a:hover {
     color: #f84200;
 }
 
-@media (max-width: 767.98px) {
-    .footer .copyright p,
-    .footer .copyright .col-md-6:last-child p {
-        margin: 5px 0;
-        text-align: center;
+@media (max-width: 768px) {
+    .footer .container {
+        text-align: center; /* Center align text for mobile */
+    }
+
+    .footer h2 {
+        text-align: center; /* Center align heading for mobile */
+    }
+
+    .footer p {
+        text-align: center; /* Center align paragraphs for mobile */
     }
 }
