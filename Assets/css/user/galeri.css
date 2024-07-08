@@ -16,37 +16,9 @@
     font-weight: 700;
 }
 
-.page-header a {
-    padding: 0 12px;
-    font-size: 22px;
-    color: #00235B;
-    text-decoration: none; /* Menambahkan dekorasi ke link */
-}
-
-.page-header a:hover {
-    color: #ffffff;
-}
-
-.page-header a::after {
-    content: "/";
-    width: 8px;
-    height: 8px;
-    top: -2px;
-    right: -7px;
-    text-align: center;
-    color: #00235B;
-}
-
-.page-header a:last-child::after {
-    display: none;
-}
-
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
     .page-header h2 {
         font-size: 54px;
-    }
-    .page-header a {
-        font-size: 18px;
     }
 }
 
