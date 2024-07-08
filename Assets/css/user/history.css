@@ -11,7 +11,8 @@
 
 .page-header h2 {
     color: #ffffff;
-    font-size: 60px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 64px;
     font-weight: 700;
 }
 
@@ -43,39 +44,10 @@
 
 @media (max-width: 767.98px) {
     .page-header h2 {
-        font-size: 35px;
+        font-size: 54px;
     }
-    
     .page-header a {
         font-size: 18px;
-    }
-}
-
-/*******************************/
-/******* Section Header ********/
-/*******************************/
-.section-header {
-    max-width: 600px;
-    margin: 0 auto;
-    margin-bottom: 45px;
-    text-align: center; /* Mengatur teks ke tengah */
-}
-
-.section-header p {
-    margin-bottom: 5px;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.section-header h2 {
-    margin: 0;
-    font-size: 50px;
-    font-weight: 700;
-}
-
-@media (max-width: 767.98px) {
-    .section-header h2 {
-        font-size: 30px;
     }
 }
 

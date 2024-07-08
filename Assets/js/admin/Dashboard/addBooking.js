@@ -38,7 +38,6 @@ function createBookingForm(Action) {
             </div>
         </div>
         <form role="form" name="${formId}" id="${formId}" method="post" class="booking-form">
-            <!-- Bagian Pertama -->
             <div class="section section-1">
                 <div class="form-group">
                     <label for="nama_booking">Nama</label>
@@ -49,10 +48,9 @@ function createBookingForm(Action) {
                     <input type="date" id="${tanggalFieldId}" name="${tanggalFieldId}" required="required" class="form-control" data-validation-required-message="Silahkan masukan tanggal booking" required>
                 </div>
             </div>
-            <!-- Bagian Kedua -->
             <div class="section section-2">
                 <div class="form-group">
-                    <label for="nomerhp_booking">Nomor HP</label>
+                    <label for="nomerhp_booking">Nomor Ponsel</label>
                     <input type="text" name="${nomorHPFieldId}" id="${nomorHPFieldId}" class="form-control" required>
                 </div>
                 <div class="form-group">
@@ -62,25 +60,21 @@ function createBookingForm(Action) {
                     </select>
                 </div>
             </div>
-            <!-- Bagian Ketiga -->
             <div class="section section-3">
                 <div class="form-group service-data-container${BookingID}"></div>
             </div>
-            <!-- Bagian Keempat -->
             <div class="section section-4">
                 <div class="form-group">
                     <label for="pesan">Pesan</label>
                     <textarea type="text" id="${pesanFieldId}" name="${pesanFieldId}" class="form-control" required></textarea>
                 </div>
             </div>
-            <!-- Bagian Kelima -->
             <div class="section section-5">
                 <div class="form-group">
                     <div class="form-group service-data "></div>
                     <button id="${submitBtnId}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
                 </div>
             </div>
-            <!-- Bagian Keenam -->
             <div class="section section-6">
                 <div id="${TotalHarga}">
                     Total Harga: Rp. 0

@@ -10,9 +10,10 @@
 }
 
 .page-header h2 {
+    font-family: "Work Sans", sans-serif;
     position: relative;
+    font-size: 64px;
     color: #ffffff;
-    font-size: 60px;
     font-weight: 700;
 }
 
@@ -68,6 +69,8 @@
 @media (max-width: 767.98px) {
     .section-header h3 {
         font-size: 24px;
+    }.page-header h2 {
+        font-size: 54px;
     }
 }
 
@@ -114,9 +117,17 @@
 }
 
 .container-fluid .row .col-md-12 .mb-5 h2 {
+    font-family: "ABeeZee", sans-serif;
+    font-weight: bold;
+    font-size: 32px;
     margin-top: 10px;
     margin-bottom: 25px;
     text-align: center;
+}
+
+.container-fluid .row .col-md-12 .mb-5 .table-responsive {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
 }
 
 /* Aturan CSS untuk mode ponsel */

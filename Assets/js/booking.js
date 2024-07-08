@@ -1,7 +1,6 @@
 const id = sessionStorage.getItem('id');
 
 function fetchUserById(id) {
-    // const url = `http://localhost/BEPLAZA/API/api.php/User/${id}`;
     const url = `https://beplazabarber.my.id/API/api.php/User/${id}`;
 
     fetch(url)
@@ -12,14 +11,15 @@ function fetchUserById(id) {
             return response.json();
         })
         .then(data => {
-            // Mengisi nilai ke dalam elemen HTML
             document.getElementById('nama_booking').value = data.username;
             document.getElementById('nomerhp_booking').value = data.no_telp;
-            console.log(data.username);
-            console.log(data.no_telp);
         })
+        .catch(error => {
+            console.error('Error fetching user data:', error);
+        });
 }
-fetchUserById(id)
+
+fetchUserById(id);
 
 const WatchData = [
     "08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11:00",
@@ -30,10 +30,7 @@ const WatchData = [
 function setMinDate() {
     var inputTanggal = document.getElementById('tanggal');
     if (inputTanggal) {
-        
-        var Hours = new Date();
-        Hours.setHours(Hours.getHours() + 7);
-        var today = Hours.toISOString().split('T')[0];
+        var today = new Date().toISOString().split('T')[0];
         inputTanggal.min = today;
     } else {
         setTimeout(setMinDate, 1000);
@@ -57,7 +54,6 @@ function enableWaktu() {
 
 function fetchGetBookedTimes(tanggal) {
     const tanggalFormatted = tanggal.split('-').join('');
-    // const url = `http://localhost/BEPLAZA/API/api.php/booking/${tanggalFormatted}`;
     const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
 
     fetch(url)
@@ -71,7 +67,7 @@ function fetchGetBookedTimes(tanggal) {
             displayBookedTimes(data, tanggal);
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error fetching booked times:', error);
         });
 }
 
@@ -79,7 +75,6 @@ function displayBookedTimes(bookedTimes, selectedDate) {
     const now = new Date();
     const selectedDateObj = new Date(selectedDate);
 
-    // Data waktu yang tersedia
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
     const currentTime = `${currentHour < 10 ? '0' : ''}${currentHour}:${currentMinutes < 10 ? '0' : ''}${currentMinutes}`;
@@ -87,14 +82,12 @@ function displayBookedTimes(bookedTimes, selectedDate) {
     let availableTimes = WatchData.filter(time => !bookedTimes.includes(time));
 
     if (selectedDateObj.toDateString() === now.toDateString()) {
-        // Filter out times that are earlier than the current time if the selected date is today
         availableTimes = availableTimes.filter(time => {
             const startTime = time.split(' - ')[0];
             return startTime > currentTime;
         });
     }
 
-    // Menyimpan waktu yang tersedia ke dalam elemen select
     const waktuSelect = document.getElementById("waktu");
     waktuSelect.disabled = false;
     waktuSelect.innerHTML = "";
@@ -104,7 +97,7 @@ function displayBookedTimes(bookedTimes, selectedDate) {
         option.text = "Tidak ada jadwal tersedia, silakan pilih tanggal lain.";
         option.value = "";
         waktuSelect.add(option);
-        waktuSelect.disabled = true; // Men-disable select jika tidak ada waktu tersedia
+        waktuSelect.disabled = true;
     } else {
         availableTimes.forEach(function(waktu) {
             const option = document.createElement("option");
@@ -119,7 +112,6 @@ function submitBooking() {
     var nama_booking = document.getElementById("nama_booking").value;
     var nomerhp_booking = document.getElementById("nomerhp_booking").value;
     var tanggal = document.getElementById("tanggal").value;
-    var tanggal = document.getElementById("tanggal").value;
     var waktu = document.getElementById("waktu").value;
     var pesan = document.getElementById("pesan").value;
 
@@ -129,60 +121,77 @@ function submitBooking() {
         fieldsNotFilled.push("Nama Booking");
     }
     if (nomerhp_booking === "") {
-        fieldsNotFilled.push("Nomer HP Booking");
+        fieldsNotFilled.push("Nomor HP Booking");
     }
     if (tanggal === "") {
-        fieldsNotFilled.push("Tanggal");
-    }
-    if (tanggal === "") {
-        fieldsNotFilled.push("Tanggal");
+        fieldsNotFilled.push("Tanggal Booking");
     }
     if (waktu === "") {
-        fieldsNotFilled.push("Waktu");
+        fieldsNotFilled.push("Waktu Booking");
     }
     if (pesan === "") {
         fieldsNotFilled.push("Pesan");
     }
 
     if (fieldsNotFilled.length > 0) {
-        document.getElementById("missingFieldsList").innerHTML = fieldsNotFilled.map(function(field) {
-            return "<li>" + field + "</li>";
-        }).join("");
+        var missingFieldsList = document.getElementById("missingFieldsList");
+        missingFieldsList.innerHTML = "";
+        fieldsNotFilled.forEach(function(field) {
+            var listItem = document.createElement("li");
+            listItem.textContent = field;
+            missingFieldsList.appendChild(listItem);
+        });
         document.getElementById("alertContainer").classList.remove("d-none");
+        document.getElementById("successAlertContainer").classList.add("d-none"); // Menyembunyikan alert berhasil jika sedang tampil
+        setTimeout(function() {
+            document.getElementById("alertContainer").classList.add("d-none");
+        }, 5000); // Menghilangkan alert gagal setelah 5 detik (5000 milidetik)
         return;
     }
 
-    var dataToSend = {
-        "nama_booking": nama_booking,
-        "nomerhp_booking": nomerhp_booking,
-        "tanggal": tanggal,
-        "waktu": waktu,
-        "pesan": pesan
+    var data = {
+        nama_booking: nama_booking,
+        nomerhp_booking: nomerhp_booking,
+        tanggal: tanggal,
+        waktu: waktu,
+        pesan: pesan
     };
 
-    var jsonData = JSON.stringify(dataToSend);
+    var url = "https://beplazabarber.my.id/API/api.php/booking";
 
     var xhr = new XMLHttpRequest();
-
-    // xhr.open("POST", "http://localhost/BEPLAZA/API/api.php/booking", true);
-    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/booking", true);
-
+    xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onload = function() {
         if (xhr.status === 200) {
             document.getElementById("successAlertContainer").classList.remove("d-none");
+            document.getElementById("alertContainer").classList.add("d-none"); // Menyembunyikan alert gagal jika sedang tampil
             setTimeout(function() {
+                document.getElementById("successAlertContainer").classList.add("d-none");
                 window.location.href = "?Booking";
-            }, 2000); // Redirect setelah 2 detik
+            }, 3000); // Menghilangkan alert berhasil setelah 3 detik (3000 milidetik)
         } else {
-            console.error("Gagal menambahkan booking:", xhr.statusText);
+            var response = JSON.parse(xhr.responseText);
+            var errorAlert = document.createElement("div");
+            errorAlert.classList.add("alert", "alert-danger", "alert-dismissible", "fade", "show");
+            errorAlert.setAttribute("role", "alert");
+            errorAlert.innerHTML = "Gagal menambahkan booking: " + response.message;
+            errorAlert.innerHTML += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            document.getElementById("alertContainer").appendChild(errorAlert);
+
+            document.getElementById("alertContainer").classList.remove("d-none");
+            document.getElementById("successAlertContainer").classList.add("d-none"); // Menyembunyikan alert berhasil jika sedang tampil
+            
+            setTimeout(function() {
+                document.getElementById("alertContainer").classList.add("d-none");
+            }, 5000); // Menghilangkan alert gagal setelah 5 detik (5000 milidetik)
         }
     };
 
     xhr.onerror = function() {
-        console.error("Koneksi error.");
+        console.error("Request failed");
     };
 
-    xhr.send(jsonData);
+    xhr.send(JSON.stringify(data));
 }

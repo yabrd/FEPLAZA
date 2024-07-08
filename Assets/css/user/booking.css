@@ -10,17 +10,17 @@
 }
 
 .page-header h2 {
-    position: relative;
     color: #ffffff;
-    font-size: 60px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 64px;
     font-weight: 700;
 }
 
 .page-header a {
-    position: relative;
     padding: 0 12px;
     font-size: 22px;
     color: #00235B;
+    text-decoration: none; /* Menambahkan dekorasi ke link */
 }
 
 .page-header a:hover {
@@ -28,7 +28,6 @@
 }
 
 .page-header a::after {
-    position: absolute;
     content: "/";
     width: 8px;
     height: 8px;
@@ -44,41 +43,10 @@
 
 @media (max-width: 767.98px) {
     .page-header h2 {
-        font-size: 35px;
+        font-size: 54px;
     }
-    
     .page-header a {
         font-size: 18px;
-    }
-}
-
-/*******************************/
-/******* Section Header ********/
-/*******************************/
-.section-header {
-    position: relative;
-    max-width: 600px;
-    margin: 0 auto;
-    margin-bottom: 45px;
-}
-
-.section-header p {
-    margin-bottom: 5px;
-    position: relative;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.section-header h2 {
-    margin: 0;
-    position: relative;
-    font-size: 50px;
-    font-weight: 700;
-}
-
-@media (max-width: 767.98px) {
-    .section-header h2 {
-        font-size: 30px;
     }
 }
 
@@ -166,34 +134,15 @@
 }
 
 @media (max-width: 767px) {
-    .page-header h2 {
-        font-size: 35px;
-    }
-    
-    .page-header a {
-        font-size: 18px;
-    }
-
-    .section-header {
-        max-width: 90%; /* Menyesuaikan lebar maksimum */
-    }
-
-    .section-header h2 {
-        font-size: 30px; /* Mengurangi ukuran font */
-    }
-
     .container-fluid .row {
         max-width: 100%; /* Penyesuaian ukuran */
     }
-
     .contact-form {
         padding: 15px 15px; /* Menyesuaikan padding */
     }
-
     .image-wrapper {
         padding: 15px 15px; /* Menyesuaikan padding */
     }
-
     .col-md-6-custom {
         padding-left: 15px; 
         padding-right: 15px;

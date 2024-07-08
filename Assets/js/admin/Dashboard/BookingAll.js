@@ -4,20 +4,17 @@ import { resetTable } from './dashboardAdmin.js';
 
 function displayBookingTable(BookingData, currentPage, Action) {
     let selectorTarget;
-    let tableId;
     let pageInfoId;
     let prevButtonId;
     let nextButtonId;
 
     if (Action === 'apply') {
         selectorTarget = '#ListTableDisplay';
-        tableId = 'NextBookingListTable';
         pageInfoId = 'PageListTable'; 
         prevButtonId = 'PrevBookingListTable';
         nextButtonId = 'NextBookingListTable';
     } else if (Action === 'edit') {
         selectorTarget = '#HistoryTableDisplay';
-        tableId = 'NextBookingHistoryTable';
         pageInfoId = 'PageHistoryTable';
         prevButtonId = 'PrevBookingHistoryTable';
         nextButtonId = 'NextBookingHistoryTable';
@@ -47,14 +44,13 @@ function displayBookingTable(BookingData, currentPage, Action) {
                     <td>${Booking.tanggal_booking}</td>
                     <td>${Booking.pesan_booking}</td>
             `;
-
             if (Action === 'edit') {
                 innerHTML += `
                     <td>${Booking.order_layanan}</td>
                     <td>${formatRupiah(Booking.harga_booking)}</td>
                     <td class="text-center">
                         <div class="btn-container">
-                            <button id="editBtn${Booking.id_booking}" class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Edit</button>
+                            <button id="${Action}Btn${Booking.id_booking}" class="btn btn-warning" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Ubah</button>
                             <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
                         </div>
                     </td>
@@ -63,13 +59,12 @@ function displayBookingTable(BookingData, currentPage, Action) {
                 innerHTML += `
                     <td class="text-center">
                         <div class="btn-container">
-                            <button class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">APPLY</button>
+                            <button id="${Action}btn${Booking.id_booking}" class="btn btn-success applyButton" data-toggle="modal" data-target="#Modal${Action}${Booking.id_booking}">Konfirmasi</button>
                             <button id="deleteBtn${Booking.id_booking}" class="btn btn-danger">Hapus</button>
                         </div>
                     </td>
                 `;
             }
-
             innerHTML += '</tr>';
 
             tableContainer.insertAdjacentHTML('beforeend', innerHTML);
@@ -118,7 +113,7 @@ function fetchAndDisplayServices(BookingID, Action) {
     .then(response => response.json())
     .then(data => {
         const layananContainer = document.querySelector(`.service-data-container${BookingID}`);
-        layananContainer.innerHTML = `<label>Service</label>`;
+        layananContainer.innerHTML = `<label>Layanan</label>`;
 
         data.forEach(Layanan => {
             if (Layanan.tampilkan === '1') { // Only display if 'tampilkan' is '1'
@@ -153,10 +148,10 @@ function fetchAndDisplayServices(BookingID, Action) {
 
 
 function SetHargaCheckbox(BookingID, totalHarga, Action) {
-    var checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`); // Perbaiki nama kelas
+    var checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`);
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
-            totalHarga[BookingID] = 0; // Reset total harga
+            totalHarga[BookingID] = 0;
             checkboxes.forEach(function(cb) {
                 if (cb.checked) {
                     totalHarga[BookingID] += parseFloat(cb.getAttribute('data-harga'));
@@ -262,7 +257,6 @@ function deleteBooking(BookingID, Action) {
     }
 }
 
-
 function SubmitButton(BookingID, Action) {
     var MissingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
     var AlertContainerId = `AlertContainer${Action}${BookingID}`;
@@ -283,7 +277,6 @@ function SubmitButton(BookingID, Action) {
     var pesan = document.getElementById(PesanFieldId)?.value || "";
     var harga = document.getElementById(Harga)?.value || 0;
     var checkboxes = document.getElementsByName(`services${BookingID}[]`);
-
 
     var selectedServices = [];
     for (var i = 0; i < checkboxes.length; i++) {

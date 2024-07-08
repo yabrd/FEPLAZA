@@ -22,15 +22,16 @@ function historyAndEditingModal(Booking, Action) {
     const submitBtnId = `SubmitBtn${Action}${BookingID}`;
     const TotalHarga = `TotalHarga${Action}${BookingID}`;
     const Harga = `Harga${Action}${BookingID}`;
-    const modalTitle = Action;
-    const submitBtnText = Action;
+    let submitBtnText, modalTitle;
+    Action === 'edit' ? submitBtnText = 'Simpan Perubahan' : submitBtnText = 'Konfirmasi';
+    submitBtnText === 'Simpan Perubahan' ? modalTitle = 'Perbarui Pesanan' : modalTitle = 'Konfirmasi Pesanan';
 
     modalElement.innerHTML = `
         <div class="modal fade" id="${modalId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">${modalTitle}</h5>
+                        <h4 class="modal-title" id="exampleModalLabel">${modalTitle}</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="${closeModalId}">
                             <span aria-hidden="true">&times;</span>
                         </button>
