@@ -8,7 +8,7 @@ let currentBookingHistoryTable = 1;
 let bookingData = []; // Store fetched booking data
 let historyData = []; // Store fetched booking data
 let selectedFilter = 'filterAllTime'; // Default filter
-let rangeHistory;
+let rangeHistory = undefined;
 
 // Fungsi untuk mengambil data Booking dari API
 function fetchbookingData() {
@@ -24,19 +24,25 @@ function fetchbookingData() {
             console.error('Error:', error);
         });
 
-    document.getElementById('PrevBookingListTable').addEventListener('click', function () {
-        if (currentBookingListTable > 1) {
-            currentBookingListTable--;
-            displayBookingTable(bookingData, currentBookingListTable, 'apply');
-        }
-    });
-    
-    document.getElementById('NextBookingListTable').addEventListener('click', function () {
-        if (currentBookingListTable < Math.ceil(bookingData.length / 5)) {
-            currentBookingListTable++;
-            displayBookingTable(bookingData, currentBookingListTable, 'apply');
-        }
-    });
+    if (!document.getElementById('PrevBookingListTable').hasAttribute('listener-added')) {
+        document.getElementById('PrevBookingListTable').addEventListener('click', function () {
+            if (currentBookingListTable > 1) {
+                currentBookingListTable--;
+                displayBookingTable(bookingData, currentBookingListTable, 'apply');
+            }
+        });
+        document.getElementById('PrevBookingListTable').setAttribute('listener-added', 'true');
+    }
+
+    if (!document.getElementById('NextBookingListTable').hasAttribute('listener-added')) {
+        document.getElementById('NextBookingListTable').addEventListener('click', function () {
+            if (currentBookingListTable < Math.ceil(bookingData.length / 5)) {
+                currentBookingListTable++;
+                displayBookingTable(bookingData, currentBookingListTable, 'apply');
+            }
+        });
+        document.getElementById('NextBookingListTable').setAttribute('listener-added', 'true');
+    }
 }
 
 function fetchhistoryData(rangeHistory) {
@@ -58,19 +64,25 @@ function fetchhistoryData(rangeHistory) {
             console.error('Error:', error);
         });
 
+    if (!document.getElementById('PrevBookingHistoryTable').hasAttribute('listener-added')) {
         document.getElementById('PrevBookingHistoryTable').addEventListener('click', function () {
             if (currentBookingHistoryTable > 1) {
                 currentBookingHistoryTable--;
                 displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
             }
         });
-        
+        document.getElementById('PrevBookingHistoryTable').setAttribute('listener-added', 'true');
+    }
+
+    if (!document.getElementById('NextBookingHistoryTable').hasAttribute('listener-added')) {
         document.getElementById('NextBookingHistoryTable').addEventListener('click', function () {
             if (currentBookingHistoryTable < Math.ceil(historyData.length / 5)) {
                 currentBookingHistoryTable++;
                 displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
             }
         });
+        document.getElementById('NextBookingHistoryTable').setAttribute('listener-added', 'true');
+    }
 }
 
 function setupFilterButtons() {

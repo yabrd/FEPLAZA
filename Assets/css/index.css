@@ -1,17 +1,19 @@
-/**********************************/
-/*********** Nav Bar CSS **********/
-/**********************************/
 .navbar {
-    position: relative;
-    transition: .5s;
-    z-index: 999;
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    padding: 20px 60px;
+    background: rgba(0, 0, 0, .1) !important;
+    z-index: 9;
+    transition: background-color 0.3s ease; /* Tambahkan transisi untuk background-color */
 }
 
 .navbar.nav-sticky {
     position: fixed;
     top: 0;
     width: 100%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, .3);
+    background: #00235B !important;
+    transition: background-color 0.3s ease; /* Tambahkan transisi untuk background-color */
 }
 
 .navbar .navbar-brand {
@@ -37,12 +39,17 @@
 .navbar-dark .navbar-nav .nav-link.active {
     padding: 10px 10px 8px 10px;
     color: #ffffff;
+    padding: 8px 15px;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: padding 0.3s ease, color 0.3s ease; /* Tambahkan transisi untuk padding dan color */
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link.active {
     background: rgba(256, 256, 256, .1);
-    transition: none;
+    transition: background-color 0.3s ease; /* Tambahkan transisi untuk background-color */
 }
 
 .navbar .dropdown-menu {
@@ -52,33 +59,9 @@
     background: #f8f9fa;
 }
 
-@media (min-width: 992px) {
-    .navbar {
-        position: absolute;
-        width: 100%;
-        top: 0px;
-        padding: 20px 60px;
-        background: rgba(0, 0, 0, .1) !important;
-        z-index: 9;
-    }
-    
-    .navbar.nav-sticky {
-        padding: 10px 60px;
-        background: #00235B !important;
-    }
-    
-    .navbar a.nav-link {
-        padding: 8px 15px;
-        font-size: 14px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-}
-
 @media (max-width: 768px) {   
     .navbar {
         padding: 15px;
-        background: #00235B !important;
     }
     
     .navbar a.nav-link {

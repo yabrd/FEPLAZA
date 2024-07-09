@@ -39,6 +39,7 @@
 }
 
 .hero .hero-text h1 {
+    font-family: "Open Sans", sans-serif;
     color: #ffffff;
     font-size: 45px;
     font-weight: 700;
@@ -46,6 +47,7 @@
 }
 
 .hero .hero-text p {
+    font-family: "Open Sans", sans-serif;
     color: #ffffff;
     font-size: 18px;
     margin-bottom: 25px;
@@ -68,7 +70,11 @@
     background: #f84200;
 }
 
-@media (max-width: 575.98px) {
+@media (max-width: 768px) {
+    .hero .hero-image {
+        margin-top: 40px;
+    }
+
     .hero .hero-image,
     .hero .hero-text {
         padding: 0 20px;
@@ -129,6 +135,7 @@
 }
 
 .about .about-text p {
+    font-family: "Open Sans", sans-serif;
     font-size: 16px;
 }
 
@@ -151,7 +158,7 @@
     background: #00235B;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
     .about .row.align-items-center .kasihPaham{
         text-align: center;
     }
@@ -196,13 +203,15 @@
 }
 
 .service .service-item h3 {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
     margin: 0;
     padding: 25px 15px 15px 15px;
     font-size: 25px;
-    font-weight: 700;
 }
 
 .service .service-item p {
+    font-family: "Open Sans", sans-serif;
     margin: 0;
     padding: 0 25px 25px 25px;
     font-size: 16px;
@@ -255,11 +264,13 @@
 }
 
 .team .team-text h2 {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
     font-size: 16px;
-    font-weight: 600;
 }
 
 .team .team-text p {
+    font-family: "Open Sans", sans-serif;
     margin: 0;
     color: #333333;
 }

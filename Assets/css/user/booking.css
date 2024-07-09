@@ -81,7 +81,7 @@
     text-align: center;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
     .container-fluid .row {
         max-width: 100%; /* Penyesuaian ukuran */
     }

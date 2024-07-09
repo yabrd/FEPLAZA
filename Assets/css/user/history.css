@@ -7,6 +7,7 @@
 }
 
 .section-header h3 {
+    font-family: "Open Sans", sans-serif;
     font-size: 2rem;
     font-weight: 700;
     color: #333;
@@ -30,14 +31,23 @@
     flex-wrap: wrap; /* Mengizinkan konten untuk membungkus jika diperlukan */
     justify-content: center; /* Menengahkan konten secara horizontal */
     box-sizing: border-box; /* Pastikan padding dan border termasuk dalam perhitungan lebar total */
-    margin: 40px; /* Opsional: Menambahkan margin antar elemen */
     background-color: #fff;
     overflow: hidden;
     width: 100%; /* Set both elements to have the same width */
     max-width: 100%;
 }
 
+#HeadPending {
+    margin: 40px 40px 20px 40px; /* margin-top, margin-right, margin-bottom, margin-left */
+}
+
+#HeadSuccess { 
+    margin: 20px 40px 40px 40px; /* margin-top, margin-right, margin-bottom, margin-left */
+}
+
 #HeadPending h4, #HeadSuccess h4 {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 700;
     margin-top: 20px; /* Menghapus margin atas pada judul */
     margin-bottom: 20px; /* Sesuaikan margin bawah judul */
     color: #333;
@@ -52,11 +62,16 @@
     background-color: #fff;
     border-collapse: collapse;
 }
+#HistoryTablePending tr, #HistoryTableSuccess tr {
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px; /* Atur ukuran font sesuai kebutuhan Anda */
+}
 
 #pendingPagination, #successPagination {
-    margin-top: 10px; /* Sesuaikan margin bawah judul */
-    margin-bottom: 20px; /* Sesuaikan margin bawah judul */
-    margin-left: 20px;
+    margin-top: 15px; /* Sesuaikan margin bawah judul */
+    margin-bottom: 15px; /* Sesuaikan margin bawah judul */
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 /* Responsive Adjustments */
@@ -65,7 +80,11 @@
         margin: 10px; /* Opsional: Menambahkan margin antar elemen */
     }
 
-    #HeadPending, #HeadSuccess {
-        margin: 10px; /* Opsional: Menambahkan margin antar elemen */
+    #HeadPending {
+        margin: 10px 10px 5px 10px; /* margin-top, margin-right, margin-bottom, margin-left */
+    }
+    
+    #HeadSuccess { 
+        margin: 5px 10px 10px 10px; /* margin-top, margin-right, margin-bottom, margin-left */
     }
 }
