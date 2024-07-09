@@ -10,15 +10,10 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap JavaScript (Popper.js harus dimuat terlebih dahulu, diikuti oleh Bootstrap JS) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-    <!-- Font -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"><link rel="preconnect" href="https://fonts.googleapis.com">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <!-- Template Stylesheet -->
@@ -26,11 +21,12 @@
 </head>
 
 <body>
-    <!-- Nav Bar Start -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
             <a class="navbar-brand" href="?Beranda">PLAZA</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
@@ -43,15 +39,17 @@
         </div>
     </nav>
 
-    <!-- Data dari /Beranda/index.html akan ditampilkan di sini -->
-    <div id="contentFromIndexHTML"></div>
+    <!-- Konten Utama -->
+    <div id="contentFromIndexHTML" class="fade-in"></div>
 
+    <!-- Footer -->
     <div class="footer">
         <div class="container">
             <h2>Plaza Barbershop</h2>
             <p>
                 <i class="fa fa-map-marker-alt"></i>
-                <a href="https://maps.app.goo.gl/8v1xZ1hg6tQGcrtE7" target="_blank">Jl. Monumen Perjuangan 6-73, Glondong, Wirokerten, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55194</a>
+                <a href="https://maps.app.goo.gl/8v1xZ1hg6tQGcrtE7" target="_blank">Jl. Monumen Perjuangan 6-73,
+                    Glondong, Wirokerten, Kec. Banguntapan, Kabupaten Bantul, Daerah Istimewa Yogyakarta 55194</a>
             </p>
             <p>
                 <i class="fa fa-phone-alt"></i>
@@ -62,18 +60,16 @@
             <p>&copy; <a href="#">Plaza Barbershop</a>, All Right Reserved.</p>
         </div>
     </div>
-
-
+    
     <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="../Assets/lib/easing/easing.min.js"></script>
     <script src="../Assets/lib/owlcarousel/owl.carousel.min.js"></script>
-    <script src="../Assets/lib/isotope/isotope.pkgd.min.js"></script>
-
-    <!-- Contact Javascript File -->
     <script src="../Assets/mail/jqBootstrapValidation.min.js"></script>
     <script src="../Assets/mail/contact.js"></script>
-
-    <!-- Template Javascript -->
     <script src="../Assets/js/main.js"></script>
 
     <script>
@@ -82,7 +78,7 @@
             const userId = sessionStorage.getItem('id');
             const userRole = sessionStorage.getItem('role');
             var pageToLoad = "booking.html";
-    
+
             if (userId) {
                 loginLinkElement.innerText = 'Logout';
                 loginLinkElement.setAttribute('href', '../Auth/?Logout');
@@ -94,10 +90,7 @@
                 loginLinkElement.innerText = 'Login';
                 loginLinkElement.setAttribute('href', '../Auth/?Login');
             }
-    
-            // Mendapatkan URL tanpa query string
-            var urlWithoutQuery = window.location.href.split('?')[0];
-    
+
             var scriptToLoad = null;
 
             if (window.location.search.includes('?Service')) {
@@ -105,42 +98,60 @@
                 scriptToLoad = "../Assets/js/admin/serviceAdm.js";  
             } 
             else if (window.location.search.includes('?Dashboard')) {
-                // pageToLoad = "booking.html";
                 pageToLoad = "Dashboard.html";
                 
                 var script0 = document.createElement('script');
                 script0.src = "../Assets/js/admin/Dashboard/dashboardAdmin.js";
                 script0.type = "module"; // Tambahkan atribut type
                 document.head.appendChild(script0);
-                // scriptToLoad = "../Assets/js/admin/DashboardAdmin.js";
             }
             else {
                 pageToLoad = "Dashboard.html";
                 scriptToLoad = "../Assets/js/admin/Dashboard/dashboardAdmin.js";     
             }
 
-            
-            // Membuat instance objek XMLHttpRequest
-            var xhttp = new XMLHttpRequest();
-            
-            // Mendefinisikan apa yang harus dilakukan setelah mendapatkan respon dari server
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
+            // Membuat instance objek fetch untuk memuat halaman
+            fetch(pageToLoad)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
                     // Memasukkan isi halaman ke dalam div
-                    document.getElementById("contentFromIndexHTML").innerHTML = this.responseText;
-    
+                    document.getElementById("contentFromIndexHTML").innerHTML = html;
+
+                    // Tambahkan kelas 'loaded' setelah konten dimuat
+                    document.getElementById("contentFromIndexHTML").classList.add('loaded');
+
                     // Memuat skrip tambahan jika ada
                     if (scriptToLoad) {
-                        var scriptElement = document.createElement('script');
-                        scriptElement.src = scriptToLoad;
+                        return fetch(scriptToLoad);
+                    } else {
+                        return Promise.resolve(null);
+                    }
+                })
+                .then(response => {
+                    if (response) {
+                        return response.text();
+                    } else {
+                        return Promise.resolve(null);
+                    }
+                })
+                .then(scriptText => {
+                    if (scriptText) {
+                        const scriptElement = document.createElement('script');
+                        scriptElement.textContent = scriptText;
                         document.body.appendChild(scriptElement);
                     }
-                }
-            };
+                })
+                .catch(error => {
+                    console.error('Error fetching or loading content:', error);
+                });
     
             if(userRole === 'admin') {
-                xhttp.open("GET", pageToLoad, true);
-                xhttp.send();
+                // Tidak perlu memanggil xhttp lagi
             }
             else if(userRole === 'pelanggan'){
                 window.location.href = '../?Beranda';

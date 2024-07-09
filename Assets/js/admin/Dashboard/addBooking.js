@@ -2,7 +2,7 @@ import { enableWaktu, setMinDate } from "./utils.js";
 import { fetchAndDisplayServices } from "./bookingAll.js"
 import { SubmitButton } from "./bookingAll.js"
 
-function createBookingForm(Action) {
+async function createBookingForm(Action) {
     // Mendapatkan elemen tempat Anda ingin menambahkan formulir
     var formContainer = document.getElementById('formContainer');
     const BookingID = 1;
@@ -70,21 +70,21 @@ function createBookingForm(Action) {
                 </div>
             </div>
             <div class="section section-5">
-                <div class="form-group">
-                    <div class="form-group service-data "></div>
-                    <button id="${submitBtnId}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
+                <div id="${TotalHarga}">
+                    Total Harga: Rp. 0
                 </div>
             </div>
             <div class="section section-6">
-                <div id="${TotalHarga}">
-                    Total Harga: Rp. 0
+                <div class="form-group">
+                    <div class="form-group service-data "></div>
+                    <button id="${submitBtnId}" class="btn btn-primary btn-block fw-bold text-black fs-5" type="button">Tambah Booking</button>
                 </div>
             </div>
         </form>
     `;
     formContainer.innerHTML = formHTML;
 
-    fetchAndDisplayServices(BookingID, Action);
+    await fetchAndDisplayServices(BookingID, Action); // Menunggu fetchAndDisplayServices selesai
     setMinDate(tanggalFieldId);
 
     var tanggalInput = document.getElementById(tanggalFieldId);
@@ -98,4 +98,4 @@ function createBookingForm(Action) {
     });
 }
 
-export { createBookingForm }
+export { createBookingForm };

@@ -110,6 +110,24 @@
 /*****************************/
 /********** Booking **********/
 /*****************************/
+/* Styling untuk membungkus semua section dalam booking form */
+.booking-form {
+    padding: 20px; /* Padding agar konten tidak terlalu dekat dengan tepi */
+    background-color: #f7f7f7; /* Warna latar belakang untuk menampilkan area formulir dengan jelas */
+    border: 1px solid #ccc; /* Garis pinggiran untuk menandai area formulir */
+    border-radius: 5px; /* Corner radius untuk tampilan yang lebih halus */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow untuk efek mendalam */
+}
+
+/* Padding dan margin tambahan untuk setiap section */
+
+/* Style untuk judul section */
+.section-title {
+    font-size: 18px; /* Ukuran font untuk judul section */
+    font-weight: bold; /* Ketebalan font untuk judul yang menonjol */
+    margin-bottom: 10px; /* Margin bawah untuk memisahkan judul dari konten di bawahnya */
+}
+
 /* Style untuk Form Label */
 .booking-form {
     display: grid;
@@ -119,7 +137,8 @@
     grid-template-areas:
         "section1 section2 section3"
         "section4 section4 section3" /* Section 5 dan 6 berada di bawah Section 4 */
-        "section5 section6 section3" /* Section 5 dan 6 berada di bawah Section 4 */
+        "section5 section5 section3" /* Section 5 dan 6 berada di bawah Section 4 */
+        "section6 section6 section3" /* Section 5 dan 6 berada di bawah Section 4 */
 }
 
 .booking-form .section-1 {
@@ -153,9 +172,30 @@
 @media (max-width: 768px) {
     .booking-form {
         display: block;
+        padding: 10px; /* Padding agar konten tidak terlalu dekat dengan tepi */
+    }
+    
+    .booking-form .section-1 {
+        order: 1; /* Urutan 1 */
     }
 
-    .section-1, .section-2, .section-3, .section-4, .section-6, .section-5 {
-        width: 100%;
+    .booking-form .section-2 {
+        order: 2; /* Urutan 2 */
+    }
+
+    .booking-form .section-4 {
+        order: 3; /* Urutan 3 */
+    }
+
+    .booking-form .section-3 {
+        order: 4; /* Urutan 4 */
+    }
+
+    .booking-form .section-5 {
+        order: 5; /* Urutan 5 */
+    }
+
+    .booking-form .section-6 {
+        order: 6; /* Urutan 6 */
     }
 }

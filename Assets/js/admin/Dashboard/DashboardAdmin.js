@@ -6,62 +6,41 @@ import { printCetakTable } from './printData.js';
 let currentBookingListTable = 1;
 let currentBookingHistoryTable = 1;
 let bookingData = []; // Store fetched booking data
-let historyData = []; // Store fetched booking data
+let historyData = []; // Store fetched history data
 let selectedFilter = 'filterAllTime'; // Default filter
 let rangeHistory = undefined;
 
-// Fungsi untuk menampilkan loading spinner
-function showLoading() {
-    const loader = document.createElement('div');
-    loader.id = 'loader';
-    loader.style.position = 'absolute';
-    loader.style.top = '50%';
-    loader.style.left = '50%';
-    loader.style.transform = 'translate(-50%, -50%)';
-    loader.style.zIndex = '1000';
-    loader.innerHTML = '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
-    document.body.appendChild(loader);
-}
-
-// Fungsi untuk menghilangkan loading spinner
-function hideLoading() {
-    const loader = document.getElementById('loader');
-    if (loader) {
-        loader.remove();
-    }
-}
-
-// Fungsi untuk mengambil data Booking dari API dengan retry logic
+// Fungsi async untuk mengambil data Booking dari API dengan retry
 async function fetchbookingData() {
     const bookingAPI = 'https://beplazabarber.my.id/API/api.php/bookingNoBookingPrice';
-    let retries = 3; // Jumlah maksimum percobaan
-    let attempts = 0;
 
-    while (attempts < retries) {
+    let retryCount = 0;
+    const maxRetry = 3;
+
+    while (retryCount < maxRetry) {
         try {
-            showLoading();
             const response = await fetch(bookingAPI);
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error('Network response was not ok');
             }
-            bookingData = await response.json();
+            const data = await response.json();
+            bookingData = data;
             displayBookingTable(bookingData, currentBookingListTable, 'apply');
-            hideLoading();
-            break; // Keluar dari loop jika berhasil
+            break; // Break out of the retry loop on successful fetch
         } catch (error) {
-            console.error('Error fetching data, retrying...', error);
-            attempts++;
-            if (attempts === retries) {
-                console.error('Max retries reached. Failed to fetch data.');
-                hideLoading();
+            console.error('Error fetching booking data:', error);
+            retryCount++;
+            if (retryCount === maxRetry) {
+                console.error('Maximum retries exceeded');
             }
-            // Tunggu sebelum mencoba lagi
-            await new Promise(resolve => setTimeout(resolve, 2000));
         }
     }
+
+    // Setup event listeners after fetching data
+    setupBookingTableListeners();
 }
 
-// Fungsi untuk mengambil data History dari API dengan retry logic
+// Fungsi async untuk mengambil data History dari API dengan retry
 async function fetchhistoryData(rangeHistory) {
     let historyAPI;
 
@@ -71,33 +50,83 @@ async function fetchhistoryData(rangeHistory) {
         historyAPI = `https://beplazabarber.my.id/API/api.php/bookingRange/${rangeHistory}`;
     }
 
-    let retries = 3; // Jumlah maksimum percobaan
-    let attempts = 0;
+    let retryCount = 0;
+    const maxRetry = 3;
 
-    while (attempts < retries) {
+    while (retryCount < maxRetry) {
         try {
-            showLoading();
             const response = await fetch(historyAPI);
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error('Network response was not ok');
             }
-            historyData = await response.json();
+            const data = await response.json();
+            historyData = data;
             displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
-            hideLoading();
-            break; // Keluar dari loop jika berhasil
+            break; // Break out of the retry loop on successful fetch
         } catch (error) {
-            console.error('Error fetching data, retrying...', error);
-            attempts++;
-            if (attempts === retries) {
-                console.error('Max retries reached. Failed to fetch data.');
-                hideLoading();
+            console.error('Error fetching history data:', error);
+            retryCount++;
+            if (retryCount === maxRetry) {
+                console.error('Maximum retries exceeded');
             }
-            // Tunggu sebelum mencoba lagi
-            await new Promise(resolve => setTimeout(resolve, 2000));
         }
+    }
+
+    // Setup event listeners after fetching data
+    setupHistoryTableListeners();
+}
+
+// Setup event listeners untuk tabel booking
+function setupBookingTableListeners() {
+    // Event listener untuk PrevBookingListTable
+    if (!document.getElementById('PrevBookingListTable').hasAttribute('listener-added')) {
+        document.getElementById('PrevBookingListTable').addEventListener('click', function () {
+            if (currentBookingListTable > 1) {
+                currentBookingListTable--;
+                displayBookingTable(bookingData, currentBookingListTable, 'apply');
+            }
+        });
+        document.getElementById('PrevBookingListTable').setAttribute('listener-added', 'true');
+    }
+
+    // Event listener untuk NextBookingListTable
+    if (!document.getElementById('NextBookingListTable').hasAttribute('listener-added')) {
+        document.getElementById('NextBookingListTable').addEventListener('click', function () {
+            if (currentBookingListTable < Math.ceil(bookingData.length / 5)) {
+                currentBookingListTable++;
+                displayBookingTable(bookingData, currentBookingListTable, 'apply');
+            }
+        });
+        document.getElementById('NextBookingListTable').setAttribute('listener-added', 'true');
     }
 }
 
+// Setup event listeners untuk tabel history
+function setupHistoryTableListeners() {
+    // Event listener untuk PrevBookingHistoryTable
+    if (!document.getElementById('PrevBookingHistoryTable').hasAttribute('listener-added')) {
+        document.getElementById('PrevBookingHistoryTable').addEventListener('click', function () {
+            if (currentBookingHistoryTable > 1) {
+                currentBookingHistoryTable--;
+                displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
+            }
+        });
+        document.getElementById('PrevBookingHistoryTable').setAttribute('listener-added', 'true');
+    }
+
+    // Event listener untuk NextBookingHistoryTable
+    if (!document.getElementById('NextBookingHistoryTable').hasAttribute('listener-added')) {
+        document.getElementById('NextBookingHistoryTable').addEventListener('click', function () {
+            if (currentBookingHistoryTable < Math.ceil(historyData.length / 5)) {
+                currentBookingHistoryTable++;
+                displayBookingTable(historyData, currentBookingHistoryTable, 'edit');
+            }
+        });
+        document.getElementById('NextBookingHistoryTable').setAttribute('listener-added', 'true');
+    }
+}
+
+// Setup event listeners untuk tombol filter dan download
 function setupFilterButtons() {
     // Menangani klik pada semua tombol filter
     const filterButtons = document.querySelectorAll('.filter-section-container .dropdown-item');
@@ -139,6 +168,7 @@ function setupFilterButtons() {
     }
 }
 
+// Fungsi untuk mereset tabel
 function resetTable() {
     currentBookingListTable = 1;
     currentBookingHistoryTable = 1;
@@ -153,4 +183,5 @@ injectFilterSection();
 setupFilterButtons();
 createBookingForm('add');
 
+// Export fungsi resetTable untuk digunakan di tempat lain jika diperlukan
 export { resetTable };

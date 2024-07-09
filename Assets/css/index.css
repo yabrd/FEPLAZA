@@ -143,6 +143,16 @@
     color: #f84200;
 }
 
+/* Animasi untuk konten utama */
+#contentFromIndexHTML {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#contentFromIndexHTML.loaded {
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
     .footer .container {
         text-align: center; /* Center align text for mobile */

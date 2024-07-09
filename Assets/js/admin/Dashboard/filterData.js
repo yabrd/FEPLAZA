@@ -1,7 +1,7 @@
 let startDateUI;
 let endDateUI;
 
-function injectFilterSection() {
+async function injectFilterSection() {
     const filterSectionHTML = `
         <div class="filter-section-container">
             <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
