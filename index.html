@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>Plaza Barbershop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" type="image/png" href="../Assets/img/Logo-Blue.png">
+    <link rel="icon" type="image/png" href="Assets/img/Logo-Blue.png">
 
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -78,6 +78,7 @@
             const userId = sessionStorage.getItem('id');
             const userRole = sessionStorage.getItem('role');
             let pageToLoad = "beranda.html";
+            let scriptToLoad = null;
 
             if (userId) {
                 // User is logged in, modify the login link to logout and add riwayat link
@@ -105,40 +106,64 @@
                     pageToLoad = "beranda.html";
                 } else if (window.location.search.includes('?Layanan')) {
                     pageToLoad = "layanan.html";
-                    var scriptToLoad = "Assets/js/user/layanan.js";
+                    scriptToLoad = "Assets/js/user/layanan.js";
                 } else if (window.location.search.includes('?Galeri')) {
                     pageToLoad = "galeri.html";
                 } else if (window.location.search.includes('?Booking')) {
                     if (userId) {
                         pageToLoad = "booking.html";
-                        var scriptToLoad = "Assets/js/booking.js";
+                        scriptToLoad = "Assets/js/booking.js";
                     } else {
                         window.location.href = 'Auth/?Login';
                     }
-                }
-                else if (window.location.search.includes('?Riwayat')){
+                } else if (window.location.search.includes('?Riwayat')) {
                     if (userId) {
-                        var scriptToLoad = "Assets/js/user/riwayat.js";
                         pageToLoad = "riwayat.html";
+                        scriptToLoad = "Assets/js/user/riwayat.js";
                     } else {
                         window.location.href = 'Auth/?Login';
                     }
                 }
             }
 
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("contentFromIndexHTML").innerHTML = this.responseText;
+            fetch(pageToLoad)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // Memasukkan isi halaman ke dalam div
+                    document.getElementById("contentFromIndexHTML").innerHTML = html;
+
+                    // Tambahkan kelas 'loaded' setelah konten dimuat
+                    document.getElementById("contentFromIndexHTML").classList.add('loaded');
+
+                    // Memuat skrip tambahan jika ada
                     if (scriptToLoad) {
-                        var scriptElement = document.createElement('script');
-                        scriptElement.src = scriptToLoad;
+                        return fetch(scriptToLoad);
+                    } else {
+                        return Promise.resolve(null);
+                    }
+                })
+                .then(response => {
+                    if (response) {
+                        return response.text();
+                    } else {
+                        return Promise.resolve(null);
+                    }
+                })
+                .then(scriptText => {
+                    if (scriptText) {
+                        const scriptElement = document.createElement('script');
+                        scriptElement.textContent = scriptText;
                         document.body.appendChild(scriptElement);
                     }
-                }
-            };
-            xhttp.open("GET", pageToLoad, true);
-            xhttp.send();
+                })
+                .catch(error => {
+                    console.error('Error fetching or loading content:', error);
+                });
         });
     </script>
 </body>

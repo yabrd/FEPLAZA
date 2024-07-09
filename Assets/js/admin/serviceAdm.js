@@ -1,67 +1,67 @@
-function AllService() {
+const AllService = async () => {
     const url = 'https://beplazabarber.my.id/API/api.php/layanan';
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            const serviceContainer = document.getElementById('data_service');
-            serviceContainer.innerHTML = ''; // Menghapus semua elemen <tr> yang ada sebelumnya
-            let iterasi = 1 ;
-            data.forEach(Service => {
-                const ServiceElement = document.createElement('tr');
-                ServiceElement.innerHTML = `
-                    <td>${iterasi++}</td>
-                    <td class="text-left">${Service.nama}</td>
-                    <td class="text-left">${Service.keterangan}</td>
-                    <td class="text-left">
-                    ${parseInt(Service.tampilkan) === 1 ? 'Ditampilkan' : 'Tidak'}
-                    </td>
-                    <td>${Service.harga}</td>
-                    <td class="text-left" style="min-width: 170px;">
-                        <button class="btn btn-warning" onclick="editService(${Service.id})">Ubah</button>
-                        <button id="btn_delete${Service.id_pelayanan}" class="btn btn-danger" onclick="deleteService(${Service.id})">Hapus</button>
-                    </td>
-                `;
-                serviceContainer.appendChild(ServiceElement);
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    try {
+        const response = await fetch(url); // Menunggu hingga data diambil dari API
+        const data = await response.json(); // Menunggu hingga data diubah menjadi JSON
+        
+        const serviceContainer = document.getElementById('data_service');
+        serviceContainer.innerHTML = ''; // Menghapus semua elemen <tr> yang ada sebelumnya
+        let iterasi = 1 ;
+        
+        data.forEach(Service => {
+            const ServiceElement = document.createElement('tr');
+            ServiceElement.innerHTML = `
+                <td>${iterasi++}</td>
+                <td class="text-left">${Service.nama}</td>
+                <td class="text-left">${Service.keterangan}</td>
+                <td class="text-left">
+                ${parseInt(Service.tampilkan) === 1 ? 'Ditampilkan' : 'Tidak'}
+                </td>
+                <td>${Service.harga}</td>
+                <td class="text-left" style="min-width: 170px;">
+                    <button class="btn btn-warning" onclick="editService(${Service.id})">Ubah</button>
+                    <button id="btn_delete${Service.id_pelayanan}" class="btn btn-danger" onclick="deleteService(${Service.id})">Hapus</button>
+                </td>
+            `;
+            serviceContainer.appendChild(ServiceElement);
         });
-}
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
-function editService(serviceId) {
-    // Dapatkan data layanan dari server berdasarkan serviceId dan isi modal edit
-    const url = `https://beplazabarber.my.id/API/api.php/layanan/${serviceId}`;
-    fetch(url)
-        .then(response => response.json())
-        .then(service => {
-            document.getElementById('editIdPelayanan').value = service.id;
-            document.getElementById('editnamaPelayanan').value = service.nama;
-            document.getElementById('editketeranganPelayanan').value = service.keterangan;
-            document.getElementById('edithargaPelayanan').value = service.harga;
-            document.getElementById('tampilkanPelayanan').value = service.tampilkan;
+const editService = async (serviceId) => {
+    try {
+        const url = `https://beplazabarber.my.id/API/api.php/layanan/${serviceId}`;
+        const response = await fetch(url);
+        const service = await response.json();
 
-            var previewContainer = document.getElementById('editpreviewContainer');
-            previewContainer.innerHTML = ''; 
-            if (service.gambar) {
-                var imgElement = document.createElement('img');
-                imgElement.setAttribute('src', service.gambar);
-                imgElement.setAttribute('class', 'img-thumbnail mt-2 rounded');
-                previewContainer.appendChild(imgElement);
-            }
-            $('#editModal').modal('show');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
+        document.getElementById('editIdPelayanan').value = service.id;
+        document.getElementById('editnamaPelayanan').value = service.nama;
+        document.getElementById('editketeranganPelayanan').value = service.keterangan;
+        document.getElementById('edithargaPelayanan').value = service.harga;
+        document.getElementById('tampilkanPelayanan').value = service.tampilkan;
+
+        var previewContainer = document.getElementById('editpreviewContainer');
+        previewContainer.innerHTML = '';
+        if (service.gambar) {
+            var imgElement = document.createElement('img');
+            imgElement.setAttribute('src', service.gambar);
+            imgElement.setAttribute('class', 'img-thumbnail mt-2 rounded');
+            previewContainer.appendChild(imgElement);
+        }
+
+        $('#editModal').modal('show');
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
 function closeEditModal() {
     $('#editModal').modal('hide'); 
 }
 
 AllService()
-
 
 function searchData() {
     var input, filter, table, tr, td, i, txtValue;
@@ -82,10 +82,10 @@ function searchData() {
     }
 }
 
-
 function showTambahPelayananModal() {
     $('#tambahPelayananModal').modal('show'); // Menggunakan jQuery untuk menampilkan modal
 }
+
 function closeModal() {
     $('#tambahPelayananModal').modal('hide'); // Menggunakan jQuery untuk menampilkan modal
 }
@@ -107,6 +107,7 @@ function previewImage(input) {
         reader.readAsDataURL(input.files[0]); // Baca data gambar sebagai URL
     }
 }
+
 function editpreviewImage(input) {
     var previewContainer = document.getElementById('editpreviewContainer');
     previewContainer.innerHTML = ''; // Kosongkan container sebelum menambah gambar baru
@@ -141,162 +142,157 @@ function isImage(filename) {
     return allowedExtensions.includes(extension);
 }
 
-function simpanDataGambar() {
-    var gambarPelayanan = document.getElementById("gambarPelayanan").files[0];
+const simpanDataGambar = async () => {
+    try {
+        const gambarPelayanan = document.getElementById("gambarPelayanan").files[0];
 
-    var formData = new FormData();
-    formData.append("gambar", gambarPelayanan);
+        const formData = new FormData();
+        formData.append("gambar", gambarPelayanan);
 
+        const response = await fetch("https://beplazabarber.my.id/API/api.php/gambarlayanan", {
+            method: "POST",
+            body: formData
+        });
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/gambarlayanan", true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
+        if (response.ok) {
             document.getElementById("successAlertContainer").classList.remove("d-none");
             setTimeout(function() {
-                closeModal() 
-                resetForm()
-                AllService()
-                document.getElementById(`successAlertContainer`).classList.add("d-none"); 
-            }, 3000); 
-            console.log(xhr.statusText)
+                closeModal();
+                resetForm();
+                AllService();
+                document.getElementById("successAlertContainer").classList.add("d-none");
+            }, 3000);
+            console.log(response.statusText);
         } else {
-            console.error("Gagal menambahkan layanan:", xhr.statusText);
+            console.error("Gagal menambahkan layanan:", response.statusText);
         }
-    };
-    xhr.onerror = function() {
-        console.error("Koneksi error.");
-    };
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
 
-    xhr.send(formData);
-}
+const editsimpanDataGambar = async (id) => {
+    try {
+        const gambarPelayanan = document.getElementById("editgambarPelayanan").files[0];
 
-function editsimpanDataGambar(id) {
-    var gambarPelayanan = document.getElementById("editgambarPelayanan").files[0];
+        const formData = new FormData();
+        formData.append("gambar", gambarPelayanan);
 
-    console.log(gambarPelayanan)
-    var formData = new FormData();
-    formData.append("gambar", gambarPelayanan);
+        const response = await fetch(`https://beplazabarber.my.id/API/api.php/gambarlayanan/${id}`, {
+            method: "POST",
+            body: formData
+        });
 
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/gambarlayanan/"+id, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
+        if (response.ok) {
             document.getElementById("editsuccessAlertContainer").classList.remove("d-none");
             setTimeout(function() {
-                closeEditModal()
-                AllService()
-                document.getElementById(`editsuccessAlertContainer`).classList.add("d-none"); 
-            }, 3000); 
+                closeEditModal();
+                AllService();
+                document.getElementById("editsuccessAlertContainer").classList.add("d-none");
+            }, 3000);
         } else {
-            console.error("Gagal menambahkan layanan:", xhr.statusText);
+            console.error("Gagal menambahkan layanan:", response.statusText);
         }
-    };
-    xhr.onerror = function() {
-        console.error("Koneksi error.");
-    };
-
-    xhr.send(formData);
-}
-
-function simpanDataPelayanan() {
-    var button = document.getElementById("simpanPelayanan");
-    button.disabled = true;
-    setTimeout(function() {
-        button.disabled = false;
-    }, 5000);
-
-    var namaPelayanan = document.getElementById("namaPelayanan").value;
-    var keteranganPelayanan = document.getElementById("keteranganPelayanan").value;
-    var tampilkanPelayanan = document.getElementById("langsungTampilkan").value;
-    var hargaPelayanan = document.getElementById("hargaPelayanan").value;
-    var gambarPelayanan = document.getElementById("gambarPelayanan").files[0];
-
-    var fieldsNotFilled = [];
-
-    if (namaPelayanan === "") {
-        fieldsNotFilled.push("Nama");
-    } else if (/[\[\]\{\}]/.test(namaPelayanan)) {
-        fieldsNotFilled.push("Nama tidak boleh mengandung karakter khusus");
+    } catch (error) {
+        console.error("Error:", error);
     }
-    
-    if (keteranganPelayanan === "") {
-        fieldsNotFilled.push("Keterangan");
-    } else if (/[\[\]\{\}]/.test(keteranganPelayanan)) {
-        fieldsNotFilled.push("Keterangan tidak boleh mengandung karakter khusus");
-    }
-    
-    if (hargaPelayanan === "") {
-        fieldsNotFilled.push("Harga");
-    } else if (isNaN(hargaPelayanan)) {
-        fieldsNotFilled.push("Harga harus berupa angka");
-    }    
-    
-    if (!gambarPelayanan) {
-        fieldsNotFilled.push("Gambar");
-    } else if (!isImage(gambarPelayanan.name)) {
-        fieldsNotFilled.push("Gambar harus berupa file gambar (format: .jpg, .jpeg, .png)");
-    }
+};
 
-    if (fieldsNotFilled.length > 0) {
-        document.getElementById("missingFieldsList").innerHTML = fieldsNotFilled.map(function(field) {
-            return "<li>" + field + "</li>";
-        }).join("");
-        document.getElementById("alertContainer").classList.remove("d-none");
+
+const simpanDataPelayanan = async () => {
+    try {
+        const button = document.getElementById("simpanPelayanan");
+        button.disabled = true;
         setTimeout(function() {
-            document.getElementById("missingFieldsList").innerHTML = "";
-            document.getElementById("alertContainer").classList.add("d-none");
+            button.disabled = false;
         }, 5000);
-        return;
-    }
 
-    var dataToSend = {
-        "nama": namaPelayanan,
-        "keterangan": keteranganPelayanan,
-        "harga": hargaPelayanan,
-        "tampilkan": tampilkanPelayanan
-    };
+        const namaPelayanan = document.getElementById("namaPelayanan").value;
+        const keteranganPelayanan = document.getElementById("keteranganPelayanan").value;
+        const tampilkanPelayanan = document.getElementById("langsungTampilkan").value;
+        const hargaPelayanan = document.getElementById("hargaPelayanan").value;
+        const gambarPelayanan = document.getElementById("gambarPelayanan").files[0];
 
+        const fieldsNotFilled = [];
 
-    var jsonData = JSON.stringify(dataToSend);
-
-    var xhr = new XMLHttpRequest();
-
-    xhr.open("POST", "https://beplazabarber.my.id/API/api.php/layanan", true);
-
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            simpanDataGambar()
-        } else {
-            console.error("Gagal menambahkan layanan:", xhr.statusText);
+        if (namaPelayanan === "") {
+            fieldsNotFilled.push("Nama");
+        } else if (/[\[\]\{\}]/.test(namaPelayanan)) {
+            fieldsNotFilled.push("Nama tidak boleh mengandung karakter khusus");
         }
-    };
-    xhr.onerror = function() {
-        console.error("Koneksi error.");
-    };
 
-    xhr.send(jsonData);
-}
+        if (keteranganPelayanan === "") {
+            fieldsNotFilled.push("Keterangan");
+        } else if (/[\[\]\{\}]/.test(keteranganPelayanan)) {
+            fieldsNotFilled.push("Keterangan tidak boleh mengandung karakter khusus");
+        }
 
+        if (hargaPelayanan === "") {
+            fieldsNotFilled.push("Harga");
+        } else if (isNaN(hargaPelayanan)) {
+            fieldsNotFilled.push("Harga harus berupa angka");
+        }
 
+        if (!gambarPelayanan) {
+            fieldsNotFilled.push("Gambar");
+        } else if (!isImage(gambarPelayanan.name)) {
+            fieldsNotFilled.push("Gambar harus berupa file gambar (format: .jpg, .jpeg, .png)");
+        }
 
-function deleteService(ServiceId) {
+        if (fieldsNotFilled.length > 0) {
+            document.getElementById("missingFieldsList").innerHTML = fieldsNotFilled.map(function(field) {
+                return "<li>" + field + "</li>";
+            }).join("");
+            document.getElementById("alertContainer").classList.remove("d-none");
+            setTimeout(function() {
+                document.getElementById("missingFieldsList").innerHTML = "";
+                document.getElementById("alertContainer").classList.add("d-none");
+            }, 5000);
+            return;
+        }
+
+        const dataToSend = {
+            "nama": namaPelayanan,
+            "keterangan": keteranganPelayanan,
+            "harga": hargaPelayanan,
+            "tampilkan": tampilkanPelayanan
+        };
+
+        const jsonData = JSON.stringify(dataToSend);
+
+        const response = await fetch("https://beplazabarber.my.id/API/api.php/layanan", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: jsonData
+        });
+
+        if (response.ok) {
+            await simpanDataGambar();
+        } else {
+            console.error("Gagal menambahkan layanan:", response.statusText);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};
+
+const deleteService = async (serviceId) => {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-        var button = document.getElementById(`btn_delete${ServiceId}`);
+        try {
+            const response = await fetch(`https://beplazabarber.my.id/API/api.php/layanan/${serviceId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
-
-        var xhr = new XMLHttpRequest();
-        xhr.open("DELETE", "https://beplazabarber.my.id/API/api.php/layanan/" + ServiceId, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.hasOwnProperty('message')) {
-                    var fieldsNotFilled = [];
-                    fieldsNotFilled.push(response.message);
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.hasOwnProperty('message')) {
+                    const fieldsNotFilled = [];
+                    fieldsNotFilled.push(responseData.message);
                     document.getElementById("missingFieldsListKeterangan").innerHTML = fieldsNotFilled.map(function(field) {
                         return "<li>" + field + "</li>";
                     }).join("");
@@ -307,29 +303,25 @@ function deleteService(ServiceId) {
                     }, 10000);
                     return;
                 } 
-                document.getElementById(`successDelete`).classList.remove("d-none");
-                AllService()
+                document.getElementById('successDelete').classList.remove('d-none');
+                AllService();
                 setTimeout(function() {
-                    document.getElementById(`successDelete`).classList.add("d-none"); // Menambahkan kembali class d-none setelah alert ditampilkan
+                    document.getElementById('successDelete').classList.add('d-none');
                 }, 5000); 
             } else {
-                document.getElementById(`gagalDelete`).classList.remove("d-none");
+                document.getElementById('gagalDelete').classList.remove('d-none');
                 setTimeout(function() {
-                    document.getElementById(`gagalDelete`).classList.add("d-none"); // Menambahkan kembali class d-none setelah alert ditampilkan
+                    document.getElementById('gagalDelete').classList.add('d-none');
                 }, 5000); 
-                console.error("Gagal menghapus pelayanan:", xhr.statusText);
+                console.error('Gagal menghapus pelayanan:', response.statusText);
             }
-        };        
-        xhr.onerror = function() {
-            console.error("Koneksi error.");
-        };
-        xhr.send();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
+};
 
-}
-
-
-function saveEditedService() {
+const saveEditedService = async () => {
     var button = document.getElementById("btnSaveEdit");
     button.disabled = true;
     setTimeout(function() {
@@ -391,35 +383,32 @@ function saveEditedService() {
         "tampilkan": tampilkanPelayanan
     };
 
-
     var jsonData = JSON.stringify(dataToSend);
 
-    var xhr = new XMLHttpRequest();
+    try {
+        const response = await fetch(`https://beplazabarber.my.id/API/api.php/layanan/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        });
 
-    xhr.open("PUT", "https://beplazabarber.my.id/API/api.php/layanan/"+id, true);
-
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
+        if (response.ok) {
             if (gambarPelayanan) {
-                editsimpanDataGambar(id)
-            } 
-            else {
+                await editsimpanDataGambar(id);
+            } else {
                 document.getElementById("editsuccessAlertContainer").classList.remove("d-none");
                 setTimeout(function() {
-                    closeEditModal()
-                    AllService()
+                    closeEditModal();
+                    AllService();
                     document.getElementById(`editsuccessAlertContainer`).classList.add("d-none"); 
                 }, 3000); 
             }
         } else {
-            console.error("Gagal menambahkan layanan:", xhr.statusText);
+            console.error("Gagal mengedit layanan:", response.statusText);
         }
-    };
-    xhr.onerror = function() {
-        console.error("Koneksi error.");
-    };
-
-    xhr.send(jsonData);
-}
+    } catch (error) {
+        console.error("Error:", error);
+    }
+};

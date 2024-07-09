@@ -35,6 +35,7 @@ async function injectFilterSection() {
     const container = document.getElementById('filterSectionContainer');
     if (container) {
         container.innerHTML = filterSectionHTML;
+
         const filterInputUser = document.getElementById('filterInputUser');
         if (filterInputUser) {
             filterInputUser.addEventListener('click', toggleManualFilterSection);
@@ -62,10 +63,14 @@ async function injectFilterSection() {
 
 function toggleManualFilterSection() {
     const manualFilterSection = document.getElementById('manualFilterSection');
-    if (manualFilterSection.style.display === 'none') {
-        manualFilterSection.style.display = 'flex';
+    if (manualFilterSection) {
+        if (manualFilterSection.style.display === 'none') {
+            manualFilterSection.style.display = 'flex';
+        } else {
+            manualFilterSection.style.display = 'none';
+        }
     } else {
-        manualFilterSection.style.display = 'none';
+        console.error(`Element with id "manualFilterSection" not found.`);
     }
 }
 

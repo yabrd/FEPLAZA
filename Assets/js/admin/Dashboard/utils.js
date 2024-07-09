@@ -32,24 +32,23 @@ function enableWaktu(tanggalFieldId, waktuFieldId, Action) {
     }
 }
 
-function fetchGetBookedTimes(tanggal, waktuFieldId, Action) {
-    const tanggalFormatted = tanggal.split('-').join('');
-    const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
+const fetchGetBookedTimes = async (tanggal, waktuFieldId, Action) => {
+    try {
+        const tanggalFormatted = tanggal.split('-').join('');
+        const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayBookedTimes(data, tanggal, waktuFieldId, Action);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        displayBookedTimes(data, tanggal, waktuFieldId, Action);
+    } catch (error) {
+        console.error('Error:', error);
+    }
+};
 
 function displayBookedTimes(bookedTimes, tanggal, waktuFieldId, Action) {
     const now = new Date();
@@ -91,7 +90,6 @@ function displayBookedTimes(bookedTimes, tanggal, waktuFieldId, Action) {
         });
     }
 }
-
 
 const WatchData = [
     "08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30", "10:30 - 11.00",

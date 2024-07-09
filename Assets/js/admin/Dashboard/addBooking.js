@@ -2,7 +2,7 @@ import { enableWaktu, setMinDate } from "./utils.js";
 import { fetchAndDisplayServices } from "./bookingAll.js"
 import { SubmitButton } from "./bookingAll.js"
 
-async function createBookingForm(Action) {
+const createBookingForm = async (Action) => {
     // Mendapatkan elemen tempat Anda ingin menambahkan formulir
     var formContainer = document.getElementById('formContainer');
     const BookingID = 1;

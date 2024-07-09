@@ -106,12 +106,16 @@ function displayBookingTable(BookingData, currentPage, Action) {
     }
 }
 
-function fetchAndDisplayServices(BookingID, Action) {
-    const url = 'https://beplazabarber.my.id/API/api.php/layanan';
+async function fetchAndDisplayServices(BookingID, Action) {
+    try {
+        const url = 'https://beplazabarber.my.id/API/api.php/layanan';
+        const response = await fetch(url);
 
-    fetch(url)
-    .then(response => response.json())
-    .then(data => {
+        if (!response.ok) {
+            throw new Error('Failed to fetch services');
+        }
+
+        const data = await response.json();
         const layananContainer = document.querySelector(`.service-data-container${BookingID}`);
         layananContainer.innerHTML = `<label>Layanan</label>`;
 
@@ -129,21 +133,21 @@ function fetchAndDisplayServices(BookingID, Action) {
             }
         });
 
-        if (Action != 'add') {
+        if (Action !== 'add') {
             const checkboxes = document.querySelectorAll(`.service-checkboxs${BookingID}`);
             const totalHarga = {};
             totalHarga[BookingID] = 0;
     
             fetchOrderData(checkboxes, totalHarga, BookingID, Action);
-        } else if (Action == 'add') {
+        } else {
             const totalHarga = {};
             totalHarga[BookingID] = 0;
             SetHargaCheckbox(BookingID, totalHarga, Action);
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+
+    } catch (error) {
+        console.error('Error fetching services:', error);
+    }
 }
 
 
@@ -176,10 +180,16 @@ function SetHargaCheckbox(BookingID, totalHarga, Action) {
     });
 }
 
-function fetchOrderData(checkboxes, totalHarga, BookingID, Action) {
-    const orderUrl = `https://beplazabarber.my.id/API/api.php/BookingOrder/${BookingID}`;
-    fetch(orderUrl).then(response => response.json())
-    .then(orderData => {
+async function fetchOrderData(checkboxes, totalHarga, BookingID, Action) {
+    try {
+        const orderUrl = `https://beplazabarber.my.id/API/api.php/BookingOrder/${BookingID}`;
+        const response = await fetch(orderUrl);
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch order data');
+        }
+
+        const orderData = await response.json();
         const checkedServiceIds = orderData.map(order => order.id_pelayanan);
 
         checkboxes.forEach(checkbox => {
@@ -197,11 +207,12 @@ function fetchOrderData(checkboxes, totalHarga, BookingID, Action) {
                 updateTotalHarga(checkboxes, totalHarga, BookingID, Action);
             });
         });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+
+    } catch (error) {
+        console.error('Error fetching order data:', error);
+    }
 }
+
 
 function updateTotalHarga(checkboxes, totalHarga, BookingID, Action) {
     totalHarga[BookingID] = 0;
@@ -215,7 +226,7 @@ function updateTotalHarga(checkboxes, totalHarga, BookingID, Action) {
     document.getElementById(`Harga${Action}${BookingID}`).value = totalHarga[BookingID];
 }
 
-function deleteBooking(BookingID, Action) {
+async function deleteBooking(BookingID, Action) {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
         const button = document.getElementById(`deleteBtn${BookingID}`);
 
@@ -225,39 +236,43 @@ function deleteBooking(BookingID, Action) {
                 button.disabled = false;
             }, 5000);
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("DELETE", "https://beplazabarber.my.id/API/api.php/booking/" + BookingID, true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const successAlert = document.getElementById(`${Action}SuccessDelete`);
-                    if (successAlert) {
-                        successAlert.classList.remove("d-none");
-                        resetTable();
-                        setTimeout(function() {
-                            successAlert.classList.add("d-none");
-                        }, 3000);
+            try {
+                const response = await fetch(`https://beplazabarber.my.id/API/api.php/booking/${BookingID}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
                     }
-                } else {
-                    const errorAlert = document.getElementById(`${Action}GagalDelete`);
-                    if (errorAlert) {
-                        errorAlert.classList.remove("d-none");
-                        setTimeout(function() {
-                            errorAlert.classList.add("d-none");
-                        }, 3000);
-                    }
-                    console.error("Gagal menghapus booking:", xhr.statusText);
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete booking');
                 }
-            };
-            xhr.onerror = function() {
-                console.error("Koneksi error.");
-            };
-            xhr.send();
+
+                const data = await response.json();
+
+                const successAlert = document.getElementById(`${Action}SuccessDelete`);
+                if (successAlert) {
+                    successAlert.classList.remove("d-none");
+                    resetTable();
+                    setTimeout(function() {
+                        successAlert.classList.add("d-none");
+                    }, 3000);
+                }
+            } catch (error) {
+                const errorAlert = document.getElementById(`${Action}GagalDelete`);
+                if (errorAlert) {
+                    errorAlert.classList.remove("d-none");
+                    setTimeout(function() {
+                        errorAlert.classList.add("d-none");
+                    }, 3000);
+                }
+                console.error("Gagal menghapus booking:", error.message);
+            }
         }
     }
 }
 
-function SubmitButton(BookingID, Action) {
+async function SubmitButton(BookingID, Action) {
     var MissingFieldsListId = `MissingFieldsList${Action}${BookingID}`;
     var AlertContainerId = `AlertContainer${Action}${BookingID}`;
     var SuccessAlertContainerId = `SuccessAlertContainer${Action}${BookingID}`;
@@ -350,35 +365,28 @@ function SubmitButton(BookingID, Action) {
 
     var jsonData = JSON.stringify(dataToSend);
 
-    var xhr = new XMLHttpRequest();
+    try {
+        const response = await fetch(API, {
+            method: Action === 'add' ? 'POST' : 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: jsonData
+        });
 
-    if (Action === 'add') {
-        xhr.open("POST", API, true);
-    } else {
-        xhr.open("PUT", API, true);
-    }
-
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            document.getElementById(SuccessAlertContainerId).classList.remove("d-none");
-            setTimeout(function() {
-                window.location.href = '?Dashboard';
-                document.getElementById(SuccessAlertContainerId).classList.add("d-none"); 
-                document.getElementById(CloseButtonId).getElementsByClassName("close")[0].click();
-                
-            }, 2000); 
-        } else {
-            console.error("Gagal menambahkan booking:", xhr.statusText);
+        if (!response.ok) {
+            throw new Error('Failed to add or update booking');
         }
-    };
 
-    xhr.onerror = function() {
-        console.error("Koneksi error.");
-    };
-
-    xhr.send(jsonData);
+        document.getElementById(SuccessAlertContainerId).classList.remove("d-none");
+        setTimeout(function() {
+            window.location.href = '?Dashboard';
+            document.getElementById(SuccessAlertContainerId).classList.add("d-none"); 
+            document.getElementById(CloseButtonId).getElementsByClassName("close")[0].click();
+        }, 2000); 
+    } catch (error) {
+        console.error("Gagal menambahkan atau mengubah booking:", error.message);
+    }
 }
 
 export { displayBookingTable, fetchAndDisplayServices, SubmitButton };

@@ -1,22 +1,21 @@
 const id = sessionStorage.getItem('id');
 
-function fetchUserById(id) {
-    const url = `https://beplazabarber.my.id/API/api.php/User/${id}`;
+async function fetchUserById(id) {
+    try {
+        const url = `https://beplazabarber.my.id/API/api.php/User/${id}`;
+        
+        const response = await fetch(url);
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('nama_booking').value = data.username;
-            document.getElementById('nomerhp_booking').value = data.no_telp;
-        })
-        .catch(error => {
-            console.error('Error fetching user data:', error);
-        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        document.getElementById('nama_booking').value = data.username;
+        document.getElementById('nomerhp_booking').value = data.no_telp;
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+    }
 }
 
 fetchUserById(id);
@@ -52,23 +51,22 @@ function enableWaktu() {
     }
 }
 
-function fetchGetBookedTimes(tanggal) {
-    const tanggalFormatted = tanggal.split('-').join('');
-    const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
+async function fetchGetBookedTimes(tanggal) {
+    try {
+        const tanggalFormatted = tanggal.split('-').join('');
+        const url = `https://beplazabarber.my.id/API/api.php/booking/${tanggalFormatted}`;
+        
+        const response = await fetch(url);
 
-    fetch(url)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayBookedTimes(data, tanggal);
-        })
-        .catch(error => {
-            console.error('Error fetching booked times:', error);
-        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        displayBookedTimes(data, tanggal);
+    } catch (error) {
+        console.error('Error fetching booked times:', error);
+    }
 }
 
 function displayBookedTimes(bookedTimes, selectedDate) {
@@ -108,7 +106,7 @@ function displayBookedTimes(bookedTimes, selectedDate) {
     }
 }
 
-function submitBooking() {
+async function submitBooking() {
     var nama_booking = document.getElementById("nama_booking").value;
     var nomerhp_booking = document.getElementById("nomerhp_booking").value;
     var tanggal = document.getElementById("tanggal").value;
@@ -142,10 +140,10 @@ function submitBooking() {
             missingFieldsList.appendChild(listItem);
         });
         document.getElementById("alertContainer").classList.remove("d-none");
-        document.getElementById("successAlertContainer").classList.add("d-none"); // Menyembunyikan alert berhasil jika sedang tampil
+        document.getElementById("successAlertContainer").classList.add("d-none");
         setTimeout(function() {
             document.getElementById("alertContainer").classList.add("d-none");
-        }, 5000); // Menghilangkan alert gagal setelah 5 detik (5000 milidetik)
+        }, 5000);
         return;
     }
 
@@ -159,39 +157,40 @@ function submitBooking() {
 
     var url = "https://beplazabarber.my.id/API/api.php/booking";
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
+    try {
+        var response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
 
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            document.getElementById("successAlertContainer").classList.remove("d-none");
-            document.getElementById("alertContainer").classList.add("d-none"); // Menyembunyikan alert gagal jika sedang tampil
-            setTimeout(function() {
-                document.getElementById("successAlertContainer").classList.add("d-none");
-                window.location.href = "?Booking";
-            }, 3000); // Menghilangkan alert berhasil setelah 3 detik (3000 milidetik)
-        } else {
-            var response = JSON.parse(xhr.responseText);
-            var errorAlert = document.createElement("div");
-            errorAlert.classList.add("alert", "alert-danger", "alert-dismissible", "fade", "show");
-            errorAlert.setAttribute("role", "alert");
-            errorAlert.innerHTML = "Gagal menambahkan booking: " + response.message;
-            errorAlert.innerHTML += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
-            document.getElementById("alertContainer").appendChild(errorAlert);
-
-            document.getElementById("alertContainer").classList.remove("d-none");
-            document.getElementById("successAlertContainer").classList.add("d-none"); // Menyembunyikan alert berhasil jika sedang tampil
-            
-            setTimeout(function() {
-                document.getElementById("alertContainer").classList.add("d-none");
-            }, 5000); // Menghilangkan alert gagal setelah 5 detik (5000 milidetik)
+        if (!response.ok) {
+            throw new Error('Gagal menambahkan booking');
         }
-    };
 
-    xhr.onerror = function() {
-        console.error("Request failed");
-    };
+        var responseData = await response.json();
+        document.getElementById("successAlertContainer").classList.remove("d-none");
+        document.getElementById("alertContainer").classList.add("d-none");
+        setTimeout(function() {
+            document.getElementById("successAlertContainer").classList.add("d-none");
+            window.location.href = "?Booking";
+        }, 3000);
+    } catch (error) {
+        var response = await error.response.json();
+        var errorAlert = document.createElement("div");
+        errorAlert.classList.add("alert", "alert-danger", "alert-dismissible", "fade", "show");
+        errorAlert.setAttribute("role", "alert");
+        errorAlert.innerHTML = "Gagal menambahkan booking: " + response.message;
+        errorAlert.innerHTML += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+        document.getElementById("alertContainer").appendChild(errorAlert);
 
-    xhr.send(JSON.stringify(data));
+        document.getElementById("alertContainer").classList.remove("d-none");
+        document.getElementById("successAlertContainer").classList.add("d-none");
+
+        setTimeout(function() {
+            document.getElementById("alertContainer").classList.add("d-none");
+        }, 5000);
+    }
 }
