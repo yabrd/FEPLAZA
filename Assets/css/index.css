@@ -145,11 +145,13 @@
 
 /* Animasi untuk konten utama */
 #contentFromIndexHTML {
+    visibility: hidden;
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
 }
 
 #contentFromIndexHTML.loaded {
+    visibility: visible;
     opacity: 1;
 }
 
