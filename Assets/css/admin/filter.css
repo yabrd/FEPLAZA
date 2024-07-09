@@ -1,118 +1,136 @@
-#filterSectionContainer {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
+
+.filter-section-container {
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
 }
 
-#filterSectionContainer h3 {
-    font-family: "Open Sans", sans-serif;
-    text-align: center;
+.btn-group {
+    display: flex; /* Gunakan flexbox untuk tata letak */
+    width: 100%; /* Pastikan btn-group mengambil lebar penuh dari parent */
 }
 
-#filterSectionContainer .btn-group-center {
-    margin: 0 auto; /* Tengah secara horizontal */
-    display: flex;
-    justify-content: space-between; /* Memberikan ruang di antara tombol */
-    width: 80%;
+#DownloadButton,
+.btn-primary {
+    background-color: #0051ff; /* Warna biru untuk tombol utama */
+    color: #ffffff; /* Teks putih untuk kontras yang baik */
+}
+
+.dropdown-toggle,
+.dropdown-item {
+    background-color: #3d3d3d; /* Warna biru untuk dropdown toggle dan item dropdown */
+    color: #ffffff; /* Teks putih untuk kontras yang baik */
+}
+
+/* Efek hover untuk DownloadButton dan tombol utama */
+#DownloadButton:hover,
+.btn-primary:hover {
+    background-color: #003d80; /* Ubah warna latar saat dihover */
+    color: #ffffff; /* Teks putih untuk kontras yang baik */
+    /* Anda bisa menambahkan transisi untuk efek smooth */
+    transition: background-color 0.3s ease;
+}
+
+/* Efek hover untuk dropdown toggle dan item dropdown */
+.dropdown-toggle:hover,
+.dropdown-item:hover {
+    background-color: #555555; /* Ubah warna latar saat dihover */
+    color: #ffffff; /* Teks putih untuk kontras yang baik */
+    /* Anda bisa menambahkan transisi untuk efek smooth */
+    transition: background-color 0.3s ease;
+    cursor: pointer; /* Ganti kursor saat dihover agar menunjukkan bisa diklik */
+}
+
+
+#DownloadButton {
+    flex: 1; /* Menggunakan flex untuk mengambil 50% dari lebar parent */
+}
+
+#dropdownMenu {
+    flex: 1; /* Menggunakan flex untuk mengambil 50% dari lebar parent */
+}
+
+.btn-group .dropdown-toggle {
+    width: 100%; /* Pastikan dropdown toggle button mengisi lebar penuh dari parentnya */
+}
+
+.input-group .input-group-text {
+    background-color: #555555;
+    color: white;
+}
+
+#manualFilterSection {
     margin-top: 10px;
-    margin-bottom: 10px;
-    overflow-x: auto; /* Mengizinkan scroll horizontal */
-}
-
-#filterSectionContainer .btn-group-center .btn {
-    border-radius: 0; /* Menghilangkan lengkungan pada tombol */
-    flex-grow: 1; /* Tombol akan mengisi ruang yang tersedia secara proporsional */
-    text-align: center;
-}
-
-#filterSectionContainer #manualFilterSection {
-    border-radius: 10px;
-    margin: 0 auto; /* Tengah secara horizontal */
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 40%;
-    background-color: #fff;
+    flex-direction: row; /* Tata letak horizontal secara default */
+    flex-wrap: wrap; /* Agar input-group bisa wrap jika perlu */
 }
 
-#filterSectionContainer #manualFilterSection .form-row {
-    display: flex;
-    justify-content: center;
-    width: auto;
-    gap: 10px;
-    padding-top: 20px;
+#manualFilterSection .input-group {
+    flex: 1; /* Biarkan input-group memanfaatkan ruang yang tersedia */
+    margin-right: 10px; /* Memberikan jarak antara endDate dengan filterButton */
+    max-height: 38px;
 }
 
-#filterSectionContainer #manualFilterSection .form-group {
-    flex: none; /* Menghilangkan flex-grow agar elemen tidak mengisi ruang yang tersedia */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+#manualFilterSection .input-group #startDate,
+#manualFilterSection .input-group #endDate {
+    flex: 1; /* Biarkan input date memanfaatkan ruang yang tersedia */
+}
+
+#filterButton {
+    background-color: #0051ff; /* Warna hijau untuk tombol Filter */
+    max-width: 150px; /* Atur lebar maksimum untuk tombol Filter */
+    max-height: 38px;
+}
+
+.dropdown-menu {
+    min-width: 100%;
+    background-color: #343a40; /* Warna latar belakang */
+    color: #ffffff; /* Warna teks */
+    border: none; /* Hapus border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+    padding: 8px 0; /* Padding atas dan bawah */
+    border-radius: 0; /* Menghapus border-radius atau radius sudut */
+}
+
+.dropdown-item {
+    padding: 10px 20px; /* Padding untuk setiap item dropdown */
     margin: 0; /* Hapus margin */
 }
 
-#filterSectionContainer #manualFilterSection .form-group input {
-    text-align: center;
-    width: 100%; /* Atur lebar input agar sesuai dengan kontainer .form-group */
-    max-width: 200px; /* Atur lebar maksimum */
-    height: 40px; /* Atur tinggi input */
-    padding: 10px; /* Tambahkan padding untuk input */
-    box-sizing: border-box; /* Pastikan padding dimasukkan dalam total lebar dan tinggi */
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #495057; /* Warna latar belakang saat hover/focus */
+    color: #ffffff; /* Warna teks saat hover/focus */
 }
 
-#filterSectionContainer #manualFilterSection .filter-button-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 20px;
-}
-
-#filterSectionContainer .Download-button-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-top: 10px;
-}
-
-@media (max-width: 576px) {
-
-    #filterSectionContainer {
-        margin: 10px;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        background-color: #f9f9f9;
-        display: flex;
-        flex-direction: column;
+@media (max-width: 768px) {
+    .input-group {
+        flex: 1; /* Biarkan input-group memanfaatkan ruang yang tersedia */
+        margin-bottom: 10px; /* Tambahkan margin bawah untuk jarak antar input-group di mode mobile */
     }
 
-    #filterSectionContainer #manualFilterSection {
-        border-radius: 10px;
-        margin: 0 auto; /* Tengah secara horizontal */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 80%;
-        background-color: #fff;
+    .input-group .input-group-text {
+        width: 120px; /* Atur lebar menjadi otomatis */
+        padding: 0.375rem 0.75rem; /* Sesuaikan padding sesuai kebutuhan */
+        margin: 0; /* Pastikan margin diatur ke nol */
+        border: none; /* Hapus border jika tidak diperlukan */
+        flex: none; /* Jangan biarkan flex memengaruhi lebar */
+        white-space: nowrap; /* Pastikan teks tidak wrap */
     }
     
-    #filterSectionContainer .btn-group-center {
-        margin: 0 auto; /* Tengah secara horizontal */
-        display: flex;
-        justify-content: space-between; /* Memberikan ruang di antara tombol */
-        width: 100%;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        overflow-x: auto; /* Mengizinkan scroll horizontal */
+    #manualFilterSection {
+        flex-direction: column; /* Menata elemen secara vertikal untuk mode mobile */
     }
 
-    #filterSectionContainer .btn-group-center .btn {
-        font-size: 10px; /* Atur ukuran font menjadi lebih kecil */
-        padding: 6px 10px; /* Atur padding tombol */
+    #manualFilterSection .input-group {
+        margin-right: 0; /* Hapus margin-right pada input dates di mode mobile */
+    }
+
+    #filterButton {
+        max-width: none; /* Hapus batas maksimum lebar untuk tombol Filter di mode mobile */
+        width: 100%; /* Agar tombol Filter mengisi lebar penuh */
     }
 }
